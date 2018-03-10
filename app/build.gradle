@@ -12,6 +12,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true //jars won't work without it
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -35,5 +36,6 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
+    compile 'com.android.support:multidex:1.0.3'
 }
 

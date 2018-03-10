@@ -1,5 +1,6 @@
 package com.soulmate.soulmate
 
+import com.soulmate.dtos.UserAccountDto
 import com.soulmate.soulmate.api.TestApi
 import okhttp3.ResponseBody
 import org.junit.Test
@@ -16,6 +17,16 @@ import retrofit2.converter.jackson.JacksonConverterFactory
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
+    private val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl("http://localhost:8080")
+            .addConverterFactory(JacksonConverterFactory.create())
+            .build()
+        get
+
+    private val api = retrofit.create(TestApi::class.java)
+        get
+
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
@@ -23,14 +34,16 @@ class ExampleUnitTest {
 
     @Test
     fun retrofit() {
-        val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl("http://localhost:8080")
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build()
-
-        val r = retrofit.create(TestApi::class.java)
-        val call: Response<ResponseBody> = r.getHelloWorldResponse().execute()
-        val res = call.body()!!.string()
+        val call: Response<ResponseBody> = api.getHelloWorldResponse().execute()
+        val body: ResponseBody? = call.body()
+        val res = body!!.string()
         assertEquals("Hello world", res)
+    }
+
+    @Test
+    fun getDto() {
+        val users: Response<Iterable<UserAccountDto>> = api.getAllUsers().execute()
+        val dmitry = users.body()!!.find { it.firstName == "dmitry" }
+        assertTrue(dmitry!!.firstName == "dmitry")
     }
 }
