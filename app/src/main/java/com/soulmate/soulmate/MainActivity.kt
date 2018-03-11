@@ -6,28 +6,27 @@ import android.widget.Button
 import android.widget.Toast
 import com.soulmate.dtos.UserAccountDto
 import com.soulmate.soulmate.api.TestApi
+import dagger.android.DaggerActivity
+import dagger.android.support.DaggerAppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    private val retrofit: Retrofit = Retrofit.Builder()
-//            .baseUrl("http://localhost:8080")
-            .baseUrl("http://192.168.0.12:8080/")
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build()
-    private val api = retrofit.create(TestApi::class.java)
+    @Inject
+    lateinit var retrofit: Retrofit;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        App.component.inject(this)
 
         val btn = findViewById<Button>(R.id.my_button)
         btn.setOnClickListener {
-            api.getAllUsers().enqueue(object : Callback<Iterable<UserAccountDto>> {
+            retrofit.create(TestApi::class.java).getAllUsers().enqueue(object : Callback<Iterable<UserAccountDto>> {
                 override fun onResponse(call: Call<Iterable<UserAccountDto>>?, response: Response<Iterable<UserAccountDto>>?) {
                     Toast.makeText(
                             applicationContext,
@@ -42,5 +41,4 @@ class MainActivity : AppCompatActivity() {
             })
         }
     }
-
 }
