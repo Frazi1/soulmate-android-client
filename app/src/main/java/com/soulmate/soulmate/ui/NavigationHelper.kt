@@ -8,14 +8,10 @@ import com.soulmate.soulmate.ui.fragments.authorization.SignInFragment
 import javax.inject.Inject
 
 
-class NavigationHelper {
-
-    @Inject constructor(mainActivity: MainActivity) {
-        this.fragmentManager = mainActivity.supportFragmentManager
-    }
+class NavigationHelper @Inject constructor(mainActivity: MainActivity) {
 
     private val containerId: Int = R.id.container
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager = mainActivity.supportFragmentManager
 
     fun navigateToSignIn() {
         fragmentManager
@@ -30,4 +26,5 @@ class NavigationHelper {
                 .replace(containerId, AuthorizationFragment())
                 .commit()
     }
+
 }

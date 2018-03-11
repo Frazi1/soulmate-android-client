@@ -13,7 +13,7 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        App.component.inject(this)
+        App.component.inject(this)
 
 //        navigationHelper.navigateToAuthorization()
         setContentView(R.layout.activity_main)
