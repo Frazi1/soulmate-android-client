@@ -20,14 +20,15 @@ class AuthorizationFragment : Fragment() {
 //        buttonSignIn = view!!.findViewById(R.id.button_signIn)
 //        buttonSignUp = view!!.findViewById(R.id.button_signUp)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_authorization, container, false)
-    }
-
-    fun navigateToSignInPage(view: View){
-        val findFragmentById: Fragment = fragmentManager!!.findFragmentById(R.id.authorization_fragment)
-        val transaction = fragmentManager!!.beginTransaction()
-        transaction.replace(view.id, findFragmentById)
-        transaction.commit()
+        val view = inflater.inflate(R.layout.fragment_authorization, container, false)
+        buttonSignUp = view.findViewById(R.id.button_signUp)
+        buttonSignIn = view.findViewById(R.id.button_signIn)
+        buttonSignIn.setOnClickListener(View.OnClickListener {
+            fragmentManager!!
+                    .beginTransaction()
+                    .replace(R.id.container, SignInFragment())
+                    .commit() })
+        return view
     }
 
 }// Required empty public constructor

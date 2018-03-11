@@ -6,10 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.soulmate.soulmate.MainActivity">
 
-    <fragment
-        android:name="com.soulmate.soulmate.ui.fragments.authorization.AuthorizationFragment"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/authorization_fragment" />
+        android:id="@+id/container" />
 
 </android.support.constraint.ConstraintLayout>

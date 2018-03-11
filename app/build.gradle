@@ -1,21 +1,21 @@
+
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
+apply plugin: 'org.jetbrains.kotlin.kapt'
 apply plugin: 'kotlin-android-extensions'
 
 //apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
-    kapt { generateStubs = true }
+//    kapt { generateStubs = true }
     defaultConfig {
         applicationId "com.soulmate.soulmate"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true //jars won't work without it
+//        multiDexEnabled true //jars won't work without it
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -24,11 +24,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
@@ -41,8 +42,8 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.0"
 
     // Room (use 1.1.0-alpha3 for latest alpha)
-    implementation "android.arch.persistence.room:runtime:1.0.0"
-    kapt "android.arch.persistence.room:compiler:1.0.0"
+//    implementation "android.arch.persistence.room:runtime:1.0.0"
+//    kapt "android.arch.persistence.room:compiler:1.0.0"
 
     // Paging
     implementation "android.arch.paging:runtime:1.0.0-alpha6"
@@ -52,7 +53,7 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
-    compile 'com.android.support:multidex:1.0.3'
+//    compile 'com.android.support:multidex:1.0.3'
 
     //Dagger
     compile 'com.google.dagger:dagger:2.15'
