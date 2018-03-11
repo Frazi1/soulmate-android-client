@@ -7,12 +7,11 @@ import javax.inject.Singleton
 
 
 @Module
-class AppModule() {
-    lateinit var appContext: Context
+class AppModule(private val context: Context) {
 
     @Singleton
     @Provides
     fun provideContext(): Context {
-        return appContext
+        return context
     }
 }

@@ -2,6 +2,7 @@ package com.soulmate.soulmate
 
 import android.app.Application
 import com.soulmate.soulmate.dagger.AppComponent
+import com.soulmate.soulmate.dagger.AppModule
 import com.soulmate.soulmate.dagger.DaggerAppComponent
 import com.soulmate.soulmate.dagger.NetworkModule
 
@@ -12,11 +13,12 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        buildComponent()
+        component = buildComponent()
     }
 
-    protected fun buildComponent() {
-        component = DaggerAppComponent.builder()
+    protected fun buildComponent(): AppComponent {
+        return DaggerAppComponent.builder()
+                .appModule(AppModule(this))
                 .networkModule(NetworkModule())
                 .build()
     }
