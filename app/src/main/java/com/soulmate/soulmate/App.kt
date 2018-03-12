@@ -1,7 +1,10 @@
 package com.soulmate.soulmate
 
 import android.app.Application
+import android.support.v7.app.AppCompatActivity
 import com.github.salomonbrys.kodein.*
+import com.github.salomonbrys.kodein.android.*
+import com.soulmate.soulmate.ui.NavigationHelper
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
