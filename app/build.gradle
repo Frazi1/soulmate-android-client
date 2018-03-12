@@ -1,4 +1,3 @@
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.kotlin.kapt'
@@ -26,7 +25,6 @@ android {
     }
 
 }
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -55,12 +53,8 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
 //    compile 'com.android.support:multidex:1.0.3'
 
-    //Dagger
-    compile 'com.google.dagger:dagger:2.15'
-    compile "com.google.dagger:dagger-android-support:2.15"
-    kapt 'com.google.dagger:dagger-compiler:2.15'
-    kapt 'com.google.dagger:dagger-android-processor:2.15'
-//    annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
+    compile 'com.github.salomonbrys.kodein:kodein:4.1.0'
+    compile 'com.github.salomonbrys.kodein:kodein-android:4.1.0'
 }
 
 

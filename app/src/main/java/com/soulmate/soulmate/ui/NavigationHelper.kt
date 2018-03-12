@@ -5,10 +5,9 @@ import com.soulmate.soulmate.MainActivity
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.ui.fragments.authorization.AuthorizationFragment
 import com.soulmate.soulmate.ui.fragments.authorization.SignInFragment
-import javax.inject.Inject
 
 
-class NavigationHelper @Inject constructor(mainActivity: MainActivity) {
+class NavigationHelper constructor(mainActivity: MainActivity) {
 
     private val containerId: Int = R.id.container
     private val fragmentManager: FragmentManager = mainActivity.supportFragmentManager

@@ -1,25 +1,22 @@
 package com.soulmate.soulmate
 
 import android.app.Application
-import com.soulmate.soulmate.dagger.AppComponent
-import com.soulmate.soulmate.dagger.AppModule
-import com.soulmate.soulmate.dagger.DaggerAppComponent
-import com.soulmate.soulmate.dagger.NetworkModule
+import com.github.salomonbrys.kodein.*
+import retrofit2.Retrofit
+import retrofit2.converter.jackson.JacksonConverterFactory
 
-class App : Application() {
-    companion object {
-        lateinit var component: AppComponent get
+class App : Application(), KodeinAware {
+
+    override val kodein by Kodein.lazy {
+        bind<Retrofit>() with singleton {
+            Retrofit.Builder()
+                    .baseUrl("http://192.168.0.12:8080")
+                    .addConverterFactory(JacksonConverterFactory.create())
+                    .build()
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
-        component = buildComponent()
-    }
-
-    private fun buildComponent(): AppComponent {
-        return DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .networkModule(NetworkModule())
-                .build()
     }
 }
