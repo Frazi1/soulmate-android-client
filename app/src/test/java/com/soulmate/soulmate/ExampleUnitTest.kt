@@ -1,12 +1,11 @@
 package com.soulmate.soulmate
 
 import com.soulmate.dtos.UserAccountDto
-import com.soulmate.soulmate.api.TestApi
+import com.soulmate.soulmate.api.AuthApi
 import okhttp3.ResponseBody
 import org.junit.Test
 
 import org.junit.Assert.*
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -24,7 +23,7 @@ class ExampleUnitTest {
             .build()
         get
 
-    private val api = retrofit.create(TestApi::class.java)
+    private val api = retrofit.create(AuthApi::class.java)
         get
 
     @Test
