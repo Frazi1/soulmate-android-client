@@ -3,6 +3,7 @@ package com.soulmate.soulmate
 import android.app.Application
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.api.AuthApi
+import com.soulmate.soulmate.api.AuthorizationInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -28,19 +29,8 @@ class App : Application(), KodeinAware {
     private fun httpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
         val credentialsStore: CredentialsStore = kodein.instance()
-        if (credentialsStore.isInitialized) {
-            val interceptor = Interceptor { chain ->
-                val request = chain.request().newBuilder()
-//                        .addHeader("Authorization", credentialsStore.getBasicAuthorizationToken())
-                        .addHeader("Authorization", credentialsStore.getBasicAuthorizationToken())
-
-                        .build()
-                chain.proceed(request)
-            }
-            builder.addInterceptor(interceptor)
-        }
-        return builder
-                .build()
+        builder.addInterceptor(AuthorizationInterceptor(credentialsStore))
+        return builder.build()
     }
 
     fun buildRetrofit(): Retrofit {

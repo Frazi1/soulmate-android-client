@@ -32,6 +32,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     lateinit var mLoginPresenter: LoginPresenter
 
     private lateinit var buttonLogin: Button
+    private lateinit var buttonTestLogin: Button
     private lateinit var textEmail: TextView
     private lateinit var textPassword: TextView
 
@@ -40,6 +41,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         buttonLogin = findViewById(R.id.button_login)
+        buttonTestLogin = findViewById(R.id.button_login_test)
         textEmail = findViewById(R.id.text_email)
         textPassword = findViewById(R.id.text_password)
 
@@ -47,6 +49,10 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
             mLoginPresenter.attemptLogin(
                     textEmail.text.toString(),
                     textPassword.text.toString())
+        }
+
+        buttonTestLogin.setOnClickListener {
+            mLoginPresenter.attemptLoginTest()
         }
     }
 }

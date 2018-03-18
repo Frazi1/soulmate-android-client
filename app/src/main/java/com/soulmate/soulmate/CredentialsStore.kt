@@ -5,28 +5,30 @@ import okhttp3.Credentials
 class CredentialsStore {
 
     companion object {
+        private const val clientId: String = "soulmate-client"
+        private const val clientSecret:String = "secret"
         fun getBasicAuthorizationToken(username: String, password: String): String = Credentials.basic(username, password)
+        fun getBasicAuthorizationToken(): String = Credentials.basic(clientId, clientSecret)
     }
-    var username: String = ""
+    var accessToken: String = ""
         get
         private set
 
-    var password: String = ""
+    var refreshToken = ""
         get
         private set
 
-    var isInitialized = false
+    var isTokenInitialized: Boolean = false
         get
         private set
 
-    fun initialize(username: String, password: String) {
-        this.username = username
-        this.password = password
-        isInitialized = true
+    fun initializeWithToken(accessToken: String, refreshToken: String) {
+        this.accessToken = accessToken
+        this.refreshToken = refreshToken
+        isTokenInitialized = true
     }
 
-    fun getBasicAuthorizationToken() : String
-            = Companion.getBasicAuthorizationToken(username, password)
+    fun getOAuth2AuthorizationToken(): String = accessToken
 
 //    init {
 //        initialize("test", "test")

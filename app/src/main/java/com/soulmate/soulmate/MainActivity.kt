@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
         initializeInjector()
         setContentView(R.layout.activity_main)
 
-        if(!credentialsStore.isInitialized) {
+        if(!credentialsStore.isTokenInitialized) {
             startActivity(LoginActivity.getIntent(this))
         }
 
