@@ -50,9 +50,5 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
                     textEmail.text.toString(),
                     textPassword.text.toString())
         }
-
-        buttonTestLogin.setOnClickListener {
-            mLoginPresenter.attemptLoginTest()
-        }
     }
 }

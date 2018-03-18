@@ -1,5 +1,6 @@
 package com.soulmate.soulmate
 
+import com.soulmate.soulmate.authorization.AuthorizationToken
 import okhttp3.Credentials
 
 class CredentialsStore {
@@ -10,27 +11,15 @@ class CredentialsStore {
         fun getBasicAuthorizationToken(username: String, password: String): String = Credentials.basic(username, password)
         fun getBasicAuthorizationToken(): String = Credentials.basic(clientId, clientSecret)
     }
-    var accessToken: String = ""
-        get
-        private set
+    lateinit var authorizationToken: AuthorizationToken
 
-    var refreshToken = ""
-        get
-        private set
 
     var isTokenInitialized: Boolean = false
         get
         private set
 
-    fun initializeWithToken(accessToken: String, refreshToken: String) {
-        this.accessToken = accessToken
-        this.refreshToken = refreshToken
+    fun initializeWithToken(authorizationToken: AuthorizationToken) {
+        this.authorizationToken = authorizationToken
         isTokenInitialized = true
     }
-
-    fun getOAuth2AuthorizationToken(): String = accessToken
-
-//    init {
-//        initialize("test", "test")
-//    }
 }

@@ -3,8 +3,8 @@ package com.soulmate.soulmate
 import android.app.Application
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.api.AuthApi
-import com.soulmate.soulmate.api.AuthorizationInterceptor
-import okhttp3.Interceptor
+import com.soulmate.soulmate.authorization.AuthorizationInterceptor
+import com.soulmate.soulmate.configuration.JacksonModule
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -36,7 +36,7 @@ class App : Application(), KodeinAware {
     fun buildRetrofit(): Retrofit {
         return Retrofit.Builder()
                 .baseUrl("http://192.168.0.12:8080")
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create(JacksonModule.objectMapper))
                 .client(httpClient())
                 .build()
     }

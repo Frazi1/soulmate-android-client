@@ -1,18 +1,13 @@
 package com.soulmate.soulmate.presentation.presenter.login
 
-import android.content.Intent
-import android.widget.Toast
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.CredentialsStore
-import com.soulmate.soulmate.MainActivity
 import com.soulmate.soulmate.api.AuthApi
+import com.soulmate.soulmate.authorization.AuthorizationToken
 import com.soulmate.soulmate.presentation.view.login.LoginView
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,15 +24,15 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
         injector.inject(App.globalkodein)
     }
 
-    val callback: Callback<ResponseBody> = object : Callback<ResponseBody> {
-        override fun onFailure(call: Call<ResponseBody?>?, t: Throwable?) {
+    private val callback: Callback<AuthorizationToken> = object : Callback<AuthorizationToken> {
+        override fun onFailure(call: Call<AuthorizationToken>?, t: Throwable?) {
+            viewState.showToast(t.toString())
         }
 
-        override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        override fun onResponse(call: Call<AuthorizationToken>, response: Response<AuthorizationToken>) {
             if (response.isSuccessful) {
-                val body = response.body()
-//                credentialsStore.initializeWithToken)
-//                App.instance.buildRetrofit()
+                val token: AuthorizationToken = response.body()!!
+                credentialsStore.initializeWithToken(token)
                 viewState.openMainActivity()
             } else
                 viewState.showToast("Invalid login or password")
@@ -47,22 +42,9 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
     fun attemptLogin(username: String, password: String) {
         val api = authApi.create(AuthApi::class.java)
         val basicAuthToken = CredentialsStore.getBasicAuthorizationToken()
-        val getTokenCall: Call<ResponseBody> =
-//                api.getToken()
-//                api.getTokenTest()
-//                api.getToken(
-//                        RequestBody.create(MediaType.parse("text/plain"),"password"),
-//                        RequestBody.create(MediaType.parse("text/plain"), username),
-//                        RequestBody.create(MediaType.parse("text/plain"), password),
-//                        basicAuthToken)
+        val getTokenCall: Call<AuthorizationToken> =
                 api.getToken("password", username, password, basicAuthToken)
 
-        getTokenCall.enqueue(callback)
-    }
-
-    fun attemptLoginTest() {
-        val api = authApi.create(AuthApi::class.java)
-        val getTokenCall = api.getTokenTest()
         getTokenCall.enqueue(callback)
     }
 }
