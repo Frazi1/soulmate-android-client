@@ -12,17 +12,10 @@ import com.soulmate.soulmate.MainActivity
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.login.LoginPresenter
 import com.soulmate.soulmate.presentation.view.login.LoginView
+import com.soulmate.soulmate.ui.activity.profile.ProfileActivity
 
 
 class LoginActivity : MvpAppCompatActivity(), LoginView {
-    override fun openMainActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
-    }
-
-    override fun showToast(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-    }
-
     companion object {
         const val TAG = "LoginActivity"
         fun getIntent(context: Context): Intent = Intent(context, LoginActivity::class.java)
@@ -50,5 +43,17 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
                     textEmail.text.toString(),
                     textPassword.text.toString())
         }
+    }
+
+    override fun openProfileActivity() {
+        startActivity(ProfileActivity.getIntent(this))
+    }
+
+    override fun openMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    override fun showToast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 }

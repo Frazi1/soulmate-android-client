@@ -19,7 +19,7 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
 
     private val authApi: AuthApi by instance()
     private val credentialsStore: CredentialsStore by instance()
-    private val authorizationSchedulerer: AuthorizationScheduler by instance()
+    private val authorizationScheduler: AuthorizationScheduler by instance()
 
     init {
         injector.inject(App.globalkodein)
@@ -34,8 +34,8 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
             if (response.isSuccessful) {
                 val token: AuthorizationToken = response.body()!!
                 credentialsStore.initializeWithToken(token)
-                authorizationSchedulerer.startAuthorizationTask(AuthorizationScheduler.REFRESH_TOKEN_PERIOD)
-                viewState.openMainActivity()
+                authorizationScheduler.startAuthorizationTask(AuthorizationScheduler.REFRESH_TOKEN_PERIOD)
+                viewState.openProfileActivity()
             } else
                 viewState.showToast("Invalid login or password")
         }

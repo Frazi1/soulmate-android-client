@@ -5,4 +5,5 @@ import com.arellomobile.mvp.MvpView
 interface LoginView : MvpView {
     fun showToast(text: String)
     fun openMainActivity()
+    fun openProfileActivity()
 }

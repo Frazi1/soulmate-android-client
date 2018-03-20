@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.api.AuthApi
+import com.soulmate.soulmate.api.ProfileApi
 import com.soulmate.soulmate.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.configuration.AppLifeCycleObserver
@@ -25,8 +26,11 @@ class App : Application(), KodeinAware, IAppLifeCycle {
     override val kodein = Kodein {
         bind<CredentialsStore>() with singleton { CredentialsStore() }
         bind<Retrofit>() with singleton { buildRetrofit() }
-        bind<AuthApi>() with singleton { kodein.instance<Retrofit>().create(AuthApi::class.java) }
         bind<AuthorizationScheduler>() with singleton { AuthorizationScheduler(instance(), instance()) }
+
+        //API
+        bind<AuthApi>() with singleton { kodein.instance<Retrofit>().create(AuthApi::class.java) }
+        bind<ProfileApi>() with singleton { kodein.instance<Retrofit>().create(ProfileApi::class.java) }
     }
 
     private fun httpClient(): OkHttpClient {
