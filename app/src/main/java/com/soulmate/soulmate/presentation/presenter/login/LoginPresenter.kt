@@ -6,6 +6,7 @@ import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.AuthApi
+import com.soulmate.soulmate.authorization.AuthorizationSchedulerer
 import com.soulmate.soulmate.authorization.AuthorizationToken
 import com.soulmate.soulmate.presentation.view.login.LoginView
 import retrofit2.Call
@@ -17,8 +18,9 @@ import retrofit2.Retrofit
 class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
     override val injector: KodeinInjector = KodeinInjector()
 
-    private val authApi: Retrofit by instance()
+    private val authApi: AuthApi by instance()
     private val credentialsStore: CredentialsStore by instance()
+    private val authorizationSchedulerer: AuthorizationSchedulerer by instance()
 
     init {
         injector.inject(App.globalkodein)
@@ -33,6 +35,7 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
             if (response.isSuccessful) {
                 val token: AuthorizationToken = response.body()!!
                 credentialsStore.initializeWithToken(token)
+                authorizationSchedulerer.startAuthorizationTask()
                 viewState.openMainActivity()
             } else
                 viewState.showToast("Invalid login or password")
@@ -40,10 +43,10 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
     }
 
     fun attemptLogin(username: String, password: String) {
-        val api = authApi.create(AuthApi::class.java)
-        val basicAuthToken = CredentialsStore.getBasicAuthorizationToken()
+        credentialsStore.initializeWithCredentials(username, password)
+        val clientBasicAuthToken = CredentialsStore.getClientBasicAuthorizationToken()
         val getTokenCall: Call<AuthorizationToken> =
-                api.getToken("password", username, password, basicAuthToken)
+                authApi.getToken(username, password, clientBasicAuthToken)
 
         getTokenCall.enqueue(callback)
     }

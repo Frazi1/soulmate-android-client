@@ -14,9 +14,12 @@ interface AuthApi {
     @GET("/users")
     fun getAllUsers(): Call<Iterable<UserAccountDto>>
 
-    @POST("/oauth/authorizationToken")
-    fun getToken(@Query("grant_type", encoded = true) grantType: String,
-                 @Query("username", encoded = true) username: String,
+    @POST("/oauth/token?grant_type=password")
+    fun getToken(@Query("username", encoded = true) username: String,
                  @Query("password", encoded = true) password: String,
                  @Header("Authorization") basicAuthToken: String): Call<AuthorizationToken>
+
+    @POST("/oauth/token?grant_type=refresh_token")
+    fun refreshToken(@Query("refresh_token") refreshToken: String,
+                     @Header("Authorization") basicAuthToken: String): Call<AuthorizationToken>
 }
