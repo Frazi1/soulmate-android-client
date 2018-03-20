@@ -1,22 +1,21 @@
 package com.soulmate.soulmate.authorization
 
-import com.github.salomonbrys.kodein.KodeinInjector
-import com.soulmate.soulmate.App
 import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.AuthApi
 import java.util.*
 
-class AuthorizationSchedulerer(private val credentialsStore: CredentialsStore,
-                               private val authApi: AuthApi) {
-//    override val injector: KodeinInjector = KodeinInjector()
+class AuthorizationScheduler(private val credentialsStore: CredentialsStore,
+                             private val authApi: AuthApi) {
+    companion object {
+        private const val REFRESH_TOKEN_PERIOD_SECONDS: Int = 100
+        const val REFRESH_TOKEN_PERIOD: Long = (1000 * REFRESH_TOKEN_PERIOD_SECONDS).toLong()
+    }
 
-    private val authTimer: Timer = Timer()
+    private var authTimer: Timer? = null
 
-//    init {
-//        inject(App.globalkodein)
-//    }
-
-    fun startAuthorizationTask() {
+    fun startAuthorizationTask(delay: Long = 0) {
+        if (!credentialsStore.isTokenInitialized) return
+        authTimer = Timer()
         val task = object : TimerTask() {
             override fun run() {
                 val newToken = authApi.refreshToken(
@@ -27,11 +26,10 @@ class AuthorizationSchedulerer(private val credentialsStore: CredentialsStore,
                 credentialsStore.initializeWithToken(newToken)
             }
         }
-        authTimer.schedule(task, 5000, 5000)
+        authTimer!!.schedule(task, delay, REFRESH_TOKEN_PERIOD)
     }
 
     fun stopAuthorizationTask() {
-        authTimer.cancel()
+        authTimer?.cancel()
     }
-
 }

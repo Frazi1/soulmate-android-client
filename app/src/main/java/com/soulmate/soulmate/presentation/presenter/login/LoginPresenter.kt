@@ -6,13 +6,12 @@ import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.AuthApi
-import com.soulmate.soulmate.authorization.AuthorizationSchedulerer
+import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.authorization.AuthorizationToken
 import com.soulmate.soulmate.presentation.view.login.LoginView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 
 @InjectViewState
 class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
@@ -20,7 +19,7 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
 
     private val authApi: AuthApi by instance()
     private val credentialsStore: CredentialsStore by instance()
-    private val authorizationSchedulerer: AuthorizationSchedulerer by instance()
+    private val authorizationSchedulerer: AuthorizationScheduler by instance()
 
     init {
         injector.inject(App.globalkodein)
@@ -35,7 +34,7 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
             if (response.isSuccessful) {
                 val token: AuthorizationToken = response.body()!!
                 credentialsStore.initializeWithToken(token)
-                authorizationSchedulerer.startAuthorizationTask()
+                authorizationSchedulerer.startAuthorizationTask(AuthorizationScheduler.REFRESH_TOKEN_PERIOD)
                 viewState.openMainActivity()
             } else
                 viewState.showToast("Invalid login or password")
