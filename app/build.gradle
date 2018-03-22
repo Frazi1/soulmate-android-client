@@ -74,4 +74,9 @@ dependencies {
     compile "com.arello-mobile:moxy:${moxyVer}"
     compile "com.arello-mobile:moxy-app-compat:${moxyVer}"
     kapt "com.arello-mobile:moxy-compiler:${moxyVer}"
+
+    //RxJava
+    compile 'io.reactivex.rxjava2:rxjava:2.1.9'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 }

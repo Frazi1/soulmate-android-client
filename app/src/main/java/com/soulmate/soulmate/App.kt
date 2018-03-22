@@ -4,12 +4,14 @@ import android.app.Application
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.api.ProfileApi
 import com.soulmate.soulmate.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.configuration.AppLifeCycleObserver
 import com.soulmate.soulmate.configuration.IAppLifeCycle
+import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -44,6 +46,7 @@ class App : Application(), KodeinAware, IAppLifeCycle {
         return Retrofit.Builder()
                 .baseUrl("http://192.168.0.12:8080")
                 .addConverterFactory(JacksonConverterFactory.create(buildObjectMapper()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(httpClient())
                 .build()
     }

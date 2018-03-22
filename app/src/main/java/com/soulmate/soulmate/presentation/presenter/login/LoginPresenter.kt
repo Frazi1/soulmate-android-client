@@ -3,12 +3,19 @@ package com.soulmate.soulmate.presentation.presenter.login
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.github.salomonbrys.kodein.*
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.R
 import com.soulmate.soulmate.api.AuthApi
+import com.soulmate.soulmate.api.HttpErrorCodes
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.authorization.AuthorizationToken
 import com.soulmate.soulmate.presentation.view.login.LoginView
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import okhttp3.internal.http2.ErrorCode
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,9 +51,24 @@ class LoginPresenter : MvpPresenter<LoginView>(), KodeinInjected {
     fun attemptLogin(username: String, password: String) {
         credentialsStore.initializeWithCredentials(username, password)
         val clientBasicAuthToken = CredentialsStore.getClientBasicAuthorizationToken()
-        val getTokenCall: Call<AuthorizationToken> =
-                authApi.getToken(username, password, clientBasicAuthToken)
+//        val getTokenCall: Call<AuthorizationToken> =
+//                authApi.getToken(username, password, clientBasicAuthToken)
 
-        getTokenCall.enqueue(callback)
+//        getTokenCall.enqueue(callback)
+
+        authApi.getTokenRx(username, password, clientBasicAuthToken)
+//                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    credentialsStore.initializeWithToken(it)
+                    authorizationScheduler.startAuthorizationTask(AuthorizationScheduler.REFRESH_TOKEN_PERIOD)
+                    viewState.openProfileActivity()
+                }, { it ->
+                    if (it is HttpException) {
+                        if (it.code() == HttpErrorCodes.NOT_AUTHORIZED.code){
+                            viewState.showToast(App.instance.applicationContext.resources.getString(R.string.invalid_credentials))
+                        }
+                    }
+                })
     }
 }
