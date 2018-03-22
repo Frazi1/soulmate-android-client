@@ -1,5 +1,6 @@
 package com.soulmate.soulmate.presentation.presenter.profile
 
+import android.graphics.BitmapFactory
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.github.salomonbrys.kodein.KodeinInjected
@@ -13,6 +14,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.InputStream
 
 @InjectViewState
 class ProfilePresenter : MvpPresenter<ProfileView>(), KodeinInjected {
@@ -64,5 +66,10 @@ class ProfilePresenter : MvpPresenter<ProfileView>(), KodeinInjected {
                 }
             })
         }
+    }
+
+    fun addImage(inputStream: InputStream?) {
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        viewState.showImage(bitmap)
     }
 }
