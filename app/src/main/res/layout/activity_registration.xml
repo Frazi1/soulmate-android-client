@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.soulmate.soulmate.ui.activity.login.LoginActivity">
+    tools:context="com.soulmate.soulmate.ui.activity.registration.RegistrationActivity">
 
 
     <android.support.constraint.ConstraintLayout
@@ -15,32 +15,23 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/login_text_email"
+                android:id="@+id/registration_edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:selectAllOnFocus="true"
-                android:singleLine="true" />
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
 
             <EditText
-                android:id="@+id/login_text_password"
+                android:id="@+id/registration_editText_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword" />
 
             <Button
-                android:id="@+id/login_button_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button"
-                tools:text="Login" />
-
-            <Button
-                android:id="@+id/login_button_registration"
+                android:id="@+id/registration_button_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/registration" />

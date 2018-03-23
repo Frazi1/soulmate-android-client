@@ -2,6 +2,7 @@ package com.soulmate.soulmate.api
 
 import com.soulmate.dtos.UserAccountDto
 import com.soulmate.soulmate.authorization.AuthorizationToken
+import dtos.UserRegistrationDto
 import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.ResponseBody
@@ -29,5 +30,8 @@ interface AuthApi {
     fun getTokenRx(@Query("username", encoded = true) username: String,
                  @Query("password", encoded = true) password: String,
                  @Header("Authorization") basicAuthToken: String): Observable<AuthorizationToken>
+
+    @POST("/registration")
+    fun registerMember(@Body dto: UserRegistrationDto): Observable<ResponseBody>
 
 }
