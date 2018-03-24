@@ -13,6 +13,8 @@ import com.soulmate.soulmate.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.configuration.AppLifeCycleObserver
 import com.soulmate.soulmate.configuration.IAppLifeCycle
+import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
+import com.soulmate.soulmate.presentation.validation.ValidationResponseHandler
 import com.soulmate.soulmate.repositories.AuthRepository
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -30,10 +32,15 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
     override val kodein by Kodein.lazy {
         import(autoAndroidModule(this@App))
+
+        bind<ObjectMapper>() with singleton { buildObjectMapper()}
+
         bind<CredentialsStore>() with singleton { CredentialsStore() }
 //        bind<Context>() with instance(this@App)
-        bind<Retrofit>() with singleton { buildRetrofit() }
+        bind<Retrofit>() with singleton { buildRetrofit(instance()) }
         bind<AuthorizationScheduler>() with singleton { AuthorizationScheduler(instance(), instance()) }
+
+        bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
 
         //API
         bind<AuthApi>() with singleton { kodein.instance<Retrofit>().create(AuthApi::class.java) }
@@ -50,10 +57,10 @@ class App : Application(), KodeinAware, IAppLifeCycle {
         return builder.build()
     }
 
-    private fun buildRetrofit(): Retrofit {
+    private fun buildRetrofit(objectMapper: ObjectMapper): Retrofit {
         return Retrofit.Builder()
                 .baseUrl("http://192.168.0.100:8080")
-                .addConverterFactory(JacksonConverterFactory.create(buildObjectMapper()))
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(httpClient())
                 .build()
