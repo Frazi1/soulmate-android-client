@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
     private lateinit var buttonGetData: Button;
     private lateinit var buttonRefresh: Button;
 
-    override fun provideOverridingModule() = Kodein.Module {
-        bind<MainActivity>() with instance(this@MainActivity)
-        bind<NavigationHelper>() with singleton { NavigationHelper(instance()) }
-    }
+//    override fun provideOverridingModule() = Kodein.Module {
+//        bind<MainActivity>() with instance(this@MainActivity)
+//        bind<NavigationHelper>() with singleton { NavigationHelper(instance()) }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

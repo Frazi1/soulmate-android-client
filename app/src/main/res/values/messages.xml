@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="invalid_credentials">Invalid login or password</string>
+    <string name="email_already_taken">That email has been already taken</string>
+    <string name="successful_registration">Successful registration!</string>
 </resources>

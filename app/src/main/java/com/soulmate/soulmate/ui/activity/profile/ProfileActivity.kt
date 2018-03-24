@@ -24,8 +24,6 @@ class ProfileActivity : MvpAppCompatActivity(), ProfileView {
         fun getIntent(context: Context): Intent = Intent(context, ProfileActivity::class.java)
     }
 
-
-
     private lateinit var textUsername: TextView
     private lateinit var buttonSave: Button
     private lateinit var buttonUploadImage: FloatingActionButton

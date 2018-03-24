@@ -13,6 +13,7 @@ import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.login.LoginPresenter
 import com.soulmate.soulmate.presentation.view.login.LoginView
 import com.soulmate.soulmate.ui.activity.profile.ProfileActivity
+import com.soulmate.soulmate.ui.activity.registration.RegistrationActivity
 
 
 class LoginActivity : MvpAppCompatActivity(), LoginView {
@@ -25,7 +26,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     lateinit var mLoginPresenter: LoginPresenter
 
     private lateinit var buttonLogin: Button
-    private lateinit var buttonTestLogin: Button
+    private lateinit var buttonRegistration: Button
     private lateinit var textEmail: TextView
     private lateinit var textPassword: TextView
 
@@ -33,16 +34,18 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        buttonLogin = findViewById(R.id.button_login)
-        buttonTestLogin = findViewById(R.id.button_login_test)
-        textEmail = findViewById(R.id.text_email)
-        textPassword = findViewById(R.id.text_password)
+        buttonLogin = findViewById(R.id.login_button_login)
+        buttonRegistration = findViewById(R.id.login_button_registration)
+        textEmail = findViewById(R.id.login_text_email)
+        textPassword = findViewById(R.id.login_text_password)
 
         buttonLogin.setOnClickListener {
             mLoginPresenter.attemptLogin(
                     textEmail.text.toString(),
                     textPassword.text.toString())
         }
+
+        buttonRegistration.setOnClickListener { startActivity(RegistrationActivity.getIntent(this)) }
     }
 
     override fun openProfileActivity() {
