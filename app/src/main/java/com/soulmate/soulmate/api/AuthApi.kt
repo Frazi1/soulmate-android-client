@@ -1,10 +1,9 @@
 package com.soulmate.soulmate.api
 
-import com.soulmate.dtos.UserAccountDto
 import com.soulmate.soulmate.authorization.AuthorizationToken
+import dtos.UserAccountDto
 import dtos.UserRegistrationDto
 import io.reactivex.Observable
-import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
