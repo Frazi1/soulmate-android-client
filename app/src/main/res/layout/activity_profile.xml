@@ -58,6 +58,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_edit_username"
             app:srcCompat="@android:color/background_dark" />
+
+        <ProgressBar
+            android:id="@+id/profile_progressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="invisible"
+            tools:layout_editor_absoluteX="64dp"
+            tools:layout_editor_absoluteY="297dp" />
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

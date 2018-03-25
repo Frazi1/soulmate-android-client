@@ -40,16 +40,18 @@ class ProfilePresenter : MvpPresenter<ProfileView>(), KodeinInjected {
     }
 
     private fun loadData() {
-
+        viewState.setSpinnerVisibility(true)
         userRepository.loadUserProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     userAccount = it
                     viewState.setUsername(it.firstName)
-                    if(it.profileImages.any()) {
-                        val bitmap = BitmapFactory.decodeStream(it.profileImages.first().data?.inputStream())
+                    if (it.profileImages.any()) {
+                        val mainImage: ProfileImageDto = it.profileImages.first { it.isMainImage }
+                        val bitmap = BitmapFactory.decodeStream(mainImage.data?.inputStream())
                         viewState.showImage(bitmap)
                     }
+                    viewState.setSpinnerVisibility(false)
                 }, {
                     if (it is HttpException)
                         viewState.showToast(it.response().errorBody()?.string()!!)
@@ -78,11 +80,11 @@ class ProfilePresenter : MvpPresenter<ProfileView>(), KodeinInjected {
 
     fun addImage(inputStream: InputStream?) {
         val data = inputStream?.readBytes()
-        imageRepository.uploadImage(ProfileImageDto(1, data, ""))
+        val bitmap = BitmapFactory.decodeStream(data?.inputStream())
+        viewState.showImage(bitmap)
+        imageRepository.uploadImage(ProfileImageDto(1, data, "", true))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    val bitmap = BitmapFactory.decodeStream(data?.inputStream())
-                    viewState.showImage(bitmap)
                 }, {
                     if (it is HttpException) {
                         viewState.showToast(it.message())

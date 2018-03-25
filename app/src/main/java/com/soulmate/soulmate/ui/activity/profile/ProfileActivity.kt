@@ -5,10 +5,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.github.salomonbrys.kodein.android.appKodein
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.profile.ProfilePresenter
 import com.soulmate.soulmate.presentation.view.profile.ProfileView
@@ -26,6 +29,7 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     private lateinit var buttonSave: Button
     private lateinit var buttonUploadImage: FloatingActionButton
     private lateinit var imageViewAvatar: ImageView
+    private lateinit var progressBar: ProgressBar
 
     @InjectPresenter
     lateinit var mProfilePresenter: ProfilePresenter
@@ -39,9 +43,12 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         buttonSave = findViewById(R.id.profile_button_save)
         buttonUploadImage = findViewById(R.id.profile_floatingButton_uploadImage)
         imageViewAvatar = findViewById(R.id.profile_imageView_avatar)
+        progressBar = findViewById(R.id.profile_progressBar)
+
 
         buttonSave.setOnClickListener { mProfilePresenter.saveData(textUsername.text.toString()) }
         buttonUploadImage.setOnClickListener { selectImageFromStore() }
+        setSpinnerVisibility(false)
     }
 
     override fun setUsername(name: String?) {
@@ -64,7 +71,7 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == PICK_IMAGE){
+        if (requestCode == PICK_IMAGE) {
             val inputStream = applicationContext.contentResolver.openInputStream(data?.data)
             mProfilePresenter.addImage(inputStream)
         }
@@ -72,5 +79,12 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
 
     override fun showImage(bitmap: Bitmap) {
         imageViewAvatar.setImageBitmap(bitmap)
+    }
+
+    override fun setSpinnerVisibility(isVisible: Boolean) {
+        if (isVisible)
+            progressBar.visibility = View.VISIBLE
+        else
+            progressBar.visibility = View.GONE
     }
 }
