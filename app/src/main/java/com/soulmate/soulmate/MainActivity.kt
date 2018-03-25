@@ -1,5 +1,6 @@
 package com.soulmate.soulmate
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
@@ -33,7 +34,9 @@ class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
         setContentView(R.layout.activity_main)
 
         if (!credentialsStore.isTokenInitialized) {
-            startActivity(LoginActivity.getIntent(this))
+            val intent = LoginActivity.getIntent(this)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         buttonGetData = findViewById(R.id.test)
