@@ -3,10 +3,8 @@ package com.soulmate.soulmate
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
-import android.widget.Toast
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.AppCompatActivityInjector
-import com.soulmate.dtos.UserAccountDto
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.authorization.AuthorizationToken
 import com.soulmate.soulmate.ui.NavigationHelper
@@ -14,7 +12,6 @@ import com.soulmate.soulmate.ui.activity.login.LoginActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 
 class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
     override val injector: KodeinInjector = KodeinInjector()
@@ -42,17 +39,17 @@ class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
         buttonGetData = findViewById(R.id.test)
         buttonRefresh = findViewById(R.id.button_refresh_token)
 //        navigationHelper.navigateToAuthorization()
-        buttonGetData.setOnClickListener {
-            authApi.getAllUsers().enqueue(object : Callback<Iterable<UserAccountDto>> {
-                override fun onFailure(call: Call<Iterable<UserAccountDto>>?, t: Throwable?) {
-                    Toast.makeText(this@MainActivity, t.toString(), Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onResponse(call: Call<Iterable<UserAccountDto>>?, response: Response<Iterable<UserAccountDto>>?) {
-                    Toast.makeText(this@MainActivity, response?.body()?.joinToString { it.firstName }, Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
+//        buttonGetData.setOnClickListener {
+//            authApi.getAllUsers().enqueue(object : Callback<Iterable<UserAccountDto>> {
+//                override fun onFailure(call: Call<Iterable<UserAccountDto>>?, t: Throwable?) {
+//                    Toast.makeText(this@MainActivity, t.toString(), Toast.LENGTH_SHORT).show()
+//                }
+//
+//                override fun onResponse(call: Call<Iterable<UserAccountDto>>?, response: Response<Iterable<UserAccountDto>>?) {
+//                    Toast.makeText(this@MainActivity, response?.body()?.joinToString { it.firstName }, Toast.LENGTH_SHORT).show()
+//                }
+//            })
+//        }
 
         buttonRefresh.setOnClickListener {
             authApi

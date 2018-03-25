@@ -8,16 +8,14 @@ import android.support.design.widget.FloatingActionButton
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.view.profile.ProfileView
 import com.soulmate.soulmate.presentation.presenter.profile.ProfilePresenter
+import com.soulmate.soulmate.presentation.view.profile.ProfileView
+import com.soulmate.soulmate.ui.activity.BaseSoulmateActivity
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 
-
-class ProfileActivity : MvpAppCompatActivity(), ProfileView {
+class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     companion object {
         const val TAG = "ProfileActivity"
         private const val PICK_IMAGE = 1
@@ -46,7 +44,7 @@ class ProfileActivity : MvpAppCompatActivity(), ProfileView {
         buttonUploadImage.setOnClickListener { selectImageFromStore() }
     }
 
-    override fun setUsername(name: String) {
+    override fun setUsername(name: String?) {
         textUsername.text = name
     }
 
