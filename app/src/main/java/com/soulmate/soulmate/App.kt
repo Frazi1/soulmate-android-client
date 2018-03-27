@@ -1,7 +1,6 @@
 package com.soulmate.soulmate
 
 import android.app.Application
-import android.content.Context
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
@@ -10,10 +9,12 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.api.ImageApi
 import com.soulmate.soulmate.api.ProfileApi
+import com.soulmate.soulmate.api.errors.*
 import com.soulmate.soulmate.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.configuration.AppLifeCycleObserver
 import com.soulmate.soulmate.configuration.IAppLifeCycle
+import com.soulmate.soulmate.configuration.ScheduleProvider
 import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
 import com.soulmate.soulmate.presentation.validation.ValidationResponseHandler
 import com.soulmate.soulmate.repositories.AuthRepository
@@ -42,8 +43,8 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 //        bind<Context>() with instance(this@App)
         bind<Retrofit>() with singleton { buildRetrofit(instance()) }
         bind<AuthorizationScheduler>() with singleton { AuthorizationScheduler(instance(), instance()) }
+        bind<ScheduleProvider>() with singleton { ScheduleProvider() }
 
-        bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
 
         //API
         bind<AuthApi>() with singleton { kodein.instance<Retrofit>().create(AuthApi::class.java) }
@@ -51,9 +52,15 @@ class App : Application(), KodeinAware, IAppLifeCycle {
         bind<ImageApi>() with singleton { kodein.instance<Retrofit>().create(ImageApi::class.java) }
 
         //Repo
-        bind<AuthRepository>() with singleton { AuthRepository(instance()) }
-        bind<ImageRepository>() with singleton { ImageRepository(instance()) }
-        bind<UserRepository>() with singleton { UserRepository(instance()) }
+        bind<AuthRepository>() with singleton { AuthRepository(kodein) }
+        bind<ImageRepository>() with singleton { ImageRepository(kodein) }
+        bind<UserRepository>() with singleton { UserRepository(kodein) }
+
+        //TODO: fix me
+        bind<IErrorMessageExtractor>() with singleton { HttpErrorMessageExtractor(kodein) }
+        bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(kodein, this@App) }
+        bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
+
     }
 
     private fun httpClient(): OkHttpClient {
@@ -65,7 +72,8 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
     private fun buildRetrofit(objectMapper: ObjectMapper): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("http://192.168.0.100:8080")
+//                .baseUrl("http://192.168.0.100:8080")
+                .baseUrl("http://192.168.42.89:8080")
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(httpClient())
