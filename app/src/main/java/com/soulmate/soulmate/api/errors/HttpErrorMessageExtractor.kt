@@ -1,11 +1,13 @@
 package com.soulmate.soulmate.api.errors
 
+import android.content.res.Resources
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.instance
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+import com.soulmate.soulmate.R
 import com.soulmate.soulmate.api.HttpErrorCodes
 import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
 import validation.ValidationResponse
@@ -15,6 +17,7 @@ open class HttpErrorMessageExtractor(protected val kodein: Kodein) : IErrorMessa
 
     private val objectMapper: ObjectMapper by instance()
     private val validationResponseHandler: IValidationResponseHandler by instance()
+    private val resource: Resources by instance()
 
     init {
         this.inject(kodein)
@@ -28,9 +31,11 @@ open class HttpErrorMessageExtractor(protected val kodein: Kodein) : IErrorMessa
     }
 
     open fun errorMessage(t: HttpException): String {
-        return if (t.code() == HttpErrorCodes.UNPROCESSABLE_ENTITY.code) {
-            return getUnprocessableEntityMessage(t)
-        } else t.toString()
+        return when(t.code()){
+            HttpErrorCodes.UNPROCESSABLE_ENTITY.code -> getUnprocessableEntityMessage(t)
+            HttpErrorCodes.NOT_AUTHORIZED.code -> resource.getString(R.string.invalid_credentials)
+            else -> resource.getString(R.string.unknown_error)
+        }
     }
 
     private fun getUnprocessableEntityMessage(t: HttpException): String {

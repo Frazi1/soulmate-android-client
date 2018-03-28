@@ -1,6 +1,8 @@
 package com.soulmate.soulmate
 
 import android.app.Application
+import android.content.Context
+import android.support.annotation.RestrictTo
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
@@ -40,7 +42,6 @@ class App : Application(), KodeinAware, IAppLifeCycle {
         bind<ObjectMapper>() with singleton { buildObjectMapper()}
 
         bind<CredentialsStore>() with singleton { CredentialsStore() }
-//        bind<Context>() with instance(this@App)
         bind<Retrofit>() with singleton { buildRetrofit(instance()) }
         bind<AuthorizationScheduler>() with singleton { AuthorizationScheduler(instance(), instance()) }
         bind<ScheduleProvider>() with singleton { ScheduleProvider() }
@@ -73,7 +74,7 @@ class App : Application(), KodeinAware, IAppLifeCycle {
     private fun buildRetrofit(objectMapper: ObjectMapper): Retrofit {
         return Retrofit.Builder()
 //                .baseUrl("http://192.168.0.100:8080")
-                .baseUrl("http://192.168.42.89:8080")
+                .baseUrl("http://192.168.0.15:8080")
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(httpClient())
