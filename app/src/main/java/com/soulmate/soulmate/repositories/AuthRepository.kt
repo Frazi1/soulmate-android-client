@@ -4,10 +4,10 @@ import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
+import com.soulmate.soulmate.authorization.AuthorizationToken
 import com.soulmate.soulmate.configuration.ScheduleProvider
 import dtos.UserRegistrationDto
 import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 import okhttp3.ResponseBody
 
 class AuthRepository(private val authApi: AuthApi,
@@ -22,13 +22,8 @@ class AuthRepository(private val authApi: AuthApi,
 
     }
 
-    fun authorize(email: String, password: String) {
-        authApi.getTokenRx(email, password, CredentialsStore.getClientBasicAuthorizationToken())
+    fun authorize(email: String, password: String, clientBasicAuthToken: String): Observable<AuthorizationToken> {
+        return authApi.getTokenRx(email, password, clientBasicAuthToken)
                 .observeOn(this.scheduleProvider.provide())
-                .doOnError(Consumer(errorHandler::handle))
-                .subscribe({
-                    credentialsStore.initializeWithToken(it)
-                    authorizationScheduler.startAuthorizationTask(AuthorizationScheduler.REFRESH_TOKEN_PERIOD)
-                }, {})
     }
 }
