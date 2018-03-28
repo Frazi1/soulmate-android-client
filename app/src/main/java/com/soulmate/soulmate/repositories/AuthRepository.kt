@@ -1,19 +1,20 @@
 package com.soulmate.soulmate.repositories
 
-import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.instance
 import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.AuthApi
+import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
+import com.soulmate.soulmate.configuration.ScheduleProvider
 import dtos.UserRegistrationDto
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import okhttp3.ResponseBody
 
-class AuthRepository(kodein: Kodein) : BaseRepository(kodein) {
-    private val authApi: AuthApi by instance()
-    private val credentialsStore: CredentialsStore by instance()
-    private val authorizationScheduler: AuthorizationScheduler by instance()
+class AuthRepository(private val authApi: AuthApi,
+                     private val credentialsStore: CredentialsStore,
+                     private val authorizationScheduler: AuthorizationScheduler,
+                     scheduleProvider: ScheduleProvider,
+                     errorHandler: IErrorHandler) : BaseRepository(scheduleProvider, errorHandler) {
 
     fun registerUser(email: String, password: String): Observable<ResponseBody> {
         return authApi.registerMember(UserRegistrationDto(email, password))

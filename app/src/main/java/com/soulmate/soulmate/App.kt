@@ -1,8 +1,6 @@
 package com.soulmate.soulmate
 
 import android.app.Application
-import android.content.Context
-import android.support.annotation.RestrictTo
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
@@ -36,10 +34,11 @@ class App : Application(), KodeinAware, IAppLifeCycle {
     private val authorizationScheduler: AuthorizationScheduler by lazy { instance<AuthorizationScheduler>() }
     private val appLifeCycleObserver: AppLifeCycleObserver = AppLifeCycleObserver(this)
 
+    @Suppress("RemoveExplicitTypeArguments")
     override val kodein by Kodein.lazy {
         import(autoAndroidModule(this@App))
 
-        bind<ObjectMapper>() with singleton { buildObjectMapper()}
+        bind<ObjectMapper>() with singleton { buildObjectMapper() }
 
         bind<CredentialsStore>() with singleton { CredentialsStore() }
         bind<Retrofit>() with singleton { buildRetrofit(instance()) }
@@ -48,14 +47,34 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
 
         //API
-        bind<AuthApi>() with singleton { kodein.instance<Retrofit>().create(AuthApi::class.java) }
-        bind<ProfileApi>() with singleton { kodein.instance<Retrofit>().create(ProfileApi::class.java) }
-        bind<ImageApi>() with singleton { kodein.instance<Retrofit>().create(ImageApi::class.java) }
+        bind<AuthApi>() with singleton { instance<Retrofit>().create(AuthApi::class.java) }
+        bind<ProfileApi>() with singleton { instance<Retrofit>().create(ProfileApi::class.java) }
+        bind<ImageApi>() with singleton { instance<Retrofit>().create(ImageApi::class.java) }
 
         //Repo
-        bind<AuthRepository>() with singleton { AuthRepository(kodein) }
-        bind<ImageRepository>() with singleton { ImageRepository(kodein) }
-        bind<UserRepository>() with singleton { UserRepository(kodein) }
+        bind<AuthRepository>() with singleton {
+            AuthRepository(
+                    instance<AuthApi>(),
+                    instance<CredentialsStore>(),
+                    instance<AuthorizationScheduler>(),
+                    instance<ScheduleProvider>(),
+                    instance<IErrorHandler>()
+            )
+        }
+        bind<ImageRepository>() with singleton {
+            ImageRepository(
+                    instance<ImageApi>(),
+                    instance<ScheduleProvider>(),
+                    instance<IErrorHandler>()
+            )
+        }
+        bind<UserRepository>() with singleton {
+            UserRepository(
+                    instance<ProfileApi>(),
+                    instance<ScheduleProvider>(),
+                    instance<IErrorHandler>()
+            )
+        }
 
         //TODO: fix me
         bind<IErrorMessageExtractor>() with singleton { HttpErrorMessageExtractor(kodein) }
