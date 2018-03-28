@@ -12,16 +12,9 @@ import com.soulmate.soulmate.api.HttpErrorCodes
 import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
 import validation.ValidationResponse
 
-open class HttpErrorMessageExtractor(protected val kodein: Kodein) : IErrorMessageExtractor, KodeinInjected {
-    override val injector: KodeinInjector = KodeinInjector()
-
-    private val objectMapper: ObjectMapper by instance()
-    private val validationResponseHandler: IValidationResponseHandler by instance()
-    private val resource: Resources by instance()
-
-    init {
-        this.inject(kodein)
-    }
+open class HttpErrorMessageExtractor(private val objectMapper: ObjectMapper,
+                                     private val validationResponseHandler: IValidationResponseHandler,
+                                     private val resource: Resources) : IErrorMessageExtractor {
 
     override fun errorMessage(t: Throwable): String {
         if (t is HttpException)
@@ -31,7 +24,7 @@ open class HttpErrorMessageExtractor(protected val kodein: Kodein) : IErrorMessa
     }
 
     open fun errorMessage(t: HttpException): String {
-        return when(t.code()){
+        return when (t.code()) {
             HttpErrorCodes.UNPROCESSABLE_ENTITY.code -> getUnprocessableEntityMessage(t)
             HttpErrorCodes.NOT_AUTHORIZED.code -> resource.getString(R.string.invalid_credentials)
             else -> resource.getString(R.string.unknown_error)

@@ -6,10 +6,8 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 
-class ToastErrorMessageHandler(kodein: Kodein, context: Context) : ErrorHandler(kodein) {
-//    private val context: Context by instance()
-    private val context: Context = context
-    private val errorMessageExtractor: IErrorMessageExtractor by instance()
+class ToastErrorMessageHandler(private val context: Context,
+                               private val errorMessageExtractor: IErrorMessageExtractor) : ErrorHandler() {
 
 
     override fun handle(t: HttpException) {

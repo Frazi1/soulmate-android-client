@@ -1,6 +1,7 @@
 package com.soulmate.soulmate
 
 import android.app.Application
+import android.content.res.Resources
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
@@ -77,8 +78,14 @@ class App : Application(), KodeinAware, IAppLifeCycle {
         }
 
         //TODO: fix me
-        bind<IErrorMessageExtractor>() with singleton { HttpErrorMessageExtractor(kodein) }
-        bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(kodein, this@App) }
+        bind<IErrorMessageExtractor>() with singleton {
+            HttpErrorMessageExtractor(
+                    instance<ObjectMapper>(),
+                    instance<IValidationResponseHandler>(),
+                    instance<Resources>()
+            )
+        }
+        bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(this@App, instance<IErrorMessageExtractor>()) }
         bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
 
     }
