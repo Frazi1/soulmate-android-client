@@ -1,7 +1,7 @@
 package com.soulmate.soulmate
 
 import android.app.Application
-import android.content.Context
+import android.content.res.Resources
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
@@ -10,10 +10,12 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.api.ImageApi
 import com.soulmate.soulmate.api.ProfileApi
+import com.soulmate.soulmate.api.errors.*
 import com.soulmate.soulmate.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.configuration.AppLifeCycleObserver
 import com.soulmate.soulmate.configuration.IAppLifeCycle
+import com.soulmate.soulmate.configuration.ScheduleProvider
 import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
 import com.soulmate.soulmate.presentation.validation.ValidationResponseHandler
 import com.soulmate.soulmate.repositories.AuthRepository
@@ -33,27 +35,59 @@ class App : Application(), KodeinAware, IAppLifeCycle {
     private val authorizationScheduler: AuthorizationScheduler by lazy { instance<AuthorizationScheduler>() }
     private val appLifeCycleObserver: AppLifeCycleObserver = AppLifeCycleObserver(this)
 
+    @Suppress("RemoveExplicitTypeArguments")
     override val kodein by Kodein.lazy {
         import(autoAndroidModule(this@App))
 
-        bind<ObjectMapper>() with singleton { buildObjectMapper()}
+        bind<ObjectMapper>() with singleton { buildObjectMapper() }
 
         bind<CredentialsStore>() with singleton { CredentialsStore() }
-//        bind<Context>() with instance(this@App)
         bind<Retrofit>() with singleton { buildRetrofit(instance()) }
         bind<AuthorizationScheduler>() with singleton { AuthorizationScheduler(instance(), instance()) }
+        bind<ScheduleProvider>() with singleton { ScheduleProvider() }
 
-        bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
 
         //API
-        bind<AuthApi>() with singleton { kodein.instance<Retrofit>().create(AuthApi::class.java) }
-        bind<ProfileApi>() with singleton { kodein.instance<Retrofit>().create(ProfileApi::class.java) }
-        bind<ImageApi>() with singleton { kodein.instance<Retrofit>().create(ImageApi::class.java) }
+        bind<AuthApi>() with singleton { instance<Retrofit>().create(AuthApi::class.java) }
+        bind<ProfileApi>() with singleton { instance<Retrofit>().create(ProfileApi::class.java) }
+        bind<ImageApi>() with singleton { instance<Retrofit>().create(ImageApi::class.java) }
 
         //Repo
-        bind<AuthRepository>() with singleton { AuthRepository(instance()) }
-        bind<ImageRepository>() with singleton { ImageRepository(instance()) }
-        bind<UserRepository>() with singleton { UserRepository(instance()) }
+        bind<AuthRepository>() with singleton {
+            AuthRepository(
+                    instance<AuthApi>(),
+                    instance<CredentialsStore>(),
+                    instance<AuthorizationScheduler>(),
+                    instance<ScheduleProvider>(),
+                    instance<IErrorHandler>()
+            )
+        }
+        bind<ImageRepository>() with singleton {
+            ImageRepository(
+                    instance<ImageApi>(),
+                    instance<ScheduleProvider>(),
+                    instance<IErrorHandler>()
+            )
+        }
+        bind<UserRepository>() with singleton {
+            UserRepository(
+                    instance<ProfileApi>(),
+                    instance<ScheduleProvider>(),
+                    instance<IErrorHandler>()
+            )
+        }
+
+        //TODO: fix me
+        bind<IErrorMessageExtractor>() with singleton {
+            HttpErrorMessageExtractor(
+                    instance<ObjectMapper>(),
+                    instance<IValidationResponseHandler>(),
+                    instance<Resources>()
+            )
+        }
+        bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(this@App, instance<IErrorMessageExtractor>()) }
+        bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
+
     }
 
     private fun httpClient(): OkHttpClient {
@@ -65,7 +99,8 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
     private fun buildRetrofit(objectMapper: ObjectMapper): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("http://192.168.0.100:8080")
+//                .baseUrl("http://192.168.0.100:8080")
+                .baseUrl("http://192.168.0.15:8080")
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(httpClient())
