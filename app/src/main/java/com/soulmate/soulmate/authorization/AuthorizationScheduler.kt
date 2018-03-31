@@ -4,6 +4,7 @@ import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.repositories.AuthRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
 class AuthorizationScheduler(private val credentialsStore: CredentialsStore,
@@ -22,17 +23,19 @@ class AuthorizationScheduler(private val credentialsStore: CredentialsStore,
         authTimer = Timer()
         val task = object : TimerTask() {
             override fun run() {
-                if (credentialsStore.isCredentialsInitialized) {
-                    val newToken = authApi.refreshToken(
-                            credentialsStore.authorizationToken.refreshToken,
-                            CredentialsStore.getClientBasicAuthorizationToken())
-                            .execute()
-                            .body()!!
-                    credentialsStore.initializeWithToken(newToken)
-                } else {
+                if (credentialsStore.isTokenInitialized) {
+                    val token = credentialsStore.authorizationToken
+                    if (token.isExpired)
+                        authApi.refreshToken(token.refreshToken, CredentialsStore.getClientBasicAuthorizationToken())
+                                .subscribe({
+                                    credentialsStore.initializeWithToken(AccessTokenDto.fromAccessToken(it))
+                                }, {
+                                    errorHandler.handle(it)
+                                })
+                } else if (credentialsStore.isCredentialsInitialized) {
                     authRepository.authorize(credentialsStore.username, credentialsStore.password, CredentialsStore.getClientBasicAuthorizationToken())
                             .subscribe({
-                                credentialsStore.initializeWithToken(it)
+                                credentialsStore.initializeWithToken(AccessTokenDto.fromAccessToken(it))
                             }, { errorHandler.handle(it) })
                 }
             }

@@ -23,7 +23,7 @@ interface AuthApi {
 
     @POST("/oauth/token?grant_type=refresh_token")
     fun refreshToken(@Query("refresh_token") refreshToken: String,
-                     @Header("Authorization") basicAuthToken: String): Call<AuthorizationToken>
+                     @Header("Authorization") basicAuthToken: String): Observable<AuthorizationToken>
 
     @POST("/oauth/token?grant_type=password")
     fun getTokenRx(@Query("username", encoded = true) username: String,

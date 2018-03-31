@@ -7,6 +7,7 @@ import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.authorization.AccessTokenDto
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.presentation.presenter.BaseSoulmatePresenter
 import com.soulmate.soulmate.presentation.view.login.LoginView
@@ -30,7 +31,7 @@ class LoginPresenter : BaseSoulmatePresenter<LoginView>(App.globalkodein.lazy) {
 
         authRepository.authorize(username, password, clientBasicAuthToken)
                 .subscribeWithDefaultErrorHandler ({
-                    credentialsStore.initializeWithToken(it)
+                    credentialsStore.initializeWithToken(AccessTokenDto.fromAccessToken(it))
                     authorizationScheduler.startAuthorizationTask(AuthorizationScheduler.REFRESH_TOKEN_PERIOD)
                     viewState.openProfileActivity()
                 })

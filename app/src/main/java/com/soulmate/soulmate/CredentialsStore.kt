@@ -1,14 +1,21 @@
 package com.soulmate.soulmate
 
 import android.content.SharedPreferences
+import com.soulmate.soulmate.authorization.AccessTokenDto
 import com.soulmate.soulmate.authorization.AuthorizationToken
 import okhttp3.Credentials
+import java.util.*
 
 class CredentialsStore(private val settings: SharedPreferences) {
 
     companion object {
         private const val usernameKey: String = "username"
         private const val passwordKey: String = "password"
+        private const val accessTokenKey: String = "access_token"
+        private const val refreshTokenKey: String = "refresh_token"
+        private const val tokenTypeKey: String = "token_type"
+        private const val expirationKey: String = "expiration"
+
         private const val clientId: String = "soulmate-client"
         private const val clientSecret: String = "secret"
         fun getClientBasicAuthorizationToken(): String = Credentials.basic(clientId, clientSecret)
@@ -16,12 +23,23 @@ class CredentialsStore(private val settings: SharedPreferences) {
 
     init {
 //        if (settings.contains(usernameKey) and settings.contains(passwordKey))
-            initializeWithCredentialsInternal(
-                    settings.getString(usernameKey, ""),
-                    settings.getString(passwordKey, ""))
+        initializeWithCredentialsInternal(
+                settings.getString(usernameKey, ""),
+                settings.getString(passwordKey, ""))
+
+        initializeWithToken(with(settings) {
+            val date = Date()
+            date.time = getLong(expirationKey, 0)
+            return@with AccessTokenDto(
+                    getString(accessTokenKey, ""),
+                    getString(refreshTokenKey, ""),
+                    getString(tokenTypeKey, ""),
+                    date
+            )
+        })
     }
 
-    lateinit var authorizationToken: AuthorizationToken
+    lateinit var authorizationToken: AccessTokenDto
 
     lateinit var username: String
         private set
@@ -36,7 +54,18 @@ class CredentialsStore(private val settings: SharedPreferences) {
     var isCredentialsInitialized: Boolean = false
         private set
 
-    fun initializeWithToken(authorizationToken: AuthorizationToken) {
+    fun initializeWithToken(authorizationToken: AccessTokenDto) {
+        initializeWithTokenInternal(authorizationToken)
+        with(settings.edit()) {
+            putString(accessTokenKey, authorizationToken.accessToken)
+            putString(tokenTypeKey, authorizationToken.tokenType)
+            putString(refreshTokenKey, authorizationToken.refreshToken)
+            putLong(expirationKey, authorizationToken.expiration.time)
+            apply()
+        }
+    }
+
+    private fun initializeWithTokenInternal(authorizationToken: AccessTokenDto) {
         this.authorizationToken = authorizationToken
         this.isTokenInitialized = true
     }

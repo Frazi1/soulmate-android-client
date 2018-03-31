@@ -20,38 +20,38 @@ class AuthorizationInterceptor(private val credentialsStore: CredentialsStore) :
     }
 }
 
-class TokenAuthenticator(private val kodein: Kodein) : Authenticator {
-    private val credentialsStore: CredentialsStore by lazy { kodein.instance<CredentialsStore>() }
-    private val retrofit: Retrofit by lazy { kodein.instance<Retrofit>() }
-
-    override fun authenticate(route: Route, response: Response): Request? {
-        val authApi = retrofit.create(AuthApi::class.java)
+//class TokenAuthenticator(private val kodein: Kodein) : Authenticator {
+//    private val credentialsStore: CredentialsStore by lazy { kodein.instance<CredentialsStore>() }
+//    private val retrofit: Retrofit by lazy { kodein.instance<Retrofit>() }
+//
+//    override fun authenticate(route: Route, response: Response): Request? {
+//        val authApi = retrofit.create(AuthApi::class.java)
 
 //        if (credentialsStore.isCredentialsInitialized) {
 
-            val newToken: AuthorizationToken =
+//            val newToken: AuthorizationToken =
 //                    credentialsStore.authorizationToken
-                    if (credentialsStore.isTokenInitialized)
-                        authApi.refreshToken(
-                                credentialsStore.authorizationToken.refreshToken,
-                                CredentialsStore.getClientBasicAuthorizationToken())
-                                .execute()
-                                .body()!!
-                    else
-                        authApi.getToken(
-                                credentialsStore.username,
-                                credentialsStore.password,
-                                CredentialsStore.getClientBasicAuthorizationToken())
-                                .execute().body()!!
-
-            credentialsStore.initializeWithToken(newToken)
-            return response.request().newBuilder()
-                    .addHeader("Authorization", "${newToken.tokenType} ${newToken.accessToken}")
-                    .build()
+//                    if (credentialsStore.isTokenInitialized)
+//                        authApi.refreshToken(
+//                                credentialsStore.authorizationToken.refreshToken,
+//                                CredentialsStore.getClientBasicAuthorizationToken())
+//                                .execute()
+//                                .body()!!
+//                    else
+//                        authApi.getToken(
+//                                credentialsStore.username,
+//                                credentialsStore.password,
+//                                CredentialsStore.getClientBasicAuthorizationToken())
+//                                .execute().body()!!
+//
+//            credentialsStore.initializeWithToken(newToken)
+//            return response.request().newBuilder()
+//                    .addHeader("Authorization", "${newToken.tokenType} ${newToken.accessToken}")
+//                    .build()
 
 //       }
 //        else {
 //            return null
 //        }
-    }
-}
+//    }
+//}

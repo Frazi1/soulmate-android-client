@@ -23,4 +23,8 @@ class AuthRepository(private val authApi: AuthApi,
         return authApi.getTokenRx(email, password, clientBasicAuthToken)
                 .observeOn(this.scheduleProvider.provide())
     }
+
+    fun refreshToken(refreshToken: String, clientBasicAuthToken: String): Observable<AuthorizationToken> {
+        return authApi.refreshToken(refreshToken, clientBasicAuthToken)
+    }
 }
