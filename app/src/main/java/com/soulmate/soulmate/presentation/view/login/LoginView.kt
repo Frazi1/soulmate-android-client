@@ -6,4 +6,6 @@ interface LoginView : MvpView {
     fun showToast(text: String)
     fun openMainActivity()
     fun openProfileActivity()
+    fun setUsername(value: String)
+    fun setPassword(value: String)
 }

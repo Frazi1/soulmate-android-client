@@ -11,15 +11,12 @@ import io.reactivex.Observable
 import okhttp3.ResponseBody
 
 class AuthRepository(private val authApi: AuthApi,
-                     private val credentialsStore: CredentialsStore,
-                     private val authorizationScheduler: AuthorizationScheduler,
                      scheduleProvider: ScheduleProvider,
                      errorHandler: IErrorHandler) : BaseRepository(scheduleProvider, errorHandler) {
 
     fun registerUser(email: String, password: String): Observable<ResponseBody> {
         return authApi.registerMember(UserRegistrationDto(email, password))
                 .observeOn(scheduleProvider.provide())
-
     }
 
     fun authorize(email: String, password: String, clientBasicAuthToken: String): Observable<AuthorizationToken> {

@@ -1,5 +1,7 @@
 package com.soulmate.soulmate.presentation.presenter.login
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
@@ -16,9 +18,16 @@ class LoginPresenter : BaseSoulmatePresenter<LoginView>(App.globalkodein.lazy) {
     private val credentialsStore: CredentialsStore by instance()
     private val authorizationScheduler: AuthorizationScheduler by instance()
 
+    override fun onFirstViewAttach() {
+        viewState.setUsername(credentialsStore.username)
+        viewState.setPassword(credentialsStore.password)
+    }
+
     fun attemptLogin(username: String, password: String) {
         credentialsStore.initializeWithCredentials(username, password)
         val clientBasicAuthToken = CredentialsStore.getClientBasicAuthorizationToken()
+
+
         authRepository.authorize(username, password, clientBasicAuthToken)
                 .subscribeWithDefaultErrorHandler ({
                     credentialsStore.initializeWithToken(it)

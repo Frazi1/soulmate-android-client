@@ -1,6 +1,7 @@
 package com.soulmate.soulmate
 
 import android.app.Application
+import android.content.Context
 import android.content.res.Resources
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -41,9 +42,14 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
         bind<ObjectMapper>() with singleton { buildObjectMapper() }
 
-        bind<CredentialsStore>() with singleton { CredentialsStore() }
+        bind<CredentialsStore>() with singleton { CredentialsStore(getSharedPreferences("settings", Context.MODE_PRIVATE)) }
         bind<Retrofit>() with singleton { buildRetrofit(instance()) }
-        bind<AuthorizationScheduler>() with singleton { AuthorizationScheduler(instance(), instance()) }
+        bind<AuthorizationScheduler>() with singleton { AuthorizationScheduler(
+                    instance<CredentialsStore>(),
+                    instance<AuthApi>(),
+                    instance<AuthRepository>(),
+                    instance<IErrorHandler>())
+        }
         bind<ScheduleProvider>() with singleton { ScheduleProvider() }
 
 
@@ -56,8 +62,6 @@ class App : Application(), KodeinAware, IAppLifeCycle {
         bind<AuthRepository>() with singleton {
             AuthRepository(
                     instance<AuthApi>(),
-                    instance<CredentialsStore>(),
-                    instance<AuthorizationScheduler>(),
                     instance<ScheduleProvider>(),
                     instance<IErrorHandler>()
             )

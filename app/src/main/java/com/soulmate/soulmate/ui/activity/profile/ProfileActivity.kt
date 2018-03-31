@@ -2,8 +2,12 @@ package com.soulmate.soulmate.ui.activity.profile
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.AssetFileDescriptor
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.ParcelFileDescriptor
+import android.os.Parcelable
 import android.support.design.widget.FloatingActionButton
 import android.view.View
 import android.widget.Button
@@ -11,11 +15,11 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.github.salomonbrys.kodein.android.appKodein
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.profile.ProfilePresenter
 import com.soulmate.soulmate.presentation.view.profile.ProfileView
 import com.soulmate.soulmate.ui.activity.BaseSoulmateActivity
+import com.squareup.picasso.Picasso
 
 
 class ProfileActivity : BaseSoulmateActivity(), ProfileView {
@@ -65,20 +69,25 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         pickIntent.type = type
 
         val chooser = Intent.createChooser(intent, applicationContext.resources.getString(R.string.select_picture))
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayListOf(pickIntent))
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayListOf<Parcelable>(pickIntent))
         startActivityForResult(chooser,
                 PICK_IMAGE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PICK_IMAGE) {
-            val inputStream = applicationContext.contentResolver.openInputStream(data?.data)
-            mProfilePresenter.addImage(inputStream)
+            if(data!= null) {
+                val uri = data.data
+                mProfilePresenter.addImage(uri)
+                showImage(uri)
+            }
         }
     }
 
     override fun showImage(bitmap: Bitmap) {
         imageViewAvatar.setImageBitmap(bitmap)
+//        imageViewAvatar.adjustViewBounds = true
+//        imageViewAvatar.scaleType = ImageView.ScaleType.FIT_CENTER
     }
 
     override fun setSpinnerVisibility(isVisible: Boolean) {
@@ -86,5 +95,11 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
             progressBar.visibility = View.VISIBLE
         else
             progressBar.visibility = View.GONE
+    }
+
+    override fun showImage(uri: Uri?) {
+        Picasso.get()
+                .load(uri)
+                .into(imageViewAvatar)
     }
 }
