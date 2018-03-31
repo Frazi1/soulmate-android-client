@@ -59,4 +59,12 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     override fun showToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
+
+    override fun setUsername(value: String) {
+        textEmail.text = value
+    }
+
+    override fun setPassword(value: String) {
+        textPassword.text = value
+    }
 }
