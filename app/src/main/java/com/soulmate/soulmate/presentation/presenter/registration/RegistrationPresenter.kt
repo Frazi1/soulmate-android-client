@@ -16,10 +16,10 @@ class RegistrationPresenter() : BaseSoulmatePresenter<RegistrationView>(App.glob
 
     fun registerUser(email: String, password: String) {
         authRepository.registerUser(email, password)
-                .subscribeWithErrorHandler {
+                .subscribeWithDefaultErrorHandler ({
                     viewState.showToast(resources.getString(R.string.successful_registration))
                     viewState.openLoginActivity()
-                }
+                })
 
     }
 }

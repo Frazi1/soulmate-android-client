@@ -13,5 +13,5 @@ interface ProfileApi {
     fun getUserProfile(): Observable<UserAccountDto>
 
     @PUT("/profile")
-    fun updateUserProfile(@Body userAccountDto: UserAccountDto) : Call<ResponseBody>
+    fun updateUserProfile(@Body userAccountDto: UserAccountDto) : Observable<ResponseBody>
 }
