@@ -19,6 +19,7 @@ import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.profile.ProfilePresenter
 import com.soulmate.soulmate.presentation.view.profile.ProfileView
 import com.soulmate.soulmate.ui.activity.BaseSoulmateActivity
+import com.soulmate.soulmate.ui.activity.login.LoginActivity
 import com.squareup.picasso.Picasso
 
 
@@ -31,6 +32,7 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
 
     private lateinit var textUsername: TextView
     private lateinit var buttonSave: Button
+    private lateinit var buttonLogout: Button
     private lateinit var buttonUploadImage: FloatingActionButton
     private lateinit var imageViewAvatar: ImageView
     private lateinit var progressBar: ProgressBar
@@ -45,6 +47,7 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
 
         textUsername = findViewById(R.id.profile_edit_username)
         buttonSave = findViewById(R.id.profile_button_save)
+        buttonLogout = findViewById(R.id.profile_button_logout)
         buttonUploadImage = findViewById(R.id.profile_floatingButton_uploadImage)
         imageViewAvatar = findViewById(R.id.profile_imageView_avatar)
         progressBar = findViewById(R.id.profile_progressBar)
@@ -52,6 +55,7 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
 
         buttonSave.setOnClickListener { mProfilePresenter.saveData(textUsername.text.toString()) }
         buttonUploadImage.setOnClickListener { selectImageFromStore() }
+        buttonLogout.setOnClickListener {mProfilePresenter.logout()}
         setSpinnerVisibility(false)
     }
 
@@ -101,5 +105,11 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         Picasso.get()
                 .load(uri)
                 .into(imageViewAvatar)
+    }
+
+    override fun openLoginActivity() {
+        val intent = LoginActivity.getIntent(this)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }

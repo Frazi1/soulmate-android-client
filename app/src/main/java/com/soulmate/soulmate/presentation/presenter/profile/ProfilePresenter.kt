@@ -8,6 +8,7 @@ import android.os.ParcelFileDescriptor
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
+import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.presentation.presenter.BaseSoulmatePresenter
 import com.soulmate.soulmate.presentation.view.profile.ProfileView
 import com.soulmate.soulmate.repositories.ImageRepository
@@ -22,6 +23,8 @@ class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.laz
     private val userRepository: UserRepository by instance()
     private val imageRepository: ImageRepository by instance()
     private val contentResolver: ContentResolver by instance()
+    private val credentialsStore: CredentialsStore by instance()
+
     private var userAccount: UserAccountDto? = null
 
     override fun onFirstViewAttach() {
@@ -33,7 +36,8 @@ class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.laz
         viewState.setSpinnerVisibility(true)
         userRepository.loadUserProfile()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWithDefaultErrorHandler(onSuccess = {
+                .doFinally({ viewState.setSpinnerVisibility(false) })
+                .subscribe({
                     userAccount = it
                     viewState.setUsername(it.firstName)
                     if (it.profileImages.any()) {
@@ -41,9 +45,7 @@ class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.laz
                         val bitmap = BitmapFactory.decodeStream(mainImage.data?.inputStream())
                         viewState.showImage(bitmap)
                     }
-                }, doFinally = {
-                    viewState.setSpinnerVisibility(false)
-                })
+                }, defaultErrorHandler::handle)
     }
 
     fun saveData(newUserName: String) {
@@ -51,7 +53,11 @@ class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.laz
             it.firstName = newUserName
             userRepository.updateUserProfile(it)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWithDefaultErrorHandler()
+                    .subscribe({
+                        viewState.showToast("Updated")
+                    }, {
+                        defaultErrorHandler.handle(it)
+                    })
 
         }
     }
@@ -63,8 +69,17 @@ class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.laz
 //        viewState.showImage(uri)
         imageRepository.uploadImage(ProfileImageDto(1, byteArray, "", true))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWithDefaultErrorHandler ({
+                .subscribe({
                     viewState.showToast("Image upload finished")
-                })
+                }, { defaultErrorHandler.handle(it) })
+    }
+
+    fun logout() {
+        credentialsStore.clear()
+        viewState.openLoginActivity()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

@@ -18,22 +18,25 @@ abstract class BaseSoulmatePresenter<T : MvpView>(final override val kodein: Laz
 //        return this.subscribeWithErrorHandler(onSuccess, {}, {}, defaultErrorHandler::handle)
 //    }
 
-    fun <TInput : Any> Observable<TInput>.subscribeWithDefaultErrorHandler(onSuccess: (TInput) -> Unit = {},
-                                                                           onError: () -> Unit = {},
-                                                                           doFinally: () -> Unit = {}): Disposable {
-        return this.subscribeWithErrorHandler(onSuccess, onError, doFinally, defaultErrorHandler::handle)
-    }
-
-    fun <TInput : Any> Observable<TInput>.subscribeWithErrorHandler(onSuccess: (TInput) -> Unit,
-                                                                    onError: () -> Unit,
-                                                                    doFinally: () -> Unit,
-                                                                    errorHandler: (Throwable?) -> Unit): Disposable {
-        return this
-                .doFinally(doFinally)
-                .subscribe(onSuccess, {
-                    onError()
-                    errorHandler(it)
-                })
-    }
+//    fun <TInput : Any> Observable<TInput>.subscribeWithDefaultErrorHandler(onSuccess: (TInput) -> Unit = {},
+//                                                                           onError: () -> Unit = {},
+//                                                                           doFinally: () -> Unit = {}): Disposable {
+//        return this.subscribeWithErrorHandler(onSuccess, onError, doFinally, defaultErrorHandler::handle)
+//    }
+//
+//    fun <TInput : Any> Observable<TInput>.subscribeWithErrorHandler(onSuccess: (TInput) -> Unit,
+//                                                                    onError: () -> Unit,
+//                                                                    doFinally: () -> Unit,
+//                                                                    errorHandler: (Throwable?) -> Unit): Disposable {
+//        return this
+//                .doFinally(doFinally)
+//                .doOnError({ t ->
+//                    onError()
+//                    errorHandler(t)
+//                })
+//                .subscribe(onSuccess, {
+//                    errorHandler(it)
+//                })
+//    }
 
 }

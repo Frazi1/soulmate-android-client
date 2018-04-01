@@ -4,7 +4,6 @@ import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.repositories.AuthRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
 class AuthorizationScheduler(private val credentialsStore: CredentialsStore,
@@ -28,14 +27,14 @@ class AuthorizationScheduler(private val credentialsStore: CredentialsStore,
                     if (token.isExpired)
                         authApi.refreshToken(token.refreshToken, CredentialsStore.getClientBasicAuthorizationToken())
                                 .subscribe({
-                                    credentialsStore.initializeWithToken(AccessTokenDto.fromAccessToken(it))
+                                    credentialsStore.initializeWithToken(OAuthTokenDto.fromAccessToken(it))
                                 }, {
                                     errorHandler.handle(it)
                                 })
                 } else if (credentialsStore.isCredentialsInitialized) {
                     authRepository.authorize(credentialsStore.username, credentialsStore.password, CredentialsStore.getClientBasicAuthorizationToken())
                             .subscribe({
-                                credentialsStore.initializeWithToken(AccessTokenDto.fromAccessToken(it))
+                                credentialsStore.initializeWithToken(OAuthTokenDto.fromAccessToken(it))
                             }, { errorHandler.handle(it) })
                 }
             }

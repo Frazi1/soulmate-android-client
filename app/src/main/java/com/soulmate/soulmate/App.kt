@@ -14,6 +14,7 @@ import com.soulmate.soulmate.api.ProfileApi
 import com.soulmate.soulmate.api.errors.*
 import com.soulmate.soulmate.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
+import com.soulmate.soulmate.authorization.TokenAuthenticator
 import com.soulmate.soulmate.configuration.AppLifeCycleObserver
 import com.soulmate.soulmate.configuration.IAppLifeCycle
 import com.soulmate.soulmate.configuration.ScheduleProvider
@@ -26,6 +27,7 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class App : Application(), KodeinAware, IAppLifeCycle {
     companion object {
@@ -44,7 +46,8 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
         bind<CredentialsStore>() with singleton { CredentialsStore(getSharedPreferences("settings", Context.MODE_PRIVATE)) }
         bind<Retrofit>() with singleton { buildRetrofit(instance()) }
-        bind<AuthorizationScheduler>() with singleton { AuthorizationScheduler(
+        bind<AuthorizationScheduler>() with singleton {
+            AuthorizationScheduler(
                     instance<CredentialsStore>(),
                     instance<AuthApi>(),
                     instance<AuthRepository>(),
@@ -96,8 +99,9 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
     private fun httpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
-        builder.addInterceptor(AuthorizationInterceptor(kodein.instance()))
-//        builder.authenticator(TokenAuthenticator(kodein))
+        builder.connectTimeout(10, TimeUnit.SECONDS)
+        builder.addInterceptor(AuthorizationInterceptor(instance<CredentialsStore>()))
+//        builder.authenticator(TokenAuthenticator(kodein.lazy))
         return builder.build()
     }
 
@@ -127,10 +131,10 @@ class App : Application(), KodeinAware, IAppLifeCycle {
     }
 
     override fun onGoToForeground() {
-        authorizationScheduler.startAuthorizationTask()
+//        authorizationScheduler.startAuthorizationTask()
     }
 
     override fun onGoToBackground() {
-        authorizationScheduler.stopAuthorizationTask()
+//        authorizationScheduler.stopAuthorizationTask()
     }
 }

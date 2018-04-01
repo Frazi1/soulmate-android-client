@@ -10,6 +10,14 @@ class ToastErrorMessageHandler(private val context: Context,
                                private val errorMessageExtractor: IErrorMessageExtractor) : ErrorHandler() {
 
 
+    override fun handle(t: Throwable?) {
+        if(t is HttpException)
+            handle(t)
+        else
+            Toast.makeText(context, t.toString(), Toast.LENGTH_LONG)
+                    .show()
+    }
+
     override fun handle(t: HttpException) {
         Toast.makeText(context, errorMessageExtractor.errorMessage(t), Toast.LENGTH_LONG)
                 .show()

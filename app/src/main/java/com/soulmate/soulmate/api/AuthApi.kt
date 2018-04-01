@@ -1,6 +1,6 @@
 package com.soulmate.soulmate.api
 
-import com.soulmate.soulmate.authorization.AuthorizationToken
+import com.soulmate.soulmate.authorization.OAuthToken
 import dtos.UserAccountDto
 import dtos.UserRegistrationDto
 import io.reactivex.Observable
@@ -19,16 +19,16 @@ interface AuthApi {
     @POST("/oauth/token?grant_type=password")
     fun getToken(@Query("username", encoded = true) username: String,
                  @Query("password", encoded = true) password: String,
-                 @Header("Authorization") basicAuthToken: String): Call<AuthorizationToken>
+                 @Header("Authorization") basicAuthToken: String): Call<OAuthToken>
 
     @POST("/oauth/token?grant_type=refresh_token")
     fun refreshToken(@Query("refresh_token") refreshToken: String,
-                     @Header("Authorization") basicAuthToken: String): Observable<AuthorizationToken>
+                     @Header("Authorization") basicAuthToken: String): Observable<OAuthToken>
 
     @POST("/oauth/token?grant_type=password")
     fun getTokenRx(@Query("username", encoded = true) username: String,
                  @Query("password", encoded = true) password: String,
-                 @Header("Authorization") basicAuthToken: String): Observable<AuthorizationToken>
+                 @Header("Authorization") basicAuthToken: String): Observable<OAuthToken>
 
     @POST("/registration")
     fun registerMember(@Body dto: UserRegistrationDto): Observable<ResponseBody>

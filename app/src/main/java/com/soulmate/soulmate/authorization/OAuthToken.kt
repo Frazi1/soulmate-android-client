@@ -2,7 +2,7 @@ package com.soulmate.soulmate.authorization
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-class AuthorizationToken {
+class OAuthToken {
     @JsonProperty(value = "access_token")
     lateinit var accessToken: String
 

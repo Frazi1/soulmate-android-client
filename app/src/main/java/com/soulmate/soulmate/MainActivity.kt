@@ -7,13 +7,8 @@ import android.widget.Button
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.AppCompatActivityInjector
 import com.soulmate.soulmate.api.AuthApi
-import com.soulmate.soulmate.authorization.AccessTokenDto
-import com.soulmate.soulmate.authorization.AuthorizationToken
 import com.soulmate.soulmate.ui.NavigationHelper
 import com.soulmate.soulmate.ui.activity.login.LoginActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
     override val injector: KodeinInjector = KodeinInjector()
@@ -59,13 +54,13 @@ class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
 //            authApi
 //                    .refreshToken(
 //                    credentialsStore.authorizationToken.refreshToken,
-//                    CredentialsStore.getClientBasicAuthorizationToken()).enqueue(object : Callback<AuthorizationToken> {
-//                override fun onResponse(call: Call<AuthorizationToken>?, response: Response<AuthorizationToken>) {
+//                    CredentialsStore.getClientBasicAuthorizationToken()).enqueue(object : Callback<OAuthToken> {
+//                override fun onResponse(call: Call<OAuthToken>?, response: Response<OAuthToken>) {
 //                    if (response.isSuccessful)
-//                        credentialsStore.initializeWithToken(AccessTokenDto.fromAccessToken(response.body()!!))
+//                        credentialsStore.initializeWithToken(OAuthTokenDto.fromAccessToken(response.body()!!))
 //                }
 //
-//                override fun onFailure(call: Call<AuthorizationToken>?, t: Throwable?) {
+//                override fun onFailure(call: Call<OAuthToken>?, t: Throwable?) {
 //                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //                }
 //            })

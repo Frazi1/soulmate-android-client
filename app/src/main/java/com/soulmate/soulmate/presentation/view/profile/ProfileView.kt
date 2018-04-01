@@ -10,4 +10,5 @@ interface ProfileView : ISoulmateBaseMvpView {
     fun showImage(uri: Uri?)
     fun showImage(bitmap: Bitmap)
     fun setSpinnerVisibility(isVisible: Boolean)
+    fun openLoginActivity()
 }

@@ -1,8 +1,7 @@
 package com.soulmate.soulmate
 
 import android.content.SharedPreferences
-import com.soulmate.soulmate.authorization.AccessTokenDto
-import com.soulmate.soulmate.authorization.AuthorizationToken
+import com.soulmate.soulmate.authorization.OAuthTokenDto
 import okhttp3.Credentials
 import java.util.*
 
@@ -30,7 +29,7 @@ class CredentialsStore(private val settings: SharedPreferences) {
         initializeWithToken(with(settings) {
             val date = Date()
             date.time = getLong(expirationKey, 0)
-            return@with AccessTokenDto(
+            return@with OAuthTokenDto(
                     getString(accessTokenKey, ""),
                     getString(refreshTokenKey, ""),
                     getString(tokenTypeKey, ""),
@@ -39,7 +38,7 @@ class CredentialsStore(private val settings: SharedPreferences) {
         })
     }
 
-    lateinit var authorizationToken: AccessTokenDto
+    lateinit var authorizationToken: OAuthTokenDto
 
     lateinit var username: String
         private set
@@ -54,7 +53,7 @@ class CredentialsStore(private val settings: SharedPreferences) {
     var isCredentialsInitialized: Boolean = false
         private set
 
-    fun initializeWithToken(authorizationToken: AccessTokenDto) {
+    fun initializeWithToken(authorizationToken: OAuthTokenDto) {
         initializeWithTokenInternal(authorizationToken)
         with(settings.edit()) {
             putString(accessTokenKey, authorizationToken.accessToken)
@@ -65,9 +64,9 @@ class CredentialsStore(private val settings: SharedPreferences) {
         }
     }
 
-    private fun initializeWithTokenInternal(authorizationToken: AccessTokenDto) {
+    private fun initializeWithTokenInternal(authorizationToken: OAuthTokenDto) {
         this.authorizationToken = authorizationToken
-        this.isTokenInitialized = true
+        this.isTokenInitialized = authorizationToken.accessToken != "" && authorizationToken.refreshToken != ""
     }
 
     fun initializeWithCredentials(username: String, password: String) {
@@ -82,6 +81,15 @@ class CredentialsStore(private val settings: SharedPreferences) {
     private fun initializeWithCredentialsInternal(username: String, password: String) {
         this.username = username
         this.password = password
-        isCredentialsInitialized = true
+        isCredentialsInitialized = username != "" && password != ""
+    }
+
+    fun clear() {
+        with(settings.edit()){
+            clear()
+            apply()
+        }
+        isCredentialsInitialized = false
+        isTokenInitialized = false
     }
 }
