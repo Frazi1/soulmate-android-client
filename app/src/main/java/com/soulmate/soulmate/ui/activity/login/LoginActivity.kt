@@ -36,6 +36,7 @@ class LoginActivity : BaseSoulmateActivity(), LoginView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mLoginPresenter.attemptAutoLogin()
         setContentView(R.layout.activity_login)
         buttonLogin = findViewById(R.id.login_button_login)
         buttonRegistration = findViewById(R.id.login_button_registration)
@@ -51,11 +52,6 @@ class LoginActivity : BaseSoulmateActivity(), LoginView {
         buttonRegistration.setOnClickListener { startActivity(RegistrationActivity.getIntent(this)) }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_developer, menu)
-        return true
-    }
-
     override fun openProfileActivity() {
         val intent = ProfileActivity.getIntent(this)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -64,10 +60,6 @@ class LoginActivity : BaseSoulmateActivity(), LoginView {
 
     override fun openMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
-    }
-
-    override fun showToast(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
     override fun setUsername(value: String) {

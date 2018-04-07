@@ -21,14 +21,21 @@ class LoginPresenter : BaseSoulmatePresenter<LoginView>(App.globalkodein.lazy) {
     private val errorHandler: IErrorHandler by instance()
 
     override fun onFirstViewAttach() {
-        if(credentialsStore.authorizationToken.isExpired)
-            credentialsStore.clear()
+//        if (credentialsStore.authorizationToken.isExpired)
+//            credentialsStore.clear()
         viewState.setUsername(credentialsStore.username)
         viewState.setPassword(credentialsStore.password)
     }
 
-    fun attemptLogin(username: String, password: String) {
-        credentialsStore.initializeWithCredentials(username, password)
+    fun attemptAutoLogin(): Boolean {
+        if (credentialsStore.isCredentialsInitialized)
+            attemptLogin(credentialsStore.username, credentialsStore.password, false)
+        return credentialsStore.isCredentialsInitialized
+    }
+
+    fun attemptLogin(username: String, password: String, reinitialize: Boolean = true) {
+        if (reinitialize)
+            credentialsStore.initializeWithCredentials(username, password)
         val clientBasicAuthToken = CredentialsStore.getClientBasicAuthorizationToken()
 
 
