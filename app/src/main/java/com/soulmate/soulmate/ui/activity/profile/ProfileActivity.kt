@@ -10,10 +10,7 @@ import android.os.ParcelFileDescriptor
 import android.os.Parcelable
 import android.support.design.widget.FloatingActionButton
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.profile.ProfilePresenter
@@ -37,6 +34,8 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     private lateinit var imageViewAvatar: ImageView
     private lateinit var progressBar: ProgressBar
 
+    private lateinit var layoutLoading: FrameLayout
+
     @InjectPresenter
     lateinit var mProfilePresenter: ProfilePresenter
 
@@ -51,11 +50,13 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         buttonUploadImage = findViewById(R.id.profile_floatingButton_uploadImage)
         imageViewAvatar = findViewById(R.id.profile_imageView_avatar)
         progressBar = findViewById(R.id.profile_progressBar)
+        layoutLoading = findViewById(R.id.layout_profile_loading)
 
 
         buttonSave.setOnClickListener { mProfilePresenter.saveData(textUsername.text.toString()) }
         buttonUploadImage.setOnClickListener { selectImageFromStore() }
         buttonLogout.setOnClickListener {mProfilePresenter.logout()}
+        layoutLoading.setOnClickListener { }
         setSpinnerVisibility(false)
     }
 
@@ -95,10 +96,13 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     }
 
     override fun setSpinnerVisibility(isVisible: Boolean) {
-        if (isVisible)
+        if (isVisible) {
             progressBar.visibility = View.VISIBLE
-        else
+            layoutLoading.visibility = View.VISIBLE
+        } else {
             progressBar.visibility = View.GONE
+            layoutLoading.visibility = View.GONE
+        }
     }
 
     override fun showImage(uri: Uri?) {
