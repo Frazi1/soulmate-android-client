@@ -3,6 +3,8 @@ package com.soulmate.soulmate.ui.activity.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -12,11 +14,12 @@ import com.soulmate.soulmate.MainActivity
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.login.LoginPresenter
 import com.soulmate.soulmate.presentation.view.login.LoginView
+import com.soulmate.soulmate.ui.activity.BaseSoulmateActivity
 import com.soulmate.soulmate.ui.activity.profile.ProfileActivity
 import com.soulmate.soulmate.ui.activity.registration.RegistrationActivity
 
 
-class LoginActivity : MvpAppCompatActivity(), LoginView {
+class LoginActivity : BaseSoulmateActivity(), LoginView {
     companion object {
         const val TAG = "LoginActivity"
         fun getIntent(context: Context): Intent = Intent(context, LoginActivity::class.java)
@@ -46,6 +49,11 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         }
 
         buttonRegistration.setOnClickListener { startActivity(RegistrationActivity.getIntent(this)) }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_developer, menu)
+        return true
     }
 
     override fun openProfileActivity() {

@@ -1,0 +1,9 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="devPref_connection_settings"
+        android:title="@string/devPref_connection">
+        <EditTextPreference
+            android:key="@string/key_devPref_serverUrl"
+            android:title="@string/serverUrl" />
+    </PreferenceCategory>
+</PreferenceScreen>

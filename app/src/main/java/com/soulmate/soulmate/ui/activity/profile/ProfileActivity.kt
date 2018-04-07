@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.os.Parcelable
 import android.support.design.widget.FloatingActionButton
+import android.view.Menu
 import android.view.View
 import android.widget.*
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -58,6 +59,10 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         buttonLogout.setOnClickListener {mProfilePresenter.logout()}
         layoutLoading.setOnClickListener { }
         setSpinnerVisibility(false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun setUsername(name: String?) {

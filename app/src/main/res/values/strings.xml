@@ -11,4 +11,7 @@
     <string name="select_picture">Select picture</string>
     <string name="registration">Registration</string>
     <string name="logout">Logout</string>
+    <string name="developerSettings">Developer Settings</string>
+    <string name="devPref_connection">Connection</string>
+    <string name="serverUrl">Server URL</string>
 </resources>

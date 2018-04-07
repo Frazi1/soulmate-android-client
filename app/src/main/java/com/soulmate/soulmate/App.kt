@@ -15,9 +15,7 @@ import com.soulmate.soulmate.api.errors.*
 import com.soulmate.soulmate.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.authorization.TokenAuthenticator
-import com.soulmate.soulmate.configuration.AppLifeCycleObserver
-import com.soulmate.soulmate.configuration.IAppLifeCycle
-import com.soulmate.soulmate.configuration.ScheduleProvider
+import com.soulmate.soulmate.configuration.*
 import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
 import com.soulmate.soulmate.presentation.validation.ValidationResponseHandler
 import com.soulmate.soulmate.repositories.AuthRepository
@@ -44,8 +42,11 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
         bind<ObjectMapper>() with singleton { buildObjectMapper() }
 
+        bind<IConnectionPreferenceManager>() with singleton { ConnectionPreferenceManager(this@App, instance<Resources>()) }
         bind<CredentialsStore>() with singleton { CredentialsStore(getSharedPreferences("settings", Context.MODE_PRIVATE)) }
-        bind<Retrofit>() with singleton { buildRetrofit(instance()) }
+//        bind<Retrofit>() with singleton { buildRetrofit(instance()) }
+        bind<RetrofitProvider>() with singleton { RetrofitProvider(instance<ObjectMapper>(), instance<CredentialsStore>(), instance<IConnectionPreferenceManager>()) }
+        bind<Retrofit>() with provider { instance<RetrofitProvider>().provide() }
         bind<AuthorizationScheduler>() with singleton {
             AuthorizationScheduler(
                     instance<CredentialsStore>(),
@@ -108,7 +109,7 @@ class App : Application(), KodeinAware, IAppLifeCycle {
     private fun buildRetrofit(objectMapper: ObjectMapper): Retrofit {
         return Retrofit.Builder()
 //                .baseUrl("http://192.168.0.100:8080")
-                .baseUrl("http://192.168.0.15:8080")
+                .baseUrl("http://192.168.0.100:8080")
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(httpClient())
