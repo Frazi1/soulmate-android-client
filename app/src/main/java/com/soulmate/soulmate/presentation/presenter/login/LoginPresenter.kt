@@ -21,8 +21,8 @@ class LoginPresenter : BaseSoulmatePresenter<LoginView>(App.globalkodein.lazy) {
     private val errorHandler: IErrorHandler by instance()
 
     override fun onFirstViewAttach() {
-//        if (credentialsStore.authorizationToken.isExpired)
-//            credentialsStore.clear()
+        if (credentialsStore.authorizationToken.isExpired)
+            credentialsStore.clear()
         viewState.setUsername(credentialsStore.username)
         viewState.setPassword(credentialsStore.password)
     }

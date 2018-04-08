@@ -36,7 +36,7 @@ class LoginActivity : BaseSoulmateActivity(), LoginView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mLoginPresenter.attemptAutoLogin()
+//        mLoginPresenter.attemptAutoLogin()
         setContentView(R.layout.activity_login)
         buttonLogin = findViewById(R.id.login_button_login)
         buttonRegistration = findViewById(R.id.login_button_registration)
