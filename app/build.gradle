@@ -32,6 +32,7 @@ def retrofitVer = "2.3.0"
 def androidSupportVer = "27.1.0"
 def jacksonVer = "2.9.4"
 def kodeinVer = "4.1.0"
+def butterKnifeVer = "8.8.1"
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -87,4 +88,11 @@ dependencies {
 
     //Server dto
     implementation "com.soulmate:soulmate-dto:${serverDtoVer}"
+
+    //Circle image
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //Butter knife
+    compile "com.jakewharton:butterknife:${butterKnifeVer}"
+    kapt "com.jakewharton:butterknife-compiler:${butterKnifeVer}"
 }

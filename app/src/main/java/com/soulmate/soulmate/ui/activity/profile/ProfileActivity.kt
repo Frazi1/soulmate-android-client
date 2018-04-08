@@ -2,16 +2,18 @@ package com.soulmate.soulmate.ui.activity.profile
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.AssetFileDescriptor
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.ParcelFileDescriptor
 import android.os.Parcelable
+import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
 import android.view.Menu
 import android.view.View
 import android.widget.*
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.profile.ProfilePresenter
@@ -28,14 +30,26 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         fun getIntent(context: Context): Intent = Intent(context, ProfileActivity::class.java)
     }
 
-    private lateinit var textUsername: TextView
-    private lateinit var buttonSave: Button
-    private lateinit var buttonLogout: Button
-    private lateinit var buttonUploadImage: FloatingActionButton
-    private lateinit var imageViewAvatar: ImageView
-    private lateinit var progressBar: ProgressBar
+    @BindView(R.id.profile_edit_username)
+    lateinit var textUsername: TextView
 
-    private lateinit var layoutLoading: FrameLayout
+    @BindView(R.id.profile_button_save)
+    lateinit var buttonSave: Button
+
+    @BindView(R.id.profile_button_logout)
+    lateinit var buttonLogout: Button
+
+    @BindView(R.id.profile_floatingButton_uploadImage)
+    lateinit var buttonUploadImage: FloatingActionButton
+
+    @BindView(R.id.profile_imageView_avatar)
+    lateinit var imageViewAvatar: ImageView
+
+    @BindView(R.id.profile_progressBar)
+    lateinit var progressBar: ProgressBar
+
+    @BindView(R.id.layout_profile_loading)
+    lateinit var layoutLoading: FrameLayout
 
     @InjectPresenter
     lateinit var mProfilePresenter: ProfilePresenter
@@ -44,49 +58,45 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-
-        textUsername = findViewById(R.id.profile_edit_username)
-        buttonSave = findViewById(R.id.profile_button_save)
-        buttonLogout = findViewById(R.id.profile_button_logout)
-        buttonUploadImage = findViewById(R.id.profile_floatingButton_uploadImage)
-        imageViewAvatar = findViewById(R.id.profile_imageView_avatar)
-        progressBar = findViewById(R.id.profile_progressBar)
-        layoutLoading = findViewById(R.id.layout_profile_loading)
-
-
-        buttonSave.setOnClickListener { mProfilePresenter.saveData(textUsername.text.toString()) }
-        buttonUploadImage.setOnClickListener { selectImageFromStore() }
-        buttonLogout.setOnClickListener {mProfilePresenter.logout()}
-        layoutLoading.setOnClickListener { }
+        ButterKnife.bind(this)
         setSpinnerVisibility(false)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
+    @OnClick(R.id.profile_button_save)
+    fun saveProfile() {
+        mProfilePresenter.saveData(textUsername.text.toString())
     }
 
-    override fun setUsername(name: String?) {
-        textUsername.text = name
-    }
-
-    private fun selectImageFromStore() {
+    @OnClick(R.id.profile_floatingButton_uploadImage)
+    fun selectImage() {
         val type = "image/*"
-
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = type
-
-        val pickIntent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickIntent.type = type
-
         val chooser = Intent.createChooser(intent, applicationContext.resources.getString(R.string.select_picture))
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayListOf<Parcelable>(pickIntent))
         startActivityForResult(chooser,
                 PICK_IMAGE)
     }
 
+    @OnClick(R.id.profile_button_logout)
+    fun logout() {
+        mProfilePresenter.logout()
+    }
+
+    @OnClick(R.id.layout_profile_loading)
+    fun preventClickWhileLoading() {
+        //empty
+    }
+
+    override fun setUsername(name: String?) {
+        textUsername.text = name
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PICK_IMAGE) {
-            if(data!= null) {
+            if (data != null) {
                 val uri = data.data
                 mProfilePresenter.addImage(uri)
                 showImage(uri)

@@ -34,7 +34,6 @@ class RetrofitProvider(private val objectMapper: ObjectMapper,
 
     private fun buildRetrofit(objectMapper: ObjectMapper): Retrofit {
         return Retrofit.Builder()
-//                .baseUrl("http://192.168.0.100:8080")
                 .baseUrl(connectionPreferenceManager.serverUrl)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
