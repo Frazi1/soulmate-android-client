@@ -39,8 +39,6 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     @BindView(R.id.profile_button_logout)
     lateinit var buttonLogout: Button
 
-    @BindView(R.id.profile_floatingButton_uploadImage)
-    lateinit var buttonUploadImage: FloatingActionButton
 
     @BindView(R.id.profile_imageView_avatar)
     lateinit var imageViewAvatar: ImageView
@@ -67,7 +65,7 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         mProfilePresenter.saveData(textUsername.text.toString())
     }
 
-    @OnClick(R.id.profile_floatingButton_uploadImage)
+    @OnClick(R.id.profile_imageView_avatar)
     fun selectImage() {
         val type = "image/*"
         val intent = Intent(Intent.ACTION_GET_CONTENT)

@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="mainButton">
+        <item name="android:layout_height">48dp</item>
+    </style>
+
 </resources>

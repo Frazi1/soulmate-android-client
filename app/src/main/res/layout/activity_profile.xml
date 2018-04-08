@@ -7,67 +7,83 @@
 
 
     <ScrollView
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:id="@+id/layot_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible">
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/profile_side_margin"
+            android:layout_marginRight="@dimen/profile_side_margin"
+            android:visibility="visible"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_imageView_avatar"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:visibility="visible"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
 
             <EditText
                 android:id="@+id/profile_edit_username"
-                android:layout_width="262dp"
-                android:layout_height="0dp"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/username"
                 android:inputType="textPersonName"
+                android:selectAllOnFocus="false"
                 android:singleLine="true"
                 tools:layout_editor_absoluteX="62dp" />
 
-            <Button
-                android:id="@+id/profile_button_save"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/save"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+            <!--<ImageView-->
+            <!--android:id="@+id/profile_imageView_avatar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="210dp"-->
+            <!--android:contentDescription="TODO"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--app:srcCompat="@android:color/darker_gray" />-->
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/profile_floatingButton_uploadImage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:srcCompat="@android:drawable/ic_menu_upload"
-                tools:layout_editor_absoluteX="336dp"
-                tools:layout_editor_absoluteY="54dp" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/profile_imageView_avatar"
-                android:layout_width="0dp"
-                android:layout_height="210dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/profile_floatingButton_uploadImage"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@android:color/darker_gray" />
+                <Button
+                    android:id="@+id/profile_button_logout"
+                    style="@style/mainButton"
+                    android:layout_width="0dp"
+                    android:text="@string/logout"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/profile_button_save" />
 
-            <Button
-                android:id="@+id/profile_button_logout"
-                android:layout_width="88dp"
-                android:layout_height="wrap_content"
-                android:text="@string/logout"
-                tools:layout_editor_absoluteX="36dp"
-                tools:layout_editor_absoluteY="318dp" />
-        </android.support.constraint.ConstraintLayout>
+                <Button
+                    android:id="@+id/profile_button_save"
+                    style="@style/mainButton"
+                    android:layout_width="220dp"
+                    android:text="@string/save"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 
@@ -76,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <ProgressBar
             android:id="@+id/profile_progressBar"
