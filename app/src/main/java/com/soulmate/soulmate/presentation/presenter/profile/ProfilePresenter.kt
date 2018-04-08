@@ -4,7 +4,6 @@ import android.content.ContentResolver
 import android.content.res.AssetFileDescriptor
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.ParcelFileDescriptor
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
@@ -13,7 +12,7 @@ import com.soulmate.soulmate.presentation.presenter.BaseSoulmatePresenter
 import com.soulmate.soulmate.presentation.view.profile.ProfileView
 import com.soulmate.soulmate.repositories.ImageRepository
 import com.soulmate.soulmate.repositories.UserRepository
-import com.squareup.picasso.Picasso
+import dtos.GenderType
 import dtos.ProfileImageDto
 import dtos.UserAccountDto
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,17 +28,17 @@ class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.laz
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        loadData()
+        onLoad()
     }
 
-    private fun loadData() {
+    private fun onLoad() {
         viewState.setSpinnerVisibility(true)
         userRepository.loadUserProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally({ viewState.setSpinnerVisibility(false) })
                 .subscribe({
                     userAccount = it
-                    viewState.setUsername(it.firstName)
+                    viewState.showProfile(it)
                     if (it.profileImages.any()) {
                         val mainImage: ProfileImageDto = it.profileImages.first { it.isMainImage }
                         val bitmap = BitmapFactory.decodeStream(mainImage.data?.inputStream())
@@ -48,9 +47,13 @@ class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.laz
                 }, defaultErrorHandler::handle)
     }
 
-    fun saveData(newUserName: String) {
+    fun saveProfile(newUserName: String,
+                    gender: GenderType,
+                    personalStory: String) {
         userAccount?.let {
             it.firstName = newUserName
+            it.gender = gender
+            it.personalStory = personalStory
             userRepository.updateUserProfile(it)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -79,7 +82,4 @@ class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.laz
         viewState.openLoginActivity()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

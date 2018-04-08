@@ -61,6 +61,14 @@
             <!--android:scaleType="centerCrop"-->
             <!--app:srcCompat="@android:color/darker_gray" />-->
 
+            <EditText
+                android:id="@+id/profile_editTextMultiline_personalStory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:singleLine="false" />
+
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -92,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ProgressBar
             android:id="@+id/profile_progressBar"

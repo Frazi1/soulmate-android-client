@@ -7,8 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.MediaStore
-import android.support.design.widget.FloatingActionButton
-import android.view.Menu
 import android.view.View
 import android.widget.*
 import butterknife.BindView
@@ -21,6 +19,8 @@ import com.soulmate.soulmate.presentation.view.profile.ProfileView
 import com.soulmate.soulmate.ui.activity.BaseSoulmateActivity
 import com.soulmate.soulmate.ui.activity.login.LoginActivity
 import com.squareup.picasso.Picasso
+import dtos.GenderType
+import dtos.UserAccountDto
 
 
 class ProfileActivity : BaseSoulmateActivity(), ProfileView {
@@ -31,14 +31,13 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     }
 
     @BindView(R.id.profile_edit_username)
-    lateinit var textUsername: TextView
+    lateinit var editTextUsername: TextView
 
     @BindView(R.id.profile_button_save)
     lateinit var buttonSave: Button
 
     @BindView(R.id.profile_button_logout)
     lateinit var buttonLogout: Button
-
 
     @BindView(R.id.profile_imageView_avatar)
     lateinit var imageViewAvatar: ImageView
@@ -48,6 +47,9 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
 
     @BindView(R.id.layout_profile_loading)
     lateinit var layoutLoading: FrameLayout
+
+    @BindView(R.id.profile_editTextMultiline_personalStory)
+    lateinit var editTextMultilinePersonalStory: EditText
 
     @InjectPresenter
     lateinit var mProfilePresenter: ProfilePresenter
@@ -62,7 +64,10 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
 
     @OnClick(R.id.profile_button_save)
     fun saveProfile() {
-        mProfilePresenter.saveData(textUsername.text.toString())
+        mProfilePresenter.saveProfile(
+                editTextUsername.text.toString(),
+                GenderType.NotDefined,
+                editTextMultilinePersonalStory.text.toString())
     }
 
     @OnClick(R.id.profile_imageView_avatar)
@@ -86,10 +91,6 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     @OnClick(R.id.layout_profile_loading)
     fun preventClickWhileLoading() {
         //empty
-    }
-
-    override fun setUsername(name: String?) {
-        textUsername.text = name
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -128,5 +129,12 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         val intent = LoginActivity.getIntent(this)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+    }
+
+    override fun showProfile(userAccount: UserAccountDto) {
+        with(userAccount) {
+            editTextUsername.text = firstName
+            editTextMultilinePersonalStory.setText(personalStory)
+        }
     }
 }
