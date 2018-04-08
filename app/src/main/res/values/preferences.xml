@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="key_devPref_serverUrl">devPref_serverUrl</string>
+    <string name="key_devPref_isHerokuServer">devPref_isHerokuServer</string>
 </resources>

@@ -13,5 +13,6 @@
     <string name="logout">Logout</string>
     <string name="developerSettings">Developer Settings</string>
     <string name="devPref_connection">Connection</string>
-    <string name="serverUrl">Server URL</string>
+    <string name="devPref_localServerUrl">Local server URL</string>
+    <string name="devPref_activateHerokuServer">Activate Heroku server</string>
 </resources>

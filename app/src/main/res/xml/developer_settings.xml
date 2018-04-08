@@ -4,6 +4,9 @@
         android:title="@string/devPref_connection">
         <EditTextPreference
             android:key="@string/key_devPref_serverUrl"
-            android:title="@string/serverUrl" />
+            android:title="@string/devPref_localServerUrl" />
+        <CheckBoxPreference
+            android:key="@string/key_devPref_isHerokuServer"
+            android:title="@string/devPref_activateHerokuServer" />
     </PreferenceCategory>
 </PreferenceScreen>
