@@ -6,7 +6,6 @@ import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.view.ISoulmateBaseMvpView
-import com.soulmate.soulmate.ui.activity.developerSettings.DeveloperSettingsActivity
 
 abstract class BaseSoulmateActivity : MvpAppCompatActivity(), ISoulmateBaseMvpView {
     override fun showToast(text: String, duration: Int) {
