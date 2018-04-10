@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.ui.activity.developerSettings
+package com.soulmate.soulmate.ui.activity
 
 import android.content.Context
 import android.content.Intent

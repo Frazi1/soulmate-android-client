@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.presentation.view.profile
+package com.soulmate.soulmate.presentation.view
 
 import android.graphics.Bitmap
 import android.net.Uri

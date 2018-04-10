@@ -1,4 +1,4 @@
-package com.soulmate.soulmate
+package com.soulmate.soulmate.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,10 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.AppCompatActivityInjector
+import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.R
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.ui.NavigationHelper
-import com.soulmate.soulmate.ui.activity.login.LoginActivity
 
 class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
     override val injector: KodeinInjector = KodeinInjector()

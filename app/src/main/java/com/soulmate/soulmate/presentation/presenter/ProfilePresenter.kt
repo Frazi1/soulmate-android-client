@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.presentation.presenter.profile
+package com.soulmate.soulmate.presentation.presenter
 
 import android.content.ContentResolver
 import android.content.res.AssetFileDescriptor
@@ -8,8 +8,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.CredentialsStore
-import com.soulmate.soulmate.presentation.presenter.BaseSoulmatePresenter
-import com.soulmate.soulmate.presentation.view.profile.ProfileView
+import com.soulmate.soulmate.presentation.view.ProfileView
 import com.soulmate.soulmate.repositories.ImageRepository
 import com.soulmate.soulmate.repositories.UserRepository
 import dtos.GenderType

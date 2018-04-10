@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.presentation.view.registration
+package com.soulmate.soulmate.presentation.view
 
 import com.arellomobile.mvp.MvpView
 import com.soulmate.soulmate.presentation.view.ISoulmateBaseMvpView

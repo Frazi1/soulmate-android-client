@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.presentation.presenter.registration
+package com.soulmate.soulmate.presentation.presenter
 
 import android.content.res.Resources
 import com.arellomobile.mvp.InjectViewState
@@ -6,8 +6,7 @@ import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.api.errors.IErrorHandler
-import com.soulmate.soulmate.presentation.presenter.BaseSoulmatePresenter
-import com.soulmate.soulmate.presentation.view.registration.RegistrationView
+import com.soulmate.soulmate.presentation.view.RegistrationView
 import com.soulmate.soulmate.repositories.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 

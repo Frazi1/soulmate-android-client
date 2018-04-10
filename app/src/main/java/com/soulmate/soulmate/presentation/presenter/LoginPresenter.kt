@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.presentation.presenter.login
+package com.soulmate.soulmate.presentation.presenter
 
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.instance
@@ -8,8 +8,7 @@ import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.authorization.OAuthTokenDto
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
-import com.soulmate.soulmate.presentation.presenter.BaseSoulmatePresenter
-import com.soulmate.soulmate.presentation.view.login.LoginView
+import com.soulmate.soulmate.presentation.view.LoginView
 import com.soulmate.soulmate.repositories.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 

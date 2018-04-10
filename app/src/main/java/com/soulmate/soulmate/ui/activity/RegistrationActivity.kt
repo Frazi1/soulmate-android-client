@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.ui.activity.registration
+package com.soulmate.soulmate.ui.activity
 
 import android.content.Context
 import android.content.Intent
@@ -7,10 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.presenter.registration.RegistrationPresenter
-import com.soulmate.soulmate.presentation.view.registration.RegistrationView
-import com.soulmate.soulmate.ui.activity.BaseSoulmateActivity
-import com.soulmate.soulmate.ui.activity.login.LoginActivity
+import com.soulmate.soulmate.presentation.presenter.RegistrationPresenter
+import com.soulmate.soulmate.presentation.view.RegistrationView
 
 
 class RegistrationActivity : BaseSoulmateActivity(), RegistrationView {

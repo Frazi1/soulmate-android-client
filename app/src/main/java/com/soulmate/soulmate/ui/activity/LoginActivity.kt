@@ -1,22 +1,14 @@
-package com.soulmate.soulmate.ui.activity.login
+package com.soulmate.soulmate.ui.activity
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.soulmate.soulmate.MainActivity
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.presenter.login.LoginPresenter
-import com.soulmate.soulmate.presentation.view.login.LoginView
-import com.soulmate.soulmate.ui.activity.BaseSoulmateActivity
-import com.soulmate.soulmate.ui.activity.profile.ProfileActivity
-import com.soulmate.soulmate.ui.activity.registration.RegistrationActivity
+import com.soulmate.soulmate.presentation.presenter.LoginPresenter
+import com.soulmate.soulmate.presentation.view.LoginView
 
 
 class LoginActivity : BaseSoulmateActivity(), LoginView {

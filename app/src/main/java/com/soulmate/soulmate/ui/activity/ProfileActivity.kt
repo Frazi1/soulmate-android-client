@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.ui.activity.profile
+package com.soulmate.soulmate.ui.activity
 
 import android.content.Context
 import android.content.Intent
@@ -14,10 +14,8 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.presenter.profile.ProfilePresenter
-import com.soulmate.soulmate.presentation.view.profile.ProfileView
-import com.soulmate.soulmate.ui.activity.BaseSoulmateActivity
-import com.soulmate.soulmate.ui.activity.login.LoginActivity
+import com.soulmate.soulmate.presentation.presenter.ProfilePresenter
+import com.soulmate.soulmate.presentation.view.ProfileView
 import com.squareup.picasso.Picasso
 import dtos.GenderType
 import dtos.UserAccountDto

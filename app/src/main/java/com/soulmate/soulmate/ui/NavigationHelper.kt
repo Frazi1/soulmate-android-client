@@ -1,9 +1,7 @@
 package com.soulmate.soulmate.ui
 
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
-import com.soulmate.soulmate.MainActivity
+import com.soulmate.soulmate.ui.activity.MainActivity
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.ui.fragments.authorization.AuthorizationFragment
 import com.soulmate.soulmate.ui.fragments.authorization.SignInFragment
