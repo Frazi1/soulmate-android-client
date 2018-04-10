@@ -51,7 +51,7 @@ class LoginActivity : BaseSoulmateActivity(), LoginView {
     }
 
     override fun openMainActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
+//        startActivity(Intent(this, MainActivity::class.java))
     }
 
     override fun setUsername(value: String) {
