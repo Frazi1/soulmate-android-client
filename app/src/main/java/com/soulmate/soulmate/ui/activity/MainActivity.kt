@@ -9,7 +9,6 @@ import com.github.salomonbrys.kodein.android.AppCompatActivityInjector
 import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.api.AuthApi
-import com.soulmate.soulmate.ui.NavigationHelper
 
 class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
     override val injector: KodeinInjector = KodeinInjector()
@@ -22,7 +21,6 @@ class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
 
     override fun provideOverridingModule() = Kodein.Module {
         bind<MainActivity>() with instance(this@MainActivity)
-        bind<NavigationHelper>() with singleton { NavigationHelper(instance()) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
