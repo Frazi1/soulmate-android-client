@@ -1,24 +1,29 @@
 package com.soulmate.soulmate.ui.activity
 
+import android.content.Context
+import android.content.Intent
 import android.support.design.widget.TabLayout
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.soulmate.soulmate.R
+import com.soulmate.soulmate.ui.activity.base.BaseActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
-class MainActivity : BaseSoulmateActivity() {
+class MainActivity : BaseActivity() {
+
+    companion object {
+        const val TAG = "MainActivity"
+        fun getIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
+        const val POSITION_PROFILE = 0
+    }
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -47,37 +52,30 @@ class MainActivity : BaseSoulmateActivity() {
 
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-
-        if (id == R.id.action_settings) {
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-
     /**
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
+
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            when (position) {
+                POSITION_PROFILE -> return getString(R.string.tabName_Profile)
+            }
+            return position.toString()
+        }
+
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            when (position) {
+                POSITION_PROFILE -> return ProfileFragment()
+            }
             return PlaceholderFragment.newInstance(position + 1)
+
+
         }
 
         override fun getCount(): Int {

@@ -8,10 +8,11 @@ import android.widget.EditText
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.RegistrationPresenter
-import com.soulmate.soulmate.presentation.view.RegistrationView
+import com.soulmate.soulmate.presentation.view.RegistrationViewSoulmate
+import com.soulmate.soulmate.ui.activity.base.BaseActivity
 
 
-class RegistrationActivity : BaseSoulmateActivity(), RegistrationView {
+class RegistrationActivity : BaseActivity(), RegistrationViewSoulmate {
     companion object {
         const val TAG = "RegistrationActivity"
         fun getIntent(context: Context): Intent = Intent(context, RegistrationActivity::class.java)

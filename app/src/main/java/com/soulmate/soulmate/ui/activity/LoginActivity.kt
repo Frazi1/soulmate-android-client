@@ -9,9 +9,10 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.LoginPresenter
 import com.soulmate.soulmate.presentation.view.LoginView
+import com.soulmate.soulmate.ui.activity.base.BaseActivity
 
 
-class LoginActivity : BaseSoulmateActivity(), LoginView {
+class LoginActivity : BaseActivity(), LoginView {
     companion object {
         const val TAG = "LoginActivity"
         fun getIntent(context: Context): Intent = Intent(context, LoginActivity::class.java)
@@ -45,7 +46,7 @@ class LoginActivity : BaseSoulmateActivity(), LoginView {
     }
 
     override fun openProfileActivity() {
-        val intent = ProfileActivity.getIntent(this)
+        val intent = MainActivity.getIntent(this)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
