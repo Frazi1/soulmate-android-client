@@ -1,13 +1,14 @@
 package com.soulmate.soulmate.ui.activity
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -15,17 +16,16 @@ import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.ProfilePresenter
-import com.soulmate.soulmate.presentation.view.ProfileView
+import com.soulmate.soulmate.presentation.view.ProfileViewSoulmate
+import com.soulmate.soulmate.ui.activity.base.BaseFragment
 import com.squareup.picasso.Picasso
 import dtos.GenderType
 import dtos.UserAccountDto
 
+class ProfileFragment() : BaseFragment(), ProfileViewSoulmate {
 
-class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     companion object {
-        const val TAG = "ProfileActivity"
         private const val PICK_IMAGE = 1
-        fun getIntent(context: Context): Intent = Intent(context, ProfileActivity::class.java)
     }
 
     @BindView(R.id.profile_edit_username)
@@ -53,11 +53,10 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     lateinit var mProfilePresenter: ProfilePresenter
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
-        ButterKnife.bind(this)
-        setSpinnerVisibility(false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        ButterKnife.bind(this, view)
+        return view
     }
 
     @OnClick(R.id.profile_button_save)
@@ -75,7 +74,7 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
         intent.type = type
         val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickIntent.type = type
-        val chooser = Intent.createChooser(intent, applicationContext.resources.getString(R.string.select_picture))
+        val chooser = Intent.createChooser(intent, activity?.applicationContext?.resources?.getString(R.string.select_picture))
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayListOf<Parcelable>(pickIntent))
         startActivityForResult(chooser,
                 PICK_IMAGE)
@@ -124,7 +123,7 @@ class ProfileActivity : BaseSoulmateActivity(), ProfileView {
     }
 
     override fun openLoginActivity() {
-        val intent = LoginActivity.getIntent(this)
+        val intent = LoginActivity.getIntent(context!!)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }

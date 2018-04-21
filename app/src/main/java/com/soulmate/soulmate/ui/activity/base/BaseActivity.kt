@@ -1,19 +1,21 @@
-package com.soulmate.soulmate.ui.activity
+package com.soulmate.soulmate.ui.activity.base
 
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.view.ISoulmateBaseMvpView
+import com.soulmate.soulmate.presentation.view.IBaseSoulmateMvpView
+import com.soulmate.soulmate.ui.activity.DeveloperSettingsActivity
 
-abstract class BaseSoulmateActivity : MvpAppCompatActivity(), ISoulmateBaseMvpView {
+abstract class BaseActivity : MvpAppCompatActivity(), IBaseSoulmateMvpView {
+    protected val baseContext: BaseContext = BaseContext(this)
+
     override fun showToast(text: String, duration: Int) {
-        Toast.makeText(this, text, duration).show()
+        baseContext.showToast(text, duration)
     }
 
     override fun showToast(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        baseContext.showToast(text)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -1,75 +1,120 @@
 package com.soulmate.soulmate.ui.activity
 
+import android.content.Context
 import android.content.Intent
+import android.support.design.widget.TabLayout
+
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.widget.Button
-import com.github.salomonbrys.kodein.*
-import com.github.salomonbrys.kodein.android.AppCompatActivityInjector
-import com.soulmate.soulmate.CredentialsStore
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.api.AuthApi
-import com.soulmate.soulmate.ui.NavigationHelper
+import com.soulmate.soulmate.ui.activity.base.BaseActivity
 
-class MainActivity : AppCompatActivity(), AppCompatActivityInjector {
-    override val injector: KodeinInjector = KodeinInjector()
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main.view.*
 
-    private val authApi: AuthApi by instance()
-    private val credentialsStore: CredentialsStore by instance()
+class MainActivity : BaseActivity() {
 
-    private lateinit var buttonGetData: Button;
-    private lateinit var buttonRefresh: Button;
-
-    override fun provideOverridingModule() = Kodein.Module {
-        bind<MainActivity>() with instance(this@MainActivity)
-        bind<NavigationHelper>() with singleton { NavigationHelper(instance()) }
+    companion object {
+        const val TAG = "MainActivity"
+        fun getIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
+        const val POSITION_PROFILE = 0
     }
+
+    /**
+     * The [android.support.v4.view.PagerAdapter] that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * [android.support.v4.app.FragmentStatePagerAdapter].
+     */
+    private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initializeInjector()
         setContentView(R.layout.activity_main)
 
-//        if (!credentialsStore.isTokenInitialized) {
-            val intent = LoginActivity.getIntent(this)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-//        }
+//        setSupportActionBar(toolbar)
+//        setSupportActionBar()
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
-        buttonGetData = findViewById(R.id.test)
-        buttonRefresh = findViewById(R.id.button_refresh_token)
-//        navigationHelper.navigateToAuthorization()
-//        buttonGetData.setOnClickListener {
-//            authApi.getAllUsers().enqueue(object : Callback<Iterable<UserAccountDto>> {
-//                override fun onFailure(call: Call<Iterable<UserAccountDto>>?, t: Throwable?) {
-//                    Toast.makeText(this@MainActivity, t.toString(), Toast.LENGTH_SHORT).show()
-//                }
-//
-//                override fun onResponse(call: Call<Iterable<UserAccountDto>>?, response: Response<Iterable<UserAccountDto>>?) {
-//                    Toast.makeText(this@MainActivity, response?.body()?.joinToString { it.firstName }, Toast.LENGTH_SHORT).show()
-//                }
-//            })
-//        }
+        // Set up the ViewPager with the sections adapter.
+        container.adapter = mSectionsPagerAdapter
 
-//        buttonRefresh.setOnClickListener {
-//            authApi
-//                    .refreshToken(
-//                    credentialsStore.authorizationToken.refreshToken,
-//                    CredentialsStore.getClientBasicAuthorizationToken()).enqueue(object : Callback<OAuthToken> {
-//                override fun onResponse(call: Call<OAuthToken>?, response: Response<OAuthToken>) {
-//                    if (response.isSuccessful)
-//                        credentialsStore.initializeWithToken(OAuthTokenDto.fromAccessToken(response.body()!!))
-//                }
-//
-//                override fun onFailure(call: Call<OAuthToken>?, t: Throwable?) {
-//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//                }
-//            })
-//        }
+        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        destroyInjector()
+    /**
+     * A [FragmentPagerAdapter] that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+
+
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            when (position) {
+                POSITION_PROFILE -> return getString(R.string.tabName_Profile)
+            }
+            return position.toString()
+        }
+
+        override fun getItem(position: Int): Fragment {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            when (position) {
+                POSITION_PROFILE -> return ProfileFragment()
+            }
+            return PlaceholderFragment.newInstance(position + 1)
+
+
+        }
+
+        override fun getCount(): Int {
+            // Show 3 total pages.
+            return 3
+        }
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    class PlaceholderFragment : Fragment() {
+
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                                  savedInstanceState: Bundle?): View? {
+            val rootView = inflater.inflate(R.layout.fragment_main, container, false)
+            rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
+            return rootView
+        }
+
+        companion object {
+            /**
+             * The fragment argument representing the section number for this
+             * fragment.
+             */
+            private val ARG_SECTION_NUMBER = "section_number"
+
+            /**
+             * Returns a new instance of this fragment for the given section
+             * number.
+             */
+            fun newInstance(sectionNumber: Int): PlaceholderFragment {
+                val fragment = PlaceholderFragment()
+                val args = Bundle()
+                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
+                fragment.arguments = args
+                return fragment
+            }
+        }
     }
 }

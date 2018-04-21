@@ -6,12 +6,12 @@ import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.api.errors.IErrorHandler
-import com.soulmate.soulmate.presentation.view.RegistrationView
+import com.soulmate.soulmate.presentation.view.RegistrationViewSoulmate
 import com.soulmate.soulmate.repositories.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 @InjectViewState
-class RegistrationPresenter() : BaseSoulmatePresenter<RegistrationView>(App.globalkodein.lazy) {
+class RegistrationPresenter() : BaseSoulmatePresenter<RegistrationViewSoulmate>(App.globalkodein.lazy) {
     private val resources: Resources by instance()
     private val authRepository: AuthRepository by instance()
     private val errorHandler: IErrorHandler by instance()
