@@ -2,6 +2,7 @@ package com.soulmate.soulmate
 
 import com.soulmate.dtos.UserAccountDto
 import com.soulmate.soulmate.api.AuthApi
+import dtos.UserAccountDto
 import okhttp3.ResponseBody
 import org.junit.Test
 
