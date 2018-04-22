@@ -10,13 +10,13 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.soulmate.soulmate.presentation.view.IProfileEstimationView
-import com.soulmate.soulmate.presentation.presenter.ProfileEstimationPresenter
-
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.activity.base.BaseFragment
+import com.soulmate.soulmate.presentation.presenter.ProfileEstimationPresenter
+import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import dtos.ProfileEstimationDto
+import kotlinx.android.synthetic.main.fragment_profile_estimation.*
 
 class ProfileEstimationFragment : BaseFragment(), IProfileEstimationView {
     companion object {
@@ -46,7 +46,13 @@ class ProfileEstimationFragment : BaseFragment(), IProfileEstimationView {
         return view
     }
 
-    override fun displayProfileEstimation(profileEstimationDto: ProfileEstimationDto) {
+    override fun displayProfileEstimation(profileEstimationDto: ProfileEstimationDto?) {
+        if(profileEstimationDto == null)
+        {
+            estimation_layoutNoProfiles.visibility = View.VISIBLE
+            return
+        }
+        estimation_layoutNoProfiles.visibility = View.GONE
 
         textProfileName.text = profileEstimationDto.firstName
         if(profileEstimationDto.profileImages.any()) {

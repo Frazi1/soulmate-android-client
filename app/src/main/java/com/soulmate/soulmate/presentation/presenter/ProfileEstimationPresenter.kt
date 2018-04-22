@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
+import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import com.soulmate.soulmate.repositories.EstimationRepository
 import dtos.ProfileEstimationDto
@@ -14,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.globalkodein.lazy) {
 
     private val estimationRepository: EstimationRepository by instance()
+    private val errorHandler: IErrorHandler by instance()
 
     private val currentProfileEstimation: ProfileEstimationDto?
         get() {
@@ -34,10 +36,8 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         profileEstimationList = it.toList()
-                        currentProfileEstimation?.let {
-                            viewState.displayProfileEstimation(it)
-                        }
-                    })
+                        viewState.displayProfileEstimation(currentProfileEstimation)
+                    }, errorHandler::handle)
         })
     }
 
@@ -45,11 +45,10 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
         currentProfileEstimation?.let { profileEstimation ->
             estimationRepository.likeProfile(profileEstimation).createSubscription({
                 it.observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            currentProfileEstimationIndex++
-                            viewState.displayProfileEstimation(profileEstimation)
-                        })
+                        .subscribe({}, errorHandler::handle)
             })
         }
+        currentProfileEstimationIndex++
+        viewState.displayProfileEstimation(currentProfileEstimation)
     }
 }

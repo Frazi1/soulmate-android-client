@@ -4,5 +4,5 @@ import com.arellomobile.mvp.MvpView
 import dtos.ProfileEstimationDto
 
 interface IProfileEstimationView : MvpView {
-    fun displayProfileEstimation(profileEstimationDto: ProfileEstimationDto)
+    fun displayProfileEstimation(profileEstimationDto: ProfileEstimationDto?)
 }
