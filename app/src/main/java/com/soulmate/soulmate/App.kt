@@ -10,7 +10,7 @@ import com.github.salomonbrys.kodein.android.autoAndroidModule
 import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.api.EstimationApi
 import com.soulmate.soulmate.api.ImageApi
-import com.soulmate.soulmate.api.ProfileApi
+import com.soulmate.soulmate.api.UserApi
 import com.soulmate.soulmate.api.errors.*
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.configuration.*
@@ -54,7 +54,7 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
         //API
         bind<AuthApi>() with singleton { instance<Retrofit>().create(AuthApi::class.java) }
-        bind<ProfileApi>() with singleton { instance<Retrofit>().create(ProfileApi::class.java) }
+        bind<UserApi>() with singleton { instance<Retrofit>().create(UserApi::class.java) }
         bind<ImageApi>() with singleton { instance<Retrofit>().create(ImageApi::class.java) }
         bind<EstimationApi>() with singleton { instance<Retrofit>().create(EstimationApi::class.java) }
 
@@ -75,7 +75,7 @@ class App : Application(), KodeinAware, IAppLifeCycle {
         }
         bind<UserRepository>() with singleton {
             UserRepository(
-                    instance<ProfileApi>(),
+                    instance<UserApi>(),
                     instance<ScheduleProvider>(),
                     instance<IErrorHandler>()
             )

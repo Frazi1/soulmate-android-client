@@ -9,23 +9,20 @@ import com.soulmate.soulmate.R
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.presentation.view.IRegistrationView
 import com.soulmate.soulmate.repositories.AuthRepository
+import com.soulmate.soulmate.repositories.UserRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 @InjectViewState
-class RegistrationPresenter() : BasePresenter<IRegistrationView>(App.globalkodein.lazy) {
-    private val resources: Resources by instance()
-    private val authRepository: AuthRepository by instance()
-    private val errorHandler: IErrorHandler by instance()
+class RegistrationPresenter : BasePresenter<IRegistrationView>(App.globalkodein.lazy) {
+    private val userRepository: UserRepository by instance()
     private val credentialsStore: CredentialsStore by instance()
 
     fun registerUser(email: String, password: String) {
         credentialsStore.clear()
-        authRepository.registerUser(email, password)
+        userRepository.registerUser(email, password)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({
-                    viewState.showToast(resources.getString(R.string.successful_registration))
-                    viewState.openLoginActivity()
-                }, errorHandler::handle)
-
+                .createSubscription ({
+                    viewState.onSuccessfulRegistration()
+                })
     }
 }

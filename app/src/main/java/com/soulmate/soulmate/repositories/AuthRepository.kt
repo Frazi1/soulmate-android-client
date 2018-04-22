@@ -12,11 +12,6 @@ class AuthRepository(private val authApi: AuthApi,
                      scheduleProvider: ScheduleProvider,
                      errorHandler: IErrorHandler) : BaseRepository(errorHandler) {
 
-    fun registerUser(email: String, password: String): Observable<ResponseBody> {
-        return authApi.registerMember(UserRegistrationDto(email, password))
-//                .observeOn(scheduleProvider.provide())
-    }
-
     fun authorize(email: String, password: String, clientBasicAuthToken: String): Observable<OAuthToken> {
         return authApi.getTokenRx(email, password, clientBasicAuthToken)
 //                .observeOn(this.scheduleProvider.provide())
