@@ -1,8 +1,7 @@
 package com.soulmate.soulmate.presentation.view
 
-import com.arellomobile.mvp.MvpView
 import dtos.ProfileEstimationDto
 
-interface IProfileEstimationView : MvpView {
+interface IProfileEstimationView : IBaseMvpView, ILoader {
     fun displayProfileEstimation(profileEstimationDto: ProfileEstimationDto?)
 }

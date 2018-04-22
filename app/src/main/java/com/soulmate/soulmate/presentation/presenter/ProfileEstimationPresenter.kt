@@ -28,10 +28,11 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-
+        viewState.onLoading()
         val profileEstimations: Observable<Iterable<ProfileEstimationDto>> = estimationRepository.getProfileEstimations()
         profileEstimations
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally { viewState.onFinishedLoading() }
                 .createSubscription({
                     profileEstimationList = it.toList()
                     viewState.displayProfileEstimation(currentProfileEstimation)

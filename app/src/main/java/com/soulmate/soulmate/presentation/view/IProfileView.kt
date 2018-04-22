@@ -4,10 +4,9 @@ import android.graphics.Bitmap
 import android.net.Uri
 import dtos.UserAccountDto
 
-interface IProfileView : IBaseMvpView {
+interface IProfileView : IBaseMvpView, ILoader {
     fun showImage(uri: Uri?)
     fun showImage(bitmap: Bitmap)
-    fun setSpinnerVisibility(isVisible: Boolean)
     fun openLoginActivity()
     fun showProfile(userAccount: UserAccountDto)
 }

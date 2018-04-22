@@ -33,10 +33,10 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
     }
 
     private fun onLoad() {
-        viewState.setSpinnerVisibility(true)
+        viewState.onLoading()
         userRepository.loadUserProfile()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally({ viewState.setSpinnerVisibility(false) })
+                .doFinally({ viewState.onFinishedLoading() })
                 .subscribe({
                     userAccount = it
                     viewState.showProfile(it)

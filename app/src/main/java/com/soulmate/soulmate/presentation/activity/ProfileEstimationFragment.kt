@@ -12,13 +12,13 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.activity.base.BaseFragment
+import com.soulmate.soulmate.presentation.activity.base.LoaderFragment
 import com.soulmate.soulmate.presentation.presenter.ProfileEstimationPresenter
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import dtos.ProfileEstimationDto
 import kotlinx.android.synthetic.main.fragment_profile_estimation.*
 
-class ProfileEstimationFragment : BaseFragment(), IProfileEstimationView {
+class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
     companion object {
         const val TAG = "ProfileEstimationFragment"
 
@@ -38,6 +38,9 @@ class ProfileEstimationFragment : BaseFragment(), IProfileEstimationView {
 
     @BindView(R.id.estimation_textProfileName)
     lateinit var textProfileName: TextView
+
+    @BindView(R.id.layout_profile_loading)
+    override lateinit var loaderView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

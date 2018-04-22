@@ -13,15 +13,14 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
+import com.soulmate.soulmate.presentation.activity.base.LoaderFragment
 import com.soulmate.soulmate.presentation.presenter.ProfilePresenter
 import com.soulmate.soulmate.presentation.view.IProfileView
-import com.soulmate.soulmate.presentation.activity.base.BaseFragment
 import com.squareup.picasso.Picasso
 import dtos.GenderType
 import dtos.UserAccountDto
 
-class ProfileFragment() : BaseFragment(), IProfileView {
-
+class ProfileFragment : LoaderFragment(), IProfileView {
     companion object {
         private const val PICK_IMAGE = 1
     }
@@ -41,11 +40,11 @@ class ProfileFragment() : BaseFragment(), IProfileView {
     @BindView(R.id.profile_progressBar)
     lateinit var progressBar: ProgressBar
 
-    @BindView(R.id.layout_profile_loading)
-    lateinit var layoutLoading: FrameLayout
-
     @BindView(R.id.profile_editTextMultiline_personalStory)
     lateinit var editTextMultilinePersonalStory: EditText
+
+    @BindView(R.id.layout_profile_loading)
+    override lateinit var loaderView: View
 
     @InjectPresenter
     lateinit var mProfilePresenter: ProfilePresenter
@@ -106,16 +105,6 @@ class ProfileFragment() : BaseFragment(), IProfileView {
         imageViewAvatar.setImageBitmap(bitmap)
 //        imageViewAvatar.adjustViewBounds = true
 //        imageViewAvatar.scaleType = ImageView.ScaleType.FIT_CENTER
-    }
-
-    override fun setSpinnerVisibility(isVisible: Boolean) {
-        if (isVisible) {
-            progressBar.visibility = View.VISIBLE
-            layoutLoading.visibility = View.VISIBLE
-        } else {
-            progressBar.visibility = View.GONE
-            layoutLoading.visibility = View.GONE
-        }
     }
 
     override fun showImage(uri: Uri?) {
