@@ -15,16 +15,9 @@ abstract class BasePresenter<T : MvpView>(final override val kodein: LazyKodein)
     private val subscriptions: MutableCollection<Disposable> = mutableListOf()
 
 
-//    fun <T : Any> Observable<T>.createSubscription(onDo: (T) -> Unit,
-//                                                   onError: (Throwable) -> Unit = defaultErrorHandler::handle,
-//                                                   doFinally: () -> Unit = {}) {
-//        val s: Disposable = subscribe(onDo, onError)
-//        subscriptions.add(s)
-//    }
-
-    fun <T : Any> Observable<T>.createSubscription(a: (Observable<T>) -> Disposable) {
-//        val s: Disposable = subscribe(onDo, onError)
-        val s = a(this)
+    fun <T : Any> Observable<T>.createSubscription(onDo: (T) -> Unit,
+                                                   onError: (Throwable) -> Unit = defaultErrorHandler::handle) {
+        val s: Disposable = subscribe(onDo, onError)
         subscriptions.add(s)
     }
 

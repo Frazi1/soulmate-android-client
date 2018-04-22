@@ -15,7 +15,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.globalkodein.lazy) {
 
     private val estimationRepository: EstimationRepository by instance()
-    private val errorHandler: IErrorHandler by instance()
 
     private val currentProfileEstimation: ProfileEstimationDto?
         get() {
@@ -31,22 +30,19 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
         super.onFirstViewAttach()
 
         val profileEstimations: Observable<Iterable<ProfileEstimationDto>> = estimationRepository.getProfileEstimations()
-        profileEstimations.createSubscription({
-            it
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        profileEstimationList = it.toList()
-                        viewState.displayProfileEstimation(currentProfileEstimation)
-                    }, errorHandler::handle)
-        })
+        profileEstimations
+                .observeOn(AndroidSchedulers.mainThread())
+                .createSubscription({
+                    profileEstimationList = it.toList()
+                    viewState.displayProfileEstimation(currentProfileEstimation)
+                })
     }
 
     fun likeProfile() {
         currentProfileEstimation?.let { profileEstimation ->
-            estimationRepository.likeProfile(profileEstimation).createSubscription({
-                it.observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({}, errorHandler::handle)
-            })
+            estimationRepository.likeProfile(profileEstimation)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .createSubscription({})
         }
         currentProfileEstimationIndex++
         viewState.displayProfileEstimation(currentProfileEstimation)
