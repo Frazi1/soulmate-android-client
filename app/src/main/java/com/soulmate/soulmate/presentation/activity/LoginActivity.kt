@@ -8,11 +8,11 @@ import android.widget.TextView
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.LoginPresenter
-import com.soulmate.soulmate.presentation.view.LoginView
+import com.soulmate.soulmate.presentation.view.ILoginView
 import com.soulmate.soulmate.presentation.activity.base.BaseActivity
 
 
-class LoginActivity : BaseActivity(), LoginView {
+class LoginActivity : BaseActivity(), ILoginView {
     companion object {
         const val TAG = "LoginActivity"
         fun getIntent(context: Context): Intent = Intent(context, LoginActivity::class.java)
