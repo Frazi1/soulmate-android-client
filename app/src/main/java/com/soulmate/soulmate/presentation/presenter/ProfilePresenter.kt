@@ -8,7 +8,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.CredentialsStore
-import com.soulmate.soulmate.presentation.view.ProfileView
+import com.soulmate.soulmate.presentation.view.IProfileView
 import com.soulmate.soulmate.repositories.ImageRepository
 import com.soulmate.soulmate.repositories.UserRepository
 import dtos.GenderType
@@ -17,7 +17,7 @@ import dtos.UserAccountDto
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 @InjectViewState
-class ProfilePresenter : BaseSoulmatePresenter<ProfileView>(App.globalkodein.lazy) {
+class ProfilePresenter : BaseSoulmatePresenter<IProfileView>(App.globalkodein.lazy) {
     private val userRepository: UserRepository by instance()
     private val imageRepository: ImageRepository by instance()
     private val contentResolver: ContentResolver by instance()

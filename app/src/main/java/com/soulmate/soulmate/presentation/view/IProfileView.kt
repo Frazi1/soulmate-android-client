@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import dtos.UserAccountDto
 
-interface ProfileView : IBaseMvpView {
+interface IProfileView : IBaseMvpView {
     fun showImage(uri: Uri?)
     fun showImage(bitmap: Bitmap)
     fun setSpinnerVisibility(isVisible: Boolean)
