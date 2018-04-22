@@ -17,7 +17,7 @@ import dtos.UserAccountDto
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 @InjectViewState
-class ProfilePresenter : BaseSoulmatePresenter<IProfileView>(App.globalkodein.lazy) {
+class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
     private val userRepository: UserRepository by instance()
     private val imageRepository: ImageRepository by instance()
     private val contentResolver: ContentResolver by instance()

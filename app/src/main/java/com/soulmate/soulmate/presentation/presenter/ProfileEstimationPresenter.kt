@@ -6,6 +6,6 @@ import com.soulmate.soulmate.App
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 
 @InjectViewState
-class ProfileEstimationPresenter : BaseSoulmatePresenter<IProfileEstimationView>(App.globalkodein.lazy) {
+class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.globalkodein.lazy) {
 
 }

@@ -12,7 +12,7 @@ import com.soulmate.soulmate.repositories.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 @InjectViewState
-class RegistrationPresenter() : BaseSoulmatePresenter<RegistrationView>(App.globalkodein.lazy) {
+class RegistrationPresenter() : BasePresenter<RegistrationView>(App.globalkodein.lazy) {
     private val resources: Resources by instance()
     private val authRepository: AuthRepository by instance()
     private val errorHandler: IErrorHandler by instance()
