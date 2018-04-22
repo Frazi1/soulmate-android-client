@@ -35,6 +35,7 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally { viewState.onFinishedLoading() }
                 .createSubscription({
+                    currentProfileEstimationIndex = 0
                     profileEstimationList = it.toList()
                     viewState.displayProfileEstimation(currentProfileEstimation)
                 })
