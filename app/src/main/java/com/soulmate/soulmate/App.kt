@@ -98,24 +98,6 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
     }
 
-    private fun httpClient(): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-        builder.connectTimeout(10, TimeUnit.SECONDS)
-        builder.addInterceptor(AuthorizationInterceptor(instance<CredentialsStore>()))
-//        builder.authenticator(TokenAuthenticator(kodein.lazy))
-        return builder.build()
-    }
-
-    private fun buildRetrofit(objectMapper: ObjectMapper): Retrofit {
-        return Retrofit.Builder()
-//                .baseUrl("http://192.168.0.100:8080")
-                .baseUrl("http://192.168.0.100:8080")
-                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-                .client(httpClient())
-                .build()
-    }
-
     private fun buildObjectMapper(): ObjectMapper =
             ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 

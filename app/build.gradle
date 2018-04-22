@@ -14,7 +14,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-//        multiDexEnabled true //jars won't work without it
+        multiDexEnabled true //jars won't work without it
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -26,11 +26,13 @@ android {
 
 }
 
+def serverDtoVer = "0.0.1-SNAPSHOT"
 def moxyVer = "1.5.3"
 def retrofitVer = "2.3.0"
 def androidSupportVer = "27.1.0"
 def jacksonVer = "2.9.4"
 def kodeinVer = "4.1.0"
+def butterKnifeVer = "8.8.1"
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -64,7 +66,8 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:${retrofitVer}"
     compile "com.squareup.retrofit2:converter-jackson:${retrofitVer}"
 
-//    compile 'com.android.support:multidex:1.0.3'
+    //Multidex for 65K+ methods
+    compile 'com.android.support:multidex:1.0.3'
 
     //Kodein
     compile "com.github.salomonbrys.kodein:kodein:${kodeinVer}"
@@ -82,4 +85,14 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Server dto
+    implementation "com.soulmate:soulmate-dto:${serverDtoVer}"
+
+    //Circle image
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //Butter knife
+    compile "com.jakewharton:butterknife:${butterKnifeVer}"
+    kapt "com.jakewharton:butterknife-compiler:${butterKnifeVer}"
 }

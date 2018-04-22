@@ -10,6 +10,4 @@ abstract class ErrorHandler(): IErrorHandler{
         if( t is HttpException)
             handle(t)
     }
-
-    abstract fun handle(t: HttpException)
 }
