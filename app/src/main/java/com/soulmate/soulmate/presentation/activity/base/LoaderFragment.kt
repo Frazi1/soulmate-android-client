@@ -1,7 +1,7 @@
 package com.soulmate.soulmate.presentation.activity.base
 
 import android.view.View
-import com.soulmate.soulmate.presentation.view.ILoader
+import com.soulmate.soulmate.presentation.view.base.ILoader
 
 
 abstract class LoaderFragment : BaseFragment(), ILoader {
