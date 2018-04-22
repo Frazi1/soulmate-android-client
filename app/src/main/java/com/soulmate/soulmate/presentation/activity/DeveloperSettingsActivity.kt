@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.ui.activity
+package com.soulmate.soulmate.presentation.activity
 
 import android.content.Context
 import android.content.Intent

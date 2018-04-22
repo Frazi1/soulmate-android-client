@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.ui.activity
+package com.soulmate.soulmate.presentation.activity
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -17,7 +17,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.ProfilePresenter
 import com.soulmate.soulmate.presentation.view.ProfileViewSoulmate
-import com.soulmate.soulmate.ui.activity.base.BaseFragment
+import com.soulmate.soulmate.presentation.activity.base.BaseFragment
 import com.squareup.picasso.Picasso
 import dtos.GenderType
 import dtos.UserAccountDto

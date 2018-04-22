@@ -1,11 +1,11 @@
-package com.soulmate.soulmate.ui.activity.base
+package com.soulmate.soulmate.presentation.activity.base
 
 import android.view.Menu
 import android.view.MenuItem
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.view.IBaseSoulmateMvpView
-import com.soulmate.soulmate.ui.activity.DeveloperSettingsActivity
+import com.soulmate.soulmate.presentation.activity.DeveloperSettingsActivity
 
 abstract class BaseActivity : MvpAppCompatActivity(), IBaseSoulmateMvpView {
     protected val baseContext: BaseContext = BaseContext(this)

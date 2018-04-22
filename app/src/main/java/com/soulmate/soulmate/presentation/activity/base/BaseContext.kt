@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.ui.activity.base
+package com.soulmate.soulmate.presentation.activity.base
 
 import android.content.Context
 import android.widget.Toast

@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.ui.activity
+package com.soulmate.soulmate.presentation.activity
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.ui.activity.base.BaseActivity
+import com.soulmate.soulmate.presentation.activity.base.BaseActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
@@ -23,6 +23,7 @@ class MainActivity : BaseActivity() {
         const val TAG = "MainActivity"
         fun getIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
         const val POSITION_PROFILE = 0
+        const val POSITION_ESTIMATION = 1
     }
 
     /**
@@ -73,6 +74,7 @@ class MainActivity : BaseActivity() {
             // Return a PlaceholderFragment (defined as a static inner class below).
             when (position) {
                 POSITION_PROFILE -> return ProfileFragment()
+                POSITION_ESTIMATION -> return ProfileEstimationFragment()
             }
             return PlaceholderFragment.newInstance(position + 1)
 

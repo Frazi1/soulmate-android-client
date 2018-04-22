@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.ui.activity
+package com.soulmate.soulmate.presentation.activity
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.LoginPresenter
 import com.soulmate.soulmate.presentation.view.LoginView
-import com.soulmate.soulmate.ui.activity.base.BaseActivity
+import com.soulmate.soulmate.presentation.activity.base.BaseActivity
 
 
 class LoginActivity : BaseActivity(), LoginView {
