@@ -12,9 +12,28 @@ import io.reactivex.disposables.Disposable
 
 abstract class BasePresenter<T : MvpView>(final override val kodein: LazyKodein) : MvpPresenter<T>(), LazyKodeinAware {
     protected val defaultErrorHandler: IErrorHandler by instance()
+    private val subscriptions: MutableCollection<Disposable> = mutableListOf()
 
 
-//    fun <TInput : Any> Observable<TInput>.subscribeWithDefaultErrorHandler(onSuccess: (TInput) -> Unit): Disposable {
+//    fun <T : Any> Observable<T>.createSubscription(onDo: (T) -> Unit,
+//                                                   onError: (Throwable) -> Unit = defaultErrorHandler::handle,
+//                                                   doFinally: () -> Unit = {}) {
+//        val s: Disposable = subscribe(onDo, onError)
+//        subscriptions.add(s)
+//    }
+
+    fun <T : Any> Observable<T>.createSubscription(a: (Observable<T>) -> Disposable) {
+//        val s: Disposable = subscribe(onDo, onError)
+        val s = a(this)
+        subscriptions.add(s)
+    }
+
+    override fun onDestroy() {
+        subscriptions.forEach { it.dispose() }
+        subscriptions.clear()
+    }
+
+    //    fun <TInput : Any> Observable<TInput>.subscribeWithDefaultErrorHandler(onSuccess: (TInput) -> Unit): Disposable {
 //        return this.subscribeWithErrorHandler(onSuccess, {}, {}, defaultErrorHandler::handle)
 //    }
 

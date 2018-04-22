@@ -10,7 +10,7 @@ import okhttp3.ResponseBody
 
 class AuthRepository(private val authApi: AuthApi,
                      scheduleProvider: ScheduleProvider,
-                     errorHandler: IErrorHandler) : BaseRepository(scheduleProvider, errorHandler) {
+                     errorHandler: IErrorHandler) : BaseRepository(errorHandler) {
 
     fun registerUser(email: String, password: String): Observable<ResponseBody> {
         return authApi.registerMember(UserRegistrationDto(email, password))

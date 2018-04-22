@@ -1,16 +1,22 @@
 package com.soulmate.soulmate.presentation.activity
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import com.soulmate.soulmate.presentation.presenter.ProfileEstimationPresenter
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.activity.base.BaseFragment
+import dtos.ProfileEstimationDto
 
 class ProfileEstimationFragment : BaseFragment(), IProfileEstimationView {
     companion object {
@@ -27,10 +33,33 @@ class ProfileEstimationFragment : BaseFragment(), IProfileEstimationView {
     @InjectPresenter
     lateinit var mProfileEstimationPresenter: ProfileEstimationPresenter
 
+    @BindView(R.id.estimation_imageViewAvatar)
+    lateinit var imageViewAvatar: ImageView
+
+    @BindView(R.id.estimation_textProfileName)
+    lateinit var textProfileName: TextView
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile_estimation, container, false)
         ButterKnife.bind(this, view)
         return view
+    }
+
+    override fun displayProfileEstimation(profileEstimationDto: ProfileEstimationDto) {
+
+        textProfileName.text = profileEstimationDto.firstName
+        if(profileEstimationDto.profileImages.any()) {
+            val imageBytes = profileEstimationDto.profileImages.first().data
+            if (imageBytes != null) {
+                val imageBitmap = BitmapFactory.decodeStream(imageBytes.inputStream())
+                imageViewAvatar.setImageBitmap(imageBitmap)
+            }
+        }
+    }
+
+    @OnClick(R.id.estimation_buttonLike)
+    fun likeProfile() {
+        mProfileEstimationPresenter.likeProfile()
     }
 }
