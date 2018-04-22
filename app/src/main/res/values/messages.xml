@@ -4,4 +4,5 @@
     <string name="email_already_taken">That email has been already taken</string>
     <string name="successful_registration">Successful registration!</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="estimation_no_available_profiles">No available profiles</string>
 </resources>

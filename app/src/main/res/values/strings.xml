@@ -12,6 +12,7 @@
     <string name="registration">Registration</string>
     <string name="logout">Logout</string>
     <string name="developerSettings">Developer Settings</string>
+    <string name="estimation_resetAll">Reset all estimations</string>
     <string name="devPref_connection">Connection</string>
     <string name="devPref_localServerUrl">Local server URL</string>
     <string name="devPref_activateHerokuServer">Activate Heroku server</string>
@@ -22,6 +23,6 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="tabName_Profile">Profile</string>
-    <string name="dislike">Dislike</string>
-    <string name="like">Like</string>
+    <string name="estimation_dislike">Dislike</string>
+    <string name="estimation_like">Like</string>
 </resources>

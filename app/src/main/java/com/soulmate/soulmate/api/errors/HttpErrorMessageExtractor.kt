@@ -20,14 +20,14 @@ open class HttpErrorMessageExtractor(private val objectMapper: ObjectMapper,
         if (t is HttpException)
             return errorMessage(t)
         else
-            throw t
+            return if (t.message != null) t.message!! else "Unknows error"
     }
 
     open fun errorMessage(t: HttpException): String {
         return when (t.code()) {
             HttpErrorCodes.UNPROCESSABLE_ENTITY.code -> getUnprocessableEntityMessage(t)
             HttpErrorCodes.NOT_AUTHORIZED.code -> resource.getString(R.string.invalid_credentials)
-            else -> resource.getString(R.string.unknown_error)
+            else -> t.message()
         }
     }
 

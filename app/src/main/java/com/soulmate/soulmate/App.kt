@@ -7,25 +7,20 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.autoAndroidModule
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.soulmate.soulmate.api.AuthApi
+import com.soulmate.soulmate.api.EstimationApi
 import com.soulmate.soulmate.api.ImageApi
 import com.soulmate.soulmate.api.ProfileApi
 import com.soulmate.soulmate.api.errors.*
-import com.soulmate.soulmate.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.authorization.AuthorizationScheduler
-import com.soulmate.soulmate.authorization.TokenAuthenticator
 import com.soulmate.soulmate.configuration.*
 import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
 import com.soulmate.soulmate.presentation.validation.ValidationResponseHandler
 import com.soulmate.soulmate.repositories.AuthRepository
+import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository
 import com.soulmate.soulmate.repositories.UserRepository
-import io.reactivex.schedulers.Schedulers
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
-import java.util.concurrent.TimeUnit
 
 class App : Application(), KodeinAware, IAppLifeCycle {
     companion object {
@@ -61,6 +56,7 @@ class App : Application(), KodeinAware, IAppLifeCycle {
         bind<AuthApi>() with singleton { instance<Retrofit>().create(AuthApi::class.java) }
         bind<ProfileApi>() with singleton { instance<Retrofit>().create(ProfileApi::class.java) }
         bind<ImageApi>() with singleton { instance<Retrofit>().create(ImageApi::class.java) }
+        bind<EstimationApi>() with singleton { instance<Retrofit>().create(EstimationApi::class.java) }
 
         //Repo
         bind<AuthRepository>() with singleton {
@@ -81,6 +77,13 @@ class App : Application(), KodeinAware, IAppLifeCycle {
             UserRepository(
                     instance<ProfileApi>(),
                     instance<ScheduleProvider>(),
+                    instance<IErrorHandler>()
+            )
+        }
+
+        bind<EstimationRepository>() with singleton {
+            EstimationRepository(
+                    instance<EstimationApi>(),
                     instance<IErrorHandler>()
             )
         }
