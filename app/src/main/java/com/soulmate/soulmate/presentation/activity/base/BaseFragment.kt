@@ -1,16 +1,11 @@
 package com.soulmate.soulmate.presentation.activity.base
 
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import butterknife.ButterKnife
 import com.arellomobile.mvp.MvpAppCompatFragment
-import com.soulmate.soulmate.presentation.view.IBaseSoulmateMvpView
+import com.soulmate.soulmate.presentation.view.IBaseMvpView
 
 
-abstract class BaseFragment : MvpAppCompatFragment(), IBaseSoulmateMvpView {
+abstract class BaseFragment : MvpAppCompatFragment(), IBaseMvpView {
     private lateinit var baseContext: BaseContext
 
     private fun init(context: Context) {
