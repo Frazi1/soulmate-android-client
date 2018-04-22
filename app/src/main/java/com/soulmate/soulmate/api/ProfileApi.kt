@@ -11,9 +11,9 @@ import retrofit2.http.GET
 import retrofit2.http.PUT
 
 interface ProfileApi {
-    @GET(API_USERS + USER_PROFILE_PATH )
+    @GET("/api/users/profile")
     fun getUserProfile(): Observable<UserAccountDto>
 
-    @PUT(API_USERS + USER_PROFILE_PATH)
+    @PUT("/api/users/profile")
     fun updateUserProfile(@Body userAccountDto: UserAccountDto): Observable<ResponseBody>
 }

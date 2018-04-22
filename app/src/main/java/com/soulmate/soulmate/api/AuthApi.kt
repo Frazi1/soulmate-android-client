@@ -27,7 +27,7 @@ interface AuthApi {
                  @Query("password", encoded = true) password: String,
                  @Header("Authorization") basicAuthToken: String): Observable<OAuthToken>
 
-    @POST(API_REGISTRATION)
+    @POST("api/registration")
     fun registerMember(@Body dto: UserRegistrationDto): Observable<ResponseBody>
 
 }

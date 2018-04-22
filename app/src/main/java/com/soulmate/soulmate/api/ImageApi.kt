@@ -9,6 +9,6 @@ import retrofit2.http.POST
 
 interface ImageApi {
 
-    @POST(API_IMAGE)
+    @POST("/api/image")
     fun uploadProfileImage(@Body profileImage: ProfileImageDto): Observable<ResponseBody>
 }
