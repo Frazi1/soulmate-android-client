@@ -2,6 +2,7 @@ package com.soulmate.soulmate.presentation.activity
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,23 +43,27 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
     @BindView(R.id.layout_profile_loading)
     override lateinit var loaderView: View
 
+    @BindView(R.id.estimation_refreshLayout)
+    lateinit var refreshLayout: SwipeRefreshLayout
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_profile_estimation, container, false)
         ButterKnife.bind(this, view)
+        refreshLayout.setOnRefreshListener { mProfileEstimationPresenter.loadEstimationProfiles() }
         return view
     }
 
     override fun displayProfileEstimation(profileEstimationDto: ProfileEstimationDto?) {
-        if(profileEstimationDto == null)
-        {
+        if (profileEstimationDto == null) {
             estimation_layoutNoProfiles.visibility = View.VISIBLE
             return
         }
         estimation_layoutNoProfiles.visibility = View.GONE
 
         textProfileName.text = profileEstimationDto.firstName
-        if(profileEstimationDto.profileImages.any()) {
+        if (profileEstimationDto.profileImages.any()) {
             val imageBytes = profileEstimationDto.profileImages.first().data
             if (imageBytes != null) {
                 val imageBitmap = BitmapFactory.decodeStream(imageBytes.inputStream())
@@ -70,5 +75,10 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
     @OnClick(R.id.estimation_buttonLike)
     fun likeProfile() {
         mProfileEstimationPresenter.likeProfile()
+    }
+
+    override fun onFinishedLoading() {
+        super.onFinishedLoading()
+        estimation_refreshLayout.isRefreshing = false
     }
 }

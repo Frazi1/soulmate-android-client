@@ -4,11 +4,9 @@ import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
-import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import com.soulmate.soulmate.repositories.EstimationRepository
 import dtos.ProfileEstimationDto
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 @InjectViewState
@@ -29,8 +27,11 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.onLoading()
-        val profileEstimations: Observable<Iterable<ProfileEstimationDto>> = estimationRepository.getProfileEstimations()
-        profileEstimations
+        loadEstimationProfiles()
+    }
+
+    fun loadEstimationProfiles() {
+        estimationRepository.getProfileEstimations()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally { viewState.onFinishedLoading() }
                 .createSubscription({
