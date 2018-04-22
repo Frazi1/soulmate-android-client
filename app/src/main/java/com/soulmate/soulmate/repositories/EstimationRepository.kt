@@ -16,4 +16,8 @@ class EstimationRepository(private val estimationApi: EstimationApi, errorHandle
     fun likeProfile(profileEstimationDto: ProfileEstimationDto): Observable<ResponseBody> {
         return estimationApi.likeProfile(profileEstimationDto.id)
     }
+
+    fun resetAllEstimations(): Observable<ResponseBody> {
+        return estimationApi.resetAllEstimations()
+    }
 }

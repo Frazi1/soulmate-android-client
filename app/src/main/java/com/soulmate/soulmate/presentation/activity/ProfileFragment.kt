@@ -6,9 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -52,6 +50,10 @@ class ProfileFragment() : BaseFragment(), IProfileView {
     @InjectPresenter
     lateinit var mProfilePresenter: ProfilePresenter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
@@ -133,5 +135,21 @@ class ProfileFragment() : BaseFragment(), IProfileView {
             editTextUsername.text = firstName
             editTextMultilinePersonalStory.setText(personalStory)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_profile, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.button_menu_resetAllEstimations -> {
+                mProfilePresenter.resetAllEstimations()
+                true
+            }
+            else -> super.onContextItemSelected(item)
+        }
+
     }
 }
