@@ -69,6 +69,9 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
                 val imageBitmap = BitmapFactory.decodeStream(imageBytes.inputStream())
                 imageViewAvatar.setImageBitmap(imageBitmap)
             }
+        } else {
+            imageViewAvatar.setBackgroundColor(resources.getColor(R.color.colorNoContent))
+            imageViewAvatar.setImageResource(0)
         }
     }
 
