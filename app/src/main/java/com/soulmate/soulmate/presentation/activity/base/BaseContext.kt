@@ -2,10 +2,10 @@ package com.soulmate.soulmate.presentation.activity.base
 
 import android.content.Context
 import android.widget.Toast
-import com.soulmate.soulmate.presentation.view.IBaseSoulmateContext
+import com.soulmate.soulmate.presentation.view.IBaseContext
 
 
-class BaseContext(private val context: Context): IBaseSoulmateContext {
+class BaseContext(private val context: Context): IBaseContext {
     override fun showToast(text: String, duration: Int) {
         Toast.makeText(context, text, duration).show()
     }

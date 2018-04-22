@@ -4,10 +4,10 @@ import android.view.Menu
 import android.view.MenuItem
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.view.IBaseSoulmateMvpView
+import com.soulmate.soulmate.presentation.view.IBaseMvpView
 import com.soulmate.soulmate.presentation.activity.DeveloperSettingsActivity
 
-abstract class BaseActivity : MvpAppCompatActivity(), IBaseSoulmateMvpView {
+abstract class BaseActivity : MvpAppCompatActivity(), IBaseMvpView {
     protected val baseContext: BaseContext = BaseContext(this)
 
     override fun showToast(text: String, duration: Int) {

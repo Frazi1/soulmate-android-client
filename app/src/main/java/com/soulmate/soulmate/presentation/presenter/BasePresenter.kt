@@ -10,7 +10,7 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 
 
-abstract class BaseSoulmatePresenter<T : MvpView>(final override val kodein: LazyKodein) : MvpPresenter<T>(), LazyKodeinAware {
+abstract class BasePresenter<T : MvpView>(final override val kodein: LazyKodein) : MvpPresenter<T>(), LazyKodeinAware {
     protected val defaultErrorHandler: IErrorHandler by instance()
 
 

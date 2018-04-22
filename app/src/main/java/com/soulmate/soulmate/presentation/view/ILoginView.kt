@@ -2,7 +2,7 @@ package com.soulmate.soulmate.presentation.view
 
 import com.arellomobile.mvp.MvpView
 
-interface LoginView : MvpView {
+interface ILoginView : MvpView {
     fun showToast(text: String)
     fun openMainActivity()
     fun openProfileActivity()

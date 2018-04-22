@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import butterknife.ButterKnife
-import com.soulmate.soulmate.presentation.view.ProfileEstimationView
+import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import com.soulmate.soulmate.presentation.presenter.ProfileEstimationPresenter
 
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.activity.base.BaseFragment
 
-class ProfileEstimationFragment : BaseFragment(), ProfileEstimationView {
+class ProfileEstimationFragment : BaseFragment(), IProfileEstimationView {
     companion object {
         const val TAG = "ProfileEstimationFragment"
 

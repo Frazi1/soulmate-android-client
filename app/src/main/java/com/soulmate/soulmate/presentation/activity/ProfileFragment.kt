@@ -16,13 +16,13 @@ import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.ProfilePresenter
-import com.soulmate.soulmate.presentation.view.ProfileViewSoulmate
+import com.soulmate.soulmate.presentation.view.IProfileView
 import com.soulmate.soulmate.presentation.activity.base.BaseFragment
 import com.squareup.picasso.Picasso
 import dtos.GenderType
 import dtos.UserAccountDto
 
-class ProfileFragment() : BaseFragment(), ProfileViewSoulmate {
+class ProfileFragment() : BaseFragment(), IProfileView {
 
     companion object {
         private const val PICK_IMAGE = 1
