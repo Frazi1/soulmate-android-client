@@ -1,5 +1,5 @@
 package com.soulmate.soulmate.presentation.view
 
-interface RegistrationView : IBaseMvpView {
+interface IRegistrationView : IBaseMvpView {
     fun openLoginActivity()
 }
