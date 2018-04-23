@@ -1,6 +1,6 @@
 package com.soulmate.soulmate.repositories
 
-import com.soulmate.soulmate.api.UserApi
+import com.soulmate.soulmate.interaction.api.UserApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.configuration.ScheduleProvider
 import dtos.UserAccountDto

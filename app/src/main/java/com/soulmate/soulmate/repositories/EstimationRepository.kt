@@ -1,6 +1,6 @@
 package com.soulmate.soulmate.repositories
 
-import com.soulmate.soulmate.api.EstimationApi
+import com.soulmate.soulmate.interaction.api.EstimationApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import dtos.ProfileEstimationDto
 import io.reactivex.Observable

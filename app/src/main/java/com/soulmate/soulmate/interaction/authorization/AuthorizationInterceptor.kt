@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.authorization
+package com.soulmate.soulmate.interaction.authorization
 
 import com.soulmate.soulmate.CredentialsStore
 import okhttp3.*

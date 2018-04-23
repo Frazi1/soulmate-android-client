@@ -2,7 +2,7 @@ package com.soulmate.soulmate
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.soulmate.soulmate.authorization.AuthorizationInterceptor
+import com.soulmate.soulmate.interaction.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.configuration.IConnectionPreferenceManager
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient

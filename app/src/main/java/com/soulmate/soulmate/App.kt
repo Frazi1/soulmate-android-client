@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.autoAndroidModule
-import com.soulmate.soulmate.api.AuthApi
-import com.soulmate.soulmate.api.EstimationApi
-import com.soulmate.soulmate.api.ImageApi
-import com.soulmate.soulmate.api.UserApi
+import com.soulmate.soulmate.interaction.api.AuthApi
+import com.soulmate.soulmate.interaction.api.EstimationApi
+import com.soulmate.soulmate.interaction.api.ImageApi
+import com.soulmate.soulmate.interaction.api.UserApi
 import com.soulmate.soulmate.api.errors.*
-import com.soulmate.soulmate.authorization.AuthorizationScheduler
+import com.soulmate.soulmate.interaction.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.configuration.*
 import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
 import com.soulmate.soulmate.presentation.validation.ValidationResponseHandler

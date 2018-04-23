@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.authorization
+package com.soulmate.soulmate.interaction.authorization
 
 import android.os.Looper
 import com.github.salomonbrys.kodein.LazyKodein
@@ -8,7 +8,6 @@ import com.soulmate.soulmate.CredentialsStore
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.repositories.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response

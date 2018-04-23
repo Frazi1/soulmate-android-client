@@ -1,12 +1,10 @@
 package com.soulmate.soulmate.repositories
 
-import com.soulmate.soulmate.api.AuthApi
+import com.soulmate.soulmate.interaction.api.AuthApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
-import com.soulmate.soulmate.authorization.OAuthToken
+import com.soulmate.soulmate.interaction.authorization.OAuthToken
 import com.soulmate.soulmate.configuration.ScheduleProvider
-import dtos.UserRegistrationDto
 import io.reactivex.Observable
-import okhttp3.ResponseBody
 
 class AuthRepository(private val authApi: AuthApi,
                      scheduleProvider: ScheduleProvider,

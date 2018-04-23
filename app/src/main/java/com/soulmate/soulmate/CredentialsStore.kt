@@ -1,7 +1,7 @@
 package com.soulmate.soulmate
 
 import android.content.SharedPreferences
-import com.soulmate.soulmate.authorization.OAuthTokenDto
+import com.soulmate.soulmate.interaction.authorization.OAuthTokenDto
 import okhttp3.Credentials
 import java.util.*
 
