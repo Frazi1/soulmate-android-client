@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.api
+package com.soulmate.soulmate.interaction.api
 
 import com.soulmate.soulmate.R
 

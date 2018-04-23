@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.api
+package com.soulmate.soulmate.interaction.api
 
 import dtos.ProfileEstimationDto
 import io.reactivex.Observable

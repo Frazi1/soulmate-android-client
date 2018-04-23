@@ -1,10 +1,8 @@
-package com.soulmate.soulmate.api
+package com.soulmate.soulmate.interaction.api
 
-import Endpoints.Companion.API_REGISTRATION
 import Endpoints.Companion.API_USERS
-import com.soulmate.soulmate.authorization.OAuthToken
+import com.soulmate.soulmate.interaction.authorization.OAuthToken
 import dtos.UserAccountDto
-import dtos.UserRegistrationDto
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.Call
