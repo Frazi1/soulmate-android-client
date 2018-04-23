@@ -7,7 +7,7 @@ import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
-import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.presentation.view.IProfileView
 import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository

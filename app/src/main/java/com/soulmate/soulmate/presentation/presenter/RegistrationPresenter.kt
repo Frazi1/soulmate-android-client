@@ -3,7 +3,7 @@ package com.soulmate.soulmate.presentation.presenter
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
-import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.presentation.view.IRegistrationView
 import com.soulmate.soulmate.repositories.UserRepository
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -1,6 +1,6 @@
 package com.soulmate.soulmate.interaction.authorization
 
-import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.configuration.CredentialsStore
 import okhttp3.*
 
 class AuthorizationInterceptor(private val credentialsStore: CredentialsStore) : Interceptor {

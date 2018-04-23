@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.ComponentCallbacks2
 import android.content.Context
 import android.os.Bundle
+import com.soulmate.soulmate.configuration.interfaces.IAppLifeCycle
 
 abstract class LifeCycleObserver(private val appContext: Context,
                                  private val appLifeCycle: IAppLifeCycle) : Application.ActivityLifecycleCallbacks, ComponentCallbacks2 {

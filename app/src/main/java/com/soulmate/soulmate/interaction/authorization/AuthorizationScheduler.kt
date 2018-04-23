@@ -1,6 +1,6 @@
 package com.soulmate.soulmate.interaction.authorization
 
-import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.interaction.api.AuthApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.repositories.AuthRepository

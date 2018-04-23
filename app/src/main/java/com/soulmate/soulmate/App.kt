@@ -6,10 +6,10 @@ import com.github.salomonbrys.kodein.KodeinAware
 import com.github.salomonbrys.kodein.android.autoAndroidModule
 import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.configuration.AppLifeCycleObserver
-import com.soulmate.soulmate.configuration.IAppLifeCycle
-import com.soulmate.soulmate.configuration.di.KodeinModules.Companion.apiModule
-import com.soulmate.soulmate.configuration.di.KodeinModules.Companion.configurationModule
-import com.soulmate.soulmate.configuration.di.KodeinModules.Companion.repositoryModule
+import com.soulmate.soulmate.configuration.interfaces.IAppLifeCycle
+import com.soulmate.soulmate.configuration.di.apiModule
+import com.soulmate.soulmate.configuration.di.configurationModule
+import com.soulmate.soulmate.configuration.di.repositoryModule
 
 class App : Application(), KodeinAware, IAppLifeCycle {
     companion object {
@@ -19,7 +19,6 @@ class App : Application(), KodeinAware, IAppLifeCycle {
 
     private val appLifeCycleObserver: AppLifeCycleObserver = AppLifeCycleObserver(this)
 
-    @Suppress("RemoveExplicitTypeArguments")
     override val kodein by Kodein.lazy {
         import(autoAndroidModule(this@App))
         import(apiModule)

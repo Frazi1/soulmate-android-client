@@ -4,7 +4,7 @@ import android.os.Looper
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.instance
-import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.repositories.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers

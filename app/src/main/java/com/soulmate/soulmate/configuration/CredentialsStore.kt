@@ -1,4 +1,4 @@
-package com.soulmate.soulmate
+package com.soulmate.soulmate.configuration
 
 import android.content.SharedPreferences
 import com.soulmate.soulmate.interaction.authorization.OAuthTokenDto

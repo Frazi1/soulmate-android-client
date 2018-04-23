@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
-import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.interaction.authorization.OAuthTokenDto
 import com.soulmate.soulmate.interaction.authorization.AuthorizationScheduler
