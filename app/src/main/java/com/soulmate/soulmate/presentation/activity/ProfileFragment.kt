@@ -76,7 +76,7 @@ class ProfileFragment : LoaderFragment(), IProfileView {
         val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickIntent.type = type
         val chooser = Intent.createChooser(intent, activity?.applicationContext?.resources?.getString(R.string.select_picture))
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayListOf<Parcelable>(pickIntent))
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
         startActivityForResult(chooser,
                 PICK_IMAGE)
     }
