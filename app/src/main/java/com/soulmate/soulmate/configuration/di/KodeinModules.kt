@@ -17,8 +17,8 @@ import com.soulmate.soulmate.interaction.api.AuthApi
 import com.soulmate.soulmate.interaction.api.EstimationApi
 import com.soulmate.soulmate.interaction.api.ImageApi
 import com.soulmate.soulmate.interaction.api.UserApi
-import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
-import com.soulmate.soulmate.presentation.validation.ValidationResponseHandler
+import com.soulmate.soulmate.interaction.api.errors.validation.IValidationResponseHandler
+import com.soulmate.soulmate.interaction.api.errors.validation.ValidationResponseHandler
 import com.soulmate.soulmate.repositories.AuthRepository
 import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository

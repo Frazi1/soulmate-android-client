@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.interaction.api.HttpErrorCodes
-import com.soulmate.soulmate.presentation.validation.IValidationResponseHandler
+import com.soulmate.soulmate.interaction.api.errors.validation.IValidationResponseHandler
 import validation.ValidationResponse
 
 open class HttpErrorMessageExtractor(private val objectMapper: ObjectMapper,
@@ -30,6 +30,6 @@ open class HttpErrorMessageExtractor(private val objectMapper: ObjectMapper,
     private fun getUnprocessableEntityMessage(t: HttpException): String {
         val body = t.response().errorBody()
         val v = objectMapper.readValue(body?.byteStream(), ValidationResponse::class.java)
-        return validationResponseHandler.getValidatationMessage(v)
+        return validationResponseHandler.getValidationMessage(v)
     }
 }
