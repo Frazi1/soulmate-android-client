@@ -4,10 +4,10 @@ import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
-import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.api.errors.IErrorHandler
-import com.soulmate.soulmate.authorization.OAuthTokenDto
-import com.soulmate.soulmate.authorization.AuthorizationScheduler
+import com.soulmate.soulmate.interaction.authorization.OAuthTokenDto
+import com.soulmate.soulmate.interaction.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.presentation.view.ILoginView
 import com.soulmate.soulmate.repositories.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers

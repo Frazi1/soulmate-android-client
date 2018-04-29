@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.configuration
+package com.soulmate.soulmate.configuration.interfaces
 
 interface IAppLifeCycle {
     fun onGoToForeground()
