@@ -7,8 +7,9 @@ import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.*
 import com.soulmate.soulmate.App
-import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.presentation.view.IProfileView
+import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository
 import com.soulmate.soulmate.repositories.UserRepository
 import dtos.GenderType
@@ -20,6 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
     private val userRepository: UserRepository by instance()
     private val imageRepository: ImageRepository by instance()
+    private val estimationRepository: EstimationRepository by instance()
     private val contentResolver: ContentResolver by instance()
     private val credentialsStore: CredentialsStore by instance()
 
@@ -31,10 +33,10 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
     }
 
     private fun onLoad() {
-        viewState.setSpinnerVisibility(true)
+        viewState.onLoading()
         userRepository.loadUserProfile()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally({ viewState.setSpinnerVisibility(false) })
+                .doFinally({ viewState.onFinishedLoading() })
                 .subscribe({
                     userAccount = it
                     viewState.showProfile(it)
@@ -81,4 +83,8 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
         viewState.openLoginActivity()
     }
 
+    fun resetAllEstimations() {
+        estimationRepository.resetAllEstimations()
+                .createSubscription({}, defaultErrorHandler::handle)
+    }
 }

@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.api
+package com.soulmate.soulmate.interaction.api
 
 import Endpoints.Companion.API_IMAGE
 import dtos.ProfileImageDto
@@ -9,6 +9,6 @@ import retrofit2.http.POST
 
 interface ImageApi {
 
-    @POST(API_IMAGE)
+    @POST("/api/image")
     fun uploadProfileImage(@Body profileImage: ProfileImageDto): Observable<ResponseBody>
 }
