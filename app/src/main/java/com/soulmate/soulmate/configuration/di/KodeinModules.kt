@@ -19,11 +19,17 @@ import com.soulmate.soulmate.interaction.api.ImageApi
 import com.soulmate.soulmate.interaction.api.UserApi
 import com.soulmate.soulmate.interaction.api.errors.validation.IValidationResponseHandler
 import com.soulmate.soulmate.interaction.api.errors.validation.ValidationResponseHandler
+import com.soulmate.soulmate.interaction.authorization.AuthorizationInterceptor
+import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
 import com.soulmate.soulmate.repositories.AuthRepository
 import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository
 import com.soulmate.soulmate.repositories.UserRepository
+import com.squareup.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 @Suppress("RemoveExplicitTypeArguments")
 val apiModule = Kodein.Module {
@@ -67,8 +73,22 @@ fun configurationModule(context: Context) = Kodein.Module {
     bind<IConnectionPreferenceManager>() with singleton { ConnectionPreferenceManager(context, instance<Resources>()) }
     bind<CredentialsStore>() with singleton { CredentialsStore(context.getSharedPreferences("settings", Context.MODE_PRIVATE)) }
 
-    bind<RetrofitProvider>() with singleton { RetrofitProvider(instance<ObjectMapper>(), instance<CredentialsStore>(), instance<IConnectionPreferenceManager>()) }
+    bind<RetrofitProvider>() with singleton { RetrofitProvider(instance<ObjectMapper>(), instance<CredentialsStore>(), instance<IConnectionPreferenceManager>(), instance<OkHttpClient>()) }
     bind<Retrofit>() with provider { instance<RetrofitProvider>().provide() }
+    bind<OkHttpClient>() with provider {
+        val builder = OkHttpClient.Builder()
+        builder.connectTimeout(10, TimeUnit.SECONDS)
+        builder.addInterceptor(AuthorizationInterceptor(instance<CredentialsStore>()))
+//        builder.authenticator(TokenAuthenticator(kodein.lazy))
+        return@provider builder.build()
+    }
+
+    bind<Picasso>() with provider {
+        Picasso.Builder(context)
+                .downloader(OkHttp3Downloader(instance<OkHttpClient>()))
+                .indicatorsEnabled(true)
+                .build()
+    }
 
     bind<IErrorMessageExtractor>() with singleton {
         HttpErrorMessageExtractor(
@@ -79,4 +99,6 @@ fun configurationModule(context: Context) = Kodein.Module {
     }
     bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(context, instance<IErrorMessageExtractor>()) }
     bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
+
+    bind<ImageUrlHelper>() with singleton { ImageUrlHelper(instance<IConnectionPreferenceManager>()) }
 }

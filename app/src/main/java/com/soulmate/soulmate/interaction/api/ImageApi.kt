@@ -1,14 +1,16 @@
 package com.soulmate.soulmate.interaction.api
 
-import Endpoints.Companion.API_IMAGE
-import dtos.ProfileImageDto
+import dtos.UploadImageDto
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface ImageApi {
+    companion object {
+        const val IMAGE_API_PATH = "/api/image"
+    }
 
-    @POST("/api/image")
-    fun uploadProfileImage(@Body profileImage: ProfileImageDto): Observable<ResponseBody>
+    @POST(IMAGE_API_PATH)
+    fun uploadProfileImage(@Body uploadImageDto: UploadImageDto): Observable<ResponseBody>
 }
