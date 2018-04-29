@@ -3,5 +3,5 @@
 
     <item
         android:id="@+id/button_menu_developer"
-        android:title="@string/developerSettings" />
+        android:title="@string/developerSettings"></item>
 </menu>

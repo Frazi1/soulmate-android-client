@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.interaction.authorization
+package com.soulmate.soulmate.authorization
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

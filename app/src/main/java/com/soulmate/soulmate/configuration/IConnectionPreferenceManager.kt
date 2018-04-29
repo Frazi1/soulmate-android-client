@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.configuration.interfaces
+package com.soulmate.soulmate.configuration
 
 interface IConnectionPreferenceManager {
     var serverUrl: String

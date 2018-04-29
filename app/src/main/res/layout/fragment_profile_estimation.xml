@@ -5,89 +5,55 @@
     android:layout_height="match_parent"
     tools:context=".presentation.activity.ProfileEstimationFragment">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/estimation_refreshLayout"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <ImageView
+            android:id="@+id/estimation_imageViewAvatar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="275dp"
+            android:src="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible">
+        <TextView
+            android:id="@+id/estimation_textName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/estimation_imageViewAvatar"
+            tools:text="Irina, 21, Voronezh" />
 
-                <ImageView
-                    android:id="@+id/estimation_imageViewAvatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="275dp"
-                    android:src="@android:color/darker_gray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/estimation_buttonDislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="88dp"
+            android:text="@string/dislike"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="88dp" />
 
-                <TextView
-                    android:id="@+id/estimation_textProfileName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/estimation_imageViewAvatar"
-                    tools:text="Irina, 21, Voronezh" />
+        <Button
+            android:id="@+id/estimation_buttonLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/like"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.288"
+            app:layout_constraintStart_toEndOf="@+id/estimation_buttonDislike" />
 
-                <Button
-                    android:id="@+id/estimation_buttonDislike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginStart="88dp"
-                    android:text="@string/estimation_dislike"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <Button
-                    android:id="@+id/estimation_buttonLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/estimation_like"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.288"
-                    app:layout_constraintStart_toEndOf="@+id/estimation_buttonDislike" />
-
-            </android.support.constraint.ConstraintLayout>
-
-            <FrameLayout
-                android:id="@+id/estimation_layoutNoProfiles"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorNoContent"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/estimation_textNoProfiles"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical|center"
-                    android:text="@string/estimation_no_available_profiles"
-                    android:textSize="24sp"
-                    android:visibility="visible"
-                    tools:text="@string/estimation_no_available_profiles" />
-            </FrameLayout>
-
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-    <include layout="@layout/layout_loading"/>
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>
