@@ -1,4 +1,4 @@
-package com.soulmate.soulmate.interaction.authorization
+package com.soulmate.soulmate.authorization
 
 import java.util.*
 
@@ -13,7 +13,7 @@ class OAuthTokenDto(val accessToken: String,
             with(OAuthToken){
                 val date = Date()
                 date.time = expiration
-                return OAuthTokenDto(accessToken, tokenType, refreshToken, date)
+                return OAuthTokenDto(accessToken, tokenType,refreshToken, date)
             }
         }
     }

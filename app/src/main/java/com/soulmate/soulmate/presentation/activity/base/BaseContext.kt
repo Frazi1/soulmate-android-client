@@ -2,7 +2,7 @@ package com.soulmate.soulmate.presentation.activity.base
 
 import android.content.Context
 import android.widget.Toast
-import com.soulmate.soulmate.presentation.view.base.IBaseContext
+import com.soulmate.soulmate.presentation.view.IBaseContext
 
 
 class BaseContext(private val context: Context): IBaseContext {

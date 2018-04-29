@@ -6,21 +6,24 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.MediaStore
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.activity.base.LoaderFragment
 import com.soulmate.soulmate.presentation.presenter.ProfilePresenter
 import com.soulmate.soulmate.presentation.view.IProfileView
+import com.soulmate.soulmate.presentation.activity.base.BaseFragment
 import com.squareup.picasso.Picasso
 import dtos.GenderType
 import dtos.UserAccountDto
 
-class ProfileFragment : LoaderFragment(), IProfileView {
+class ProfileFragment() : BaseFragment(), IProfileView {
+
     companion object {
         private const val PICK_IMAGE = 1
     }
@@ -40,19 +43,15 @@ class ProfileFragment : LoaderFragment(), IProfileView {
     @BindView(R.id.profile_progressBar)
     lateinit var progressBar: ProgressBar
 
+    @BindView(R.id.layout_profile_loading)
+    lateinit var layoutLoading: FrameLayout
+
     @BindView(R.id.profile_editTextMultiline_personalStory)
     lateinit var editTextMultilinePersonalStory: EditText
-
-    @BindView(R.id.layout_profile_loading)
-    override lateinit var loaderView: View
 
     @InjectPresenter
     lateinit var mProfilePresenter: ProfilePresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
@@ -76,7 +75,7 @@ class ProfileFragment : LoaderFragment(), IProfileView {
         val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickIntent.type = type
         val chooser = Intent.createChooser(intent, activity?.applicationContext?.resources?.getString(R.string.select_picture))
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayListOf<Parcelable>(pickIntent))
         startActivityForResult(chooser,
                 PICK_IMAGE)
     }
@@ -107,6 +106,16 @@ class ProfileFragment : LoaderFragment(), IProfileView {
 //        imageViewAvatar.scaleType = ImageView.ScaleType.FIT_CENTER
     }
 
+    override fun setSpinnerVisibility(isVisible: Boolean) {
+        if (isVisible) {
+            progressBar.visibility = View.VISIBLE
+            layoutLoading.visibility = View.VISIBLE
+        } else {
+            progressBar.visibility = View.GONE
+            layoutLoading.visibility = View.GONE
+        }
+    }
+
     override fun showImage(uri: Uri?) {
         Picasso.get()
                 .load(uri)
@@ -124,21 +133,5 @@ class ProfileFragment : LoaderFragment(), IProfileView {
             editTextUsername.text = firstName
             editTextMultilinePersonalStory.setText(personalStory)
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_profile, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.button_menu_resetAllEstimations -> {
-                mProfilePresenter.resetAllEstimations()
-                true
-            }
-            else -> super.onContextItemSelected(item)
-        }
-
     }
 }

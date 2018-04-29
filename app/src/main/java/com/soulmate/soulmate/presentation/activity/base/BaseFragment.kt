@@ -2,7 +2,7 @@ package com.soulmate.soulmate.presentation.activity.base
 
 import android.content.Context
 import com.arellomobile.mvp.MvpAppCompatFragment
-import com.soulmate.soulmate.presentation.view.base.IBaseMvpView
+import com.soulmate.soulmate.presentation.view.IBaseMvpView
 
 
 abstract class BaseFragment : MvpAppCompatFragment(), IBaseMvpView {

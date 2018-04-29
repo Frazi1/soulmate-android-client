@@ -1,8 +1,10 @@
-package com.soulmate.soulmate.interaction.api
+package com.soulmate.soulmate.api
 
+import Endpoints.Companion.API_REGISTRATION
 import Endpoints.Companion.API_USERS
-import com.soulmate.soulmate.interaction.authorization.OAuthToken
+import com.soulmate.soulmate.authorization.OAuthToken
 import dtos.UserAccountDto
+import dtos.UserRegistrationDto
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -24,5 +26,8 @@ interface AuthApi {
     fun getTokenRx(@Query("username", encoded = true) username: String,
                  @Query("password", encoded = true) password: String,
                  @Header("Authorization") basicAuthToken: String): Observable<OAuthToken>
+
+    @POST(API_REGISTRATION)
+    fun registerMember(@Body dto: UserRegistrationDto): Observable<ResponseBody>
 
 }
