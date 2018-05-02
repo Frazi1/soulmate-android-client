@@ -3,10 +3,10 @@ package com.soulmate.soulmate.api.errors
 import android.content.res.Resources
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+import com.soulmate.shared.validation.ValidationResponse
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.interaction.api.HttpErrorCodes
 import com.soulmate.soulmate.interaction.api.errors.validation.IValidationResponseHandler
-import validation.ValidationResponse
 
 open class HttpErrorMessageExtractor(private val objectMapper: ObjectMapper,
                                      private val validationResponseHandler: IValidationResponseHandler,

@@ -1,6 +1,6 @@
 package com.soulmate.soulmate.interaction.api
 
-import dtos.UploadImageDto
+import com.soulmate.shared.dtos.UploadImageDto
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.Body

@@ -3,10 +3,11 @@ package com.soulmate.soulmate.presentation.presenter
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
+import com.soulmate.shared.Estimation
+import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import com.soulmate.soulmate.repositories.EstimationRepository
-import dtos.ProfileEstimationDto
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 @InjectViewState
@@ -14,15 +15,15 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
 
     private val estimationRepository: EstimationRepository by instance()
 
-    private val currentProfileEstimation: ProfileEstimationDto?
+    private val currentUserAccount: UserAccountDto?
         get() {
-            if (profileEstimationList.count() - 1 < currentProfileEstimationIndex)
+            if (userAccountList.count() - 1 < currentUserAccountIndex)
                 return null
-            return profileEstimationList[currentProfileEstimationIndex]
+            return userAccountList[currentUserAccountIndex]
         }
 
-    private var currentProfileEstimationIndex: Int = 0
-    private var profileEstimationList: List<ProfileEstimationDto> = arrayListOf()
+    private var currentUserAccountIndex: Int = 0
+    private var userAccountList: List<UserAccountDto> = arrayListOf()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -31,23 +32,23 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
     }
 
     fun loadEstimationProfiles() {
-        estimationRepository.getProfileEstimations()
+        estimationRepository.getUsersForEstimation()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally { viewState.onFinishedLoading() }
                 .createSubscription({
-                    currentProfileEstimationIndex = 0
-                    profileEstimationList = it.toList()
-                    viewState.displayProfileEstimation(currentProfileEstimation)
+                    currentUserAccountIndex = 0
+                    userAccountList = it.toList()
+                    viewState.displayUserAccount(currentUserAccount)
                 })
     }
 
-    fun likeProfile() {
-        currentProfileEstimation?.let { profileEstimation ->
-            estimationRepository.likeProfile(profileEstimation)
+    fun estimateUser(estimation: Estimation) {
+        currentUserAccount?.let { userAccount ->
+            estimationRepository.estimateUser(userAccount.id, estimation)
                     .observeOn(AndroidSchedulers.mainThread())
                     .createSubscription({})
         }
-        currentProfileEstimationIndex++
-        viewState.displayProfileEstimation(currentProfileEstimation)
+        currentUserAccountIndex++
+        viewState.displayUserAccount(currentUserAccount)
     }
 }

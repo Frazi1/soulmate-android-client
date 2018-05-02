@@ -1,9 +1,9 @@
 package com.soulmate.soulmate.repositories
 
+import com.soulmate.shared.dtos.UserAccountDto
+import com.soulmate.shared.dtos.UserRegistrationDto
 import com.soulmate.soulmate.interaction.api.UserApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
-import dtos.UserAccountDto
-import dtos.UserRegistrationDto
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 

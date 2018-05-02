@@ -1,7 +1,6 @@
 package com.soulmate.soulmate.interaction.api.errors.validation
 
-import validation.ValidationResponse
-
+import com.soulmate.shared.validation.ValidationResponse
 
 class ValidationResponseHandler : IValidationResponseHandler {
     override fun getValidationMessage(v: ValidationResponse): String {

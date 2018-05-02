@@ -6,15 +6,15 @@ import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
+import com.soulmate.shared.GenderType
+import com.soulmate.shared.dtos.UploadImageDto
+import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.presentation.view.IProfileView
 import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository
 import com.soulmate.soulmate.repositories.UserRepository
-import dtos.GenderType
-import dtos.UploadImageDto
-import dtos.UserAccountDto
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 @InjectViewState

@@ -1,21 +1,22 @@
 package com.soulmate.soulmate.interaction.api
 
-import dtos.ProfileEstimationDto
+import com.soulmate.shared.Estimation
+import com.soulmate.shared.dtos.UserAccountDto
 import io.reactivex.Observable
 import okhttp3.ResponseBody
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface EstimationApi {
 
     @GET("/api/estimation")
-    fun getAccountsForEstimation(): Observable<Iterable<ProfileEstimationDto>>
+    fun getUsersForEstimation(): Observable<Iterable<UserAccountDto>>
 
     @POST("/api/estimation/{id}")
-    fun likeProfile(@Path("id") profileId: Long): Observable<ResponseBody>
+    fun estimateUser(
+            @Path("id") userId: Long,
+            @Query("estimation") estimation: Estimation
+    ): Observable<ResponseBody>
 
     @DELETE("/api/estimation/all")
     fun resetAllEstimations(): Observable<ResponseBody>

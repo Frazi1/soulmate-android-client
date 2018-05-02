@@ -1,6 +1,5 @@
 package com.soulmate.soulmate.presentation.activity
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
@@ -15,6 +14,8 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
+import com.soulmate.shared.Estimation
+import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
@@ -22,7 +23,6 @@ import com.soulmate.soulmate.presentation.activity.base.LoaderFragment
 import com.soulmate.soulmate.presentation.presenter.ProfileEstimationPresenter
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import com.squareup.picasso.Picasso
-import dtos.ProfileEstimationDto
 import kotlinx.android.synthetic.main.fragment_profile_estimation.*
 
 class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
@@ -66,7 +66,7 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
         return view
     }
 
-    override fun displayProfileEstimation(profileEstimationDto: ProfileEstimationDto?) {
+    override fun displayUserAccount(profileEstimationDto: UserAccountDto?) {
         if (profileEstimationDto == null) {
             estimation_layoutNoProfiles.visibility = View.VISIBLE
             return
@@ -92,8 +92,13 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
     }
 
     @OnClick(R.id.estimation_buttonLike)
-    fun likeProfile() {
-        mProfileEstimationPresenter.likeProfile()
+    fun likeUser() {
+        mProfileEstimationPresenter.estimateUser(Estimation.LIKE)
+    }
+
+    @OnClick(R.id.estimation_buttonDislike)
+    fun dislikeUser() {
+        mProfileEstimationPresenter.estimateUser(Estimation.DISLIKE)
     }
 
     override fun onFinishedLoading() {
