@@ -1,7 +1,7 @@
 package com.soulmate.soulmate.interaction.api
 
-import dtos.UserAccountDto
-import dtos.UserRegistrationDto
+import com.soulmate.shared.dtos.UserAccountDto
+import com.soulmate.shared.dtos.UserRegistrationDto
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.Body

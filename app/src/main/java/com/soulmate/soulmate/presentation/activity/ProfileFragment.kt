@@ -14,6 +14,8 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
+import com.soulmate.shared.GenderType
+import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
@@ -21,8 +23,6 @@ import com.soulmate.soulmate.presentation.activity.base.LoaderFragment
 import com.soulmate.soulmate.presentation.presenter.ProfilePresenter
 import com.soulmate.soulmate.presentation.view.IProfileView
 import com.squareup.picasso.Picasso
-import dtos.GenderType
-import dtos.UserAccountDto
 
 class ProfileFragment : LoaderFragment(), IProfileView {
 
@@ -155,6 +155,5 @@ class ProfileFragment : LoaderFragment(), IProfileView {
             }
             else -> super.onContextItemSelected(item)
         }
-
     }
 }

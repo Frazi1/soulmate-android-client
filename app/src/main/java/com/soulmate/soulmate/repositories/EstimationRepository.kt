@@ -1,20 +1,21 @@
 package com.soulmate.soulmate.repositories
 
+import com.soulmate.shared.Estimation
+import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.interaction.api.EstimationApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
-import dtos.ProfileEstimationDto
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 
 
 class EstimationRepository(private val estimationApi: EstimationApi, errorHandler: IErrorHandler) : BaseRepository(errorHandler) {
 
-    fun getProfileEstimations(): Observable<Iterable<ProfileEstimationDto>> {
-        return estimationApi.getAccountsForEstimation()
+    fun getUsersForEstimation(): Observable<Iterable<UserAccountDto>> {
+        return estimationApi.getUsersForEstimation()
     }
 
-    fun likeProfile(profileEstimationDto: ProfileEstimationDto): Observable<ResponseBody> {
-        return estimationApi.likeProfile(profileEstimationDto.id)
+    fun estimateUser(accountId: Long, estimation: Estimation): Observable<ResponseBody> {
+        return estimationApi.estimateUser(accountId, estimation)
     }
 
     fun resetAllEstimations(): Observable<ResponseBody> {
