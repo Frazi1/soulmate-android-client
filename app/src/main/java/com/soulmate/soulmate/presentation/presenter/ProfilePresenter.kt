@@ -2,10 +2,10 @@ package com.soulmate.soulmate.presentation.presenter
 
 import android.content.ContentResolver
 import android.content.res.AssetFileDescriptor
-import android.graphics.BitmapFactory
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
-import com.github.salomonbrys.kodein.*
+import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.presentation.view.IProfileView
@@ -13,7 +13,7 @@ import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository
 import com.soulmate.soulmate.repositories.UserRepository
 import dtos.GenderType
-import dtos.ProfileImageDto
+import dtos.UploadImageDto
 import dtos.UserAccountDto
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -41,9 +41,9 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
                     userAccount = it
                     viewState.showProfile(it)
                     if (it.profileImages.any()) {
-                        val mainImage: ProfileImageDto = it.profileImages.first { it.isMainImage }
-                        val bitmap = BitmapFactory.decodeStream(mainImage.data?.inputStream())
-                        viewState.showImage(bitmap)
+//                        val mainImage: ProfileImageDto = it.profileImages.first { it.isMainImage }
+//                        val bitmap = BitmapFactory.decodeStream(mainImage.data?.inputStream())
+//                        viewState.showImage(bitmap)
                     }
                 }, defaultErrorHandler::handle)
     }
@@ -71,7 +71,7 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
         val byteArray: ByteArray = fileDescriptor.createInputStream().readBytes()
 //        val bitmap = BitmapFactory.decodeStream(data?.inputStream())
 //        viewState.showImage(uri)
-        imageRepository.uploadImage(ProfileImageDto(1, byteArray, "", true))
+        imageRepository.uploadImage(UploadImageDto(1, byteArray, "", true))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     viewState.showToast("Image upload finished")

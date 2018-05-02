@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.provider.MediaStore
 import android.view.*
 import android.widget.*
@@ -12,7 +11,12 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.github.salomonbrys.kodein.LazyKodein
+import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.lazy
+import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
+import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
 import com.soulmate.soulmate.presentation.activity.base.LoaderFragment
 import com.soulmate.soulmate.presentation.presenter.ProfilePresenter
 import com.soulmate.soulmate.presentation.view.IProfileView
@@ -21,9 +25,15 @@ import dtos.GenderType
 import dtos.UserAccountDto
 
 class ProfileFragment : LoaderFragment(), IProfileView {
+
     companion object {
         private const val PICK_IMAGE = 1
     }
+
+    override val kodein: LazyKodein = App.globalkodein.lazy
+
+    private val picasso: Picasso by instance()
+    private val urlHelper: ImageUrlHelper by instance()
 
     @BindView(R.id.profile_edit_username)
     lateinit var editTextUsername: TextView
@@ -123,6 +133,12 @@ class ProfileFragment : LoaderFragment(), IProfileView {
         with(userAccount) {
             editTextUsername.text = firstName
             editTextMultilinePersonalStory.setText(personalStory)
+            if (profileImages.any()) {
+                picasso
+                        .load(urlHelper.getImageUrl(profileImages.first().imageId))
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(imageViewAvatar)
+            }
         }
     }
 

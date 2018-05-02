@@ -1,8 +1,5 @@
 package com.soulmate.soulmate.interaction.api
 
-import Endpoints.Companion.API_USERS
-import Endpoints.Companion.USER_PROFILE_PATH
-
 import dtos.UserAccountDto
 import dtos.UserRegistrationDto
 import io.reactivex.Observable

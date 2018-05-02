@@ -2,10 +2,11 @@ package com.soulmate.soulmate.presentation.activity.base
 
 import android.content.Context
 import com.arellomobile.mvp.MvpAppCompatFragment
+import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.soulmate.soulmate.presentation.view.base.IBaseMvpView
 
 
-abstract class BaseFragment : MvpAppCompatFragment(), IBaseMvpView {
+abstract class BaseFragment : MvpAppCompatFragment(), IBaseMvpView, LazyKodeinAware {
     private lateinit var baseContext: BaseContext
 
     private fun init(context: Context) {
