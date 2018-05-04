@@ -75,16 +75,10 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
 
         textProfileName.text = profileEstimationDto.firstName
         if (profileEstimationDto.profileImages.any()) {
-//            onLoading()
             picasso
                     .load(urlHelper.getImageUrl(profileEstimationDto.profileImages.first().imageId))
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(imageViewAvatar)
-//            val imageBytes = profileEstimationDto.profileImages.first().data
-//            if (imageBytes != null) {
-//                val imageBitmap = BitmapFactory.decodeStream(imageBytes.inputStream())
-//                imageViewAvatar.setImageBitmap(imageBitmap)
-//            }
         } else {
             imageViewAvatar.setBackgroundColor(resources.getColor(R.color.colorNoContent))
             imageViewAvatar.setImageResource(0)

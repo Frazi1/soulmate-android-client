@@ -21,6 +21,7 @@ import com.soulmate.soulmate.interaction.api.errors.validation.IValidationRespon
 import com.soulmate.soulmate.interaction.api.errors.validation.ValidationResponseHandler
 import com.soulmate.soulmate.interaction.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
+import com.soulmate.soulmate.interaction.helpers.PicassoWrapper
 import com.soulmate.soulmate.repositories.AuthRepository
 import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository
@@ -83,12 +84,14 @@ fun configurationModule(context: Context) = Kodein.Module {
         return@provider builder.build()
     }
 
-    bind<Picasso>() with provider {
+    bind<Picasso>() with singleton {
         Picasso.Builder(context)
                 .downloader(OkHttp3Downloader(instance<OkHttpClient>()))
                 .indicatorsEnabled(true)
                 .build()
     }
+
+    bind<PicassoWrapper>() with provider { PicassoWrapper(instance<Picasso>(), instance<ImageUrlHelper>()) }
 
     bind<IErrorMessageExtractor>() with singleton {
         HttpErrorMessageExtractor(
