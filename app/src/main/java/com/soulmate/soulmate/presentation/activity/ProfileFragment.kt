@@ -56,8 +56,15 @@ class ProfileFragment : LoaderFragment(), IProfileView {
     @BindView(R.id.layout_profile_loading)
     override lateinit var loaderView: View
 
+    @BindView(R.id.profile_rbutton_Male)
+    lateinit var rbuttonMale: RadioButton
+    @BindView(R.id.profile_rbutton_Female)
+    lateinit var rbuttonFemale: RadioButton
+
     @InjectPresenter
     lateinit var mProfilePresenter: ProfilePresenter
+
+    private var userGender: GenderType = GenderType.NotDefined
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +81,7 @@ class ProfileFragment : LoaderFragment(), IProfileView {
     fun saveProfile() {
         mProfilePresenter.saveProfile(
                 editTextUsername.text.toString(),
-                GenderType.NotDefined,
+                userGender,
                 editTextMultilinePersonalStory.text.toString())
     }
 
@@ -101,6 +108,17 @@ class ProfileFragment : LoaderFragment(), IProfileView {
         //empty
     }
 
+    @OnClick(R.id.profile_rbutton_Male, R.id.profile_rbutton_Female)
+    fun onGenderRadioButtonClick(view: View) {
+        val isChecked = (view as RadioButton).isChecked
+        if (isChecked) {
+            when (view.id) {
+                R.id.profile_rbutton_Male -> userGender = GenderType.Male
+                R.id.profile_rbutton_Female -> userGender = GenderType.Female
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PICK_IMAGE) {
             if (data != null) {
@@ -109,12 +127,6 @@ class ProfileFragment : LoaderFragment(), IProfileView {
                 showImage(uri)
             }
         }
-    }
-
-    override fun showImage(bitmap: Bitmap) {
-        imageViewAvatar.setImageBitmap(bitmap)
-//        imageViewAvatar.adjustViewBounds = true
-//        imageViewAvatar.scaleType = ImageView.ScaleType.FIT_CENTER
     }
 
     override fun showImage(uri: Uri?) {
@@ -133,6 +145,7 @@ class ProfileFragment : LoaderFragment(), IProfileView {
         with(userAccount) {
             editTextUsername.text = firstName
             editTextMultilinePersonalStory.setText(personalStory)
+            setGenderRadioSelection(userAccount.gender)
             if (profileImages.any()) {
                 picasso
                         .load(urlHelper.getImageUrl(profileImages.first().imageId))
@@ -154,6 +167,13 @@ class ProfileFragment : LoaderFragment(), IProfileView {
                 true
             }
             else -> super.onContextItemSelected(item)
+        }
+    }
+
+    private fun setGenderRadioSelection(genderType: GenderType) {
+        when (genderType) {
+            GenderType.Male -> rbuttonMale.isChecked = true
+            GenderType.Female -> rbuttonFemale.isChecked = true
         }
     }
 }
