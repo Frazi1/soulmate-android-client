@@ -25,4 +25,9 @@
     <string name="tabName_Profile">Profile</string>
     <string name="estimation_dislike">Dislike</string>
     <string name="estimation_like">Like</string>
+
+    <!--Profile-->
+    <string name="profile_Male">Male</string>
+    <string name="profile_Female">Female</string>
+    <!--Profile-->
 </resources>

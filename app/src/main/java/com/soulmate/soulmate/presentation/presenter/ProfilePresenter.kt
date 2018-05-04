@@ -37,15 +37,10 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
         userRepository.loadUserProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally({ viewState.onFinishedLoading() })
-                .subscribe({
+                .createSubscription({
                     userAccount = it
                     viewState.showProfile(it)
-                    if (it.profileImages.any()) {
-//                        val mainImage: ProfileImageDto = it.profileImages.first { it.isMainImage }
-//                        val bitmap = BitmapFactory.decodeStream(mainImage.data?.inputStream())
-//                        viewState.showImage(bitmap)
-                    }
-                }, defaultErrorHandler::handle)
+                })
     }
 
     fun saveProfile(newUserName: String,
@@ -57,25 +52,21 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
             it.personalStory = personalStory
             userRepository.updateUserProfile(it)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
+                    .createSubscription({
                         viewState.showToast("Updated")
-                    }, {
-                        defaultErrorHandler.handle(it)
                     })
-
         }
     }
 
     fun addImage(uri: Uri) {
         val fileDescriptor: AssetFileDescriptor = contentResolver.openAssetFileDescriptor(uri, "r")
         val byteArray: ByteArray = fileDescriptor.createInputStream().readBytes()
-//        val bitmap = BitmapFactory.decodeStream(data?.inputStream())
-//        viewState.showImage(uri)
         imageRepository.uploadImage(UploadImageDto(1, byteArray, "", true))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .createSubscription({
                     viewState.showToast("Image upload finished")
-                }, { defaultErrorHandler.handle(it) })
+                    onLoad()
+                })
     }
 
     fun logout() {
