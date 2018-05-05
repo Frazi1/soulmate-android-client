@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.soulmate.soulmate.presentation.activity.SearchOptionsActivity">
+
+    <TextView
+        android:id="@+id/searchOptions_textView_Age"
+        style="@style/AppTheme.MainTextLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/age" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <io.apptik.widget.MultiSlider
+            android:id="@+id/searchOptions_range_age"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            custom:layout_constraintTop_toTopOf="parent"
+            custom:scaleStep="1"
+            custom:thumbNumber="2" />
+
+        <TextView
+            android:id="@+id/searchOptions_textView_minAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            custom:layout_constraintStart_toStartOf="@+id/searchOptions_range_age"
+            custom:layout_constraintTop_toBottomOf="@+id/searchOptions_range_age"
+            tools:text="13"
+            android:layout_marginLeft="32dp"
+            style="@style/AppTheme.HelperTextLabel"/>
+
+        <TextView
+            android:id="@+id/searchOptions_textView_maxAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            custom:layout_constraintEnd_toEndOf="parent"
+            custom:layout_constraintTop_toBottomOf="@+id/searchOptions_range_age"
+            tools:text="18"
+            android:layout_marginRight="32dp"
+            style="@style/AppTheme.HelperTextLabel"/>
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

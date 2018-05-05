@@ -11,6 +11,7 @@
     <string name="select_picture">Select picture</string>
     <string name="registration">Registration</string>
     <string name="logout">Logout</string>
+    <string name="age">Age</string>
     <string name="developerSettings">Developer Settings</string>
     <string name="estimation_resetAll">Reset all estimations</string>
     <string name="devPref_connection">Connection</string>
@@ -30,4 +31,6 @@
     <string name="profile_Male">Male</string>
     <string name="profile_Female">Female</string>
     <!--Profile-->
+    <string name="search_options">Search options</string>
+
 </resources>

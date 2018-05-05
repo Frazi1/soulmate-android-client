@@ -3,4 +3,7 @@
     <item
         android:id="@+id/button_menu_resetAllEstimations"
         android:title="@string/estimation_resetAll" />
+    <item
+        android:id="@+id/button_menu_searchOptions"
+        android:title="@string/search_options" />
 </menu>
