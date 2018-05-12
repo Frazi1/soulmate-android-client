@@ -2,6 +2,7 @@ package com.soulmate.soulmate.configuration.di
 
 import android.content.Context
 import android.content.res.Resources
+import android.preference.PreferenceManager
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
@@ -11,8 +12,10 @@ import com.soulmate.soulmate.api.errors.HttpErrorMessageExtractor
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.api.errors.IErrorMessageExtractor
 import com.soulmate.soulmate.api.errors.ToastErrorMessageHandler
-import com.soulmate.soulmate.configuration.ConnectionPreferenceManager
+import com.soulmate.soulmate.configuration.preferences.ConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.interfaces.IConnectionPreferenceManager
+import com.soulmate.soulmate.configuration.interfaces.ISearchPreferencesManager
+import com.soulmate.soulmate.configuration.preferences.SearchPreferencesManager
 import com.soulmate.soulmate.interaction.api.AuthApi
 import com.soulmate.soulmate.interaction.api.EstimationApi
 import com.soulmate.soulmate.interaction.api.ImageApi
@@ -72,6 +75,8 @@ fun configurationModule(context: Context) = Kodein.Module {
     bind<ObjectMapper>() with singleton { ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false) }
 
     bind<IConnectionPreferenceManager>() with singleton { ConnectionPreferenceManager(context, instance<Resources>()) }
+    bind<ISearchPreferencesManager>() with singleton { SearchPreferencesManager(PreferenceManager.getDefaultSharedPreferences(context)) }
+
     bind<CredentialsStore>() with singleton { CredentialsStore(context.getSharedPreferences("settings", Context.MODE_PRIVATE)) }
 
     bind<RetrofitProvider>() with singleton { RetrofitProvider(instance<ObjectMapper>(), instance<CredentialsStore>(), instance<IConnectionPreferenceManager>(), instance<OkHttpClient>()) }

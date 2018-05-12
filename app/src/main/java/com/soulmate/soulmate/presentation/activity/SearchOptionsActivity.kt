@@ -40,17 +40,13 @@ class SearchOptionsActivity : BaseActivity(), ISearchOptionsView {
         ButterKnife.bind(this)
 
         sliderAge.setOnThumbValueChangeListener { multiSlider, thumb, thumbIndex, value ->
-            if(thumbIndex == 0)
+            if(thumbIndex == 0) {
                 textViewMinAge.text = value.toString()
-            else if(thumbIndex == 1)
+                mSearchOptionsPresenter.minAge = value
+            } else if (thumbIndex == 1) {
                 textViewMaxAge.text = value.toString()
+                mSearchOptionsPresenter.maxAge = value
+            }
         }
-    }
-
-    private fun onAgeSliderValueChanged(multiSlider: MultiSlider,
-                                        thumb: MultiSlider.Thumb,
-                                        thumbIndex: Int,
-                                        value: Int){
-
     }
 }
