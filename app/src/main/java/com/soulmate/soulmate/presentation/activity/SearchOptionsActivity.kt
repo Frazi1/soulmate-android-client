@@ -38,15 +38,30 @@ class SearchOptionsActivity : BaseActivity(), ISearchOptionsView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_options)
         ButterKnife.bind(this)
+        initDisplay()
 
         sliderAge.setOnThumbValueChangeListener { multiSlider, thumb, thumbIndex, value ->
             if(thumbIndex == 0) {
-                textViewMinAge.text = value.toString()
                 mSearchOptionsPresenter.minAge = value
             } else if (thumbIndex == 1) {
-                textViewMaxAge.text = value.toString()
                 mSearchOptionsPresenter.maxAge = value
             }
+            updateLabels()
         }
+    }
+
+    private fun updateLabels() {
+        textViewMinAge.text = mSearchOptionsPresenter.minAge.toString()
+        textViewMaxAge.text = mSearchOptionsPresenter.maxAge.toString()
+    }
+
+    private fun updateSlider() {
+        sliderAge.getThumb(0).value = mSearchOptionsPresenter.minAge
+        sliderAge.getThumb(1).value = mSearchOptionsPresenter.maxAge
+    }
+
+    private fun initDisplay() {
+        updateLabels()
+        updateSlider()
     }
 }

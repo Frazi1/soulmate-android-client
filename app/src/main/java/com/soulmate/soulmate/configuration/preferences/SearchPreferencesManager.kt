@@ -8,31 +8,35 @@ import com.soulmate.soulmate.configuration.interfaces.ISearchPreferencesManager
 class SearchPreferencesManager(private val sharedPreferences: SharedPreferences) : ISearchPreferencesManager {
     companion object {
         private const val keyPrefix: String = "searchPref_"
+        private const val keyMinAge: String="minAge"
+        private const val keyMaxAge: String="maxAge"
+        private const val keyGender: String="gender"
+
     }
 
-    override var minAge: Int = 0
+    override var minAge: Int
         get() {
-            return sharedPreferences.getInt("$keyPrefix${field::class.simpleName}", 0)
+            return sharedPreferences.getInt("$keyPrefix$keyMinAge", 0)
         }
         @SuppressLint("CommitPrefEdits")
         set(value) = with(sharedPreferences.edit()) {
-            putInt("$keyPrefix${field::class.simpleName}", value)
+            putInt("$keyPrefix$keyMinAge", value)
             apply()
         }
 
-    override var maxAge: Int = 100
-        get() = sharedPreferences.getInt("$keyPrefix${field::class.simpleName}", 100)
+    override var maxAge: Int
+        get() = sharedPreferences.getInt("$keyPrefix$keyMaxAge", 100)
         @SuppressLint("CommitPrefEdits")
         set(value) = with(sharedPreferences.edit()) {
-            putInt("$keyPrefix${field::class.simpleName}", value)
+            putInt("$keyPrefix$keyMaxAge", value)
             apply()
         }
 
-    override var gender: GenderType = GenderType.NotDefined
-        get() = GenderType.valueOf(sharedPreferences.getString("$keyPrefix${field::class.simpleName}", GenderType.NotDefined.name))
+    override var gender: GenderType
+        get() = GenderType.valueOf(sharedPreferences.getString("$keyPrefix$keyGender", GenderType.NotDefined.name))
         @SuppressLint("CommitPrefEdits")
         set(value) = with(sharedPreferences.edit()) {
-            putString("$keyPrefix${field::class.simpleName}", value.name)
+            putString("$keyPrefix$keyGender", value.name)
             apply()
         }
 }
