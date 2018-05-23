@@ -10,7 +10,7 @@ import retrofit2.http.*
 interface EstimationApi {
 
     @GET("/api/estimation")
-    fun getUsersForEstimation(): Observable<Iterable<UserAccountDto>>
+    fun getUsersForEstimation(@QueryMap filters: Map<String, String>): Observable<Iterable<UserAccountDto>>
 
     @POST("/api/estimation/{id}")
     fun estimateUser(

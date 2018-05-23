@@ -10,8 +10,8 @@ import okhttp3.ResponseBody
 
 class EstimationRepository(private val estimationApi: EstimationApi, errorHandler: IErrorHandler) : BaseRepository(errorHandler) {
 
-    fun getUsersForEstimation(): Observable<Iterable<UserAccountDto>> {
-        return estimationApi.getUsersForEstimation()
+    fun getUsersForEstimation(filters: Map<String, String>): Observable<Iterable<UserAccountDto>> {
+        return estimationApi.getUsersForEstimation(filters)
     }
 
     fun estimateUser(accountId: Long, estimation: Estimation): Observable<ResponseBody> {
