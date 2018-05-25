@@ -36,7 +36,10 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
     }
 
     fun loadEstimationProfiles() {
-        estimationRepository.getUsersForEstimation(getFiltrationOptions())
+        estimationRepository.getUsersForEstimation(
+                ageFrom = searchPreferenceManager.minAge,
+                ageTo = searchPreferenceManager.maxAge,
+                genderTypes = searchPreferenceManager.genderTypes)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally { viewState.onFinishedLoading() }
                 .createSubscription({

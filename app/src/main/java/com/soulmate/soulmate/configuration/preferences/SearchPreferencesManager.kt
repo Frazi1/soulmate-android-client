@@ -32,11 +32,12 @@ class SearchPreferencesManager(private val sharedPreferences: SharedPreferences)
             apply()
         }
 
-    override var gender: GenderType
-        get() = GenderType.valueOf(sharedPreferences.getString("$keyPrefix$keyGender", GenderType.NotDefined.name))
-        @SuppressLint("CommitPrefEdits")
-        set(value) = with(sharedPreferences.edit()) {
-            putString("$keyPrefix$keyGender", value.name)
-            apply()
-        }
+    override val genderTypes: List<GenderType> = listOf(GenderType.Female) //TODO: implement
+//    override var gender: GenderType
+//        get() = GenderType.valueOf(sharedPreferences.getString("$keyPrefix$keyGender", GenderType.NotDefined.name))
+//        @SuppressLint("CommitPrefEdits")
+//        set(value) = with(sharedPreferences.edit()) {
+//            putString("$keyPrefix$keyGender", value.name)
+//            apply()
+//        }
 }

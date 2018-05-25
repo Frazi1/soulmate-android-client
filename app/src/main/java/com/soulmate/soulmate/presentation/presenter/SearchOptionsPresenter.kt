@@ -23,9 +23,9 @@ class SearchOptionsPresenter(lazyKodein: LazyKodein) : BasePresenter<ISearchOpti
             searchPreferencesManager.maxAge = value
         }
 
-    var gender: GenderType
-        get() = searchPreferencesManager.gender
-        set(value) {
-            searchPreferencesManager.gender = value
-        }
+//    var gender: List<GenderType>
+//        get() = searchPreferencesManager.gender
+//        set(value) {
+//            searchPreferencesManager.gender = value
+//        }
 }
