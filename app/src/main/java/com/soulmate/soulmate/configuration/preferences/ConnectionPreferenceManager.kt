@@ -1,14 +1,15 @@
-package com.soulmate.soulmate.configuration
+package com.soulmate.soulmate.configuration.preferences
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.preference.PreferenceManager
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.configuration.interfaces.IConnectionPreferenceManager
 
 class ConnectionPreferenceManager(context: Context, resources: Resources) : IConnectionPreferenceManager {
-    private val preference = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preference: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val keyServerUrl = resources.getString(R.string.key_devPref_serverUrl)
     private val keyIsHerokuServer = resources.getString(R.string.key_devPref_isHerokuServer)
 

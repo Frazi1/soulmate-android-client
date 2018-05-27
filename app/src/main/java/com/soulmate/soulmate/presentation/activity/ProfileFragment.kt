@@ -11,6 +11,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
@@ -35,34 +36,17 @@ class ProfileFragment : LoaderFragment(), IProfileView {
     private val picasso: Picasso by instance()
     private val urlHelper: ImageUrlHelper by instance()
 
-    @BindView(R.id.profile_edit_username)
-    lateinit var editTextUsername: TextView
+    @BindView(R.id.profile_edit_username) lateinit var editTextUsername: TextView
+    @BindView(R.id.profile_button_save) lateinit var buttonSave: Button
+    @BindView(R.id.profile_button_logout) lateinit var buttonLogout: Button
+    @BindView(R.id.profile_imageView_avatar) lateinit var imageViewAvatar: ImageView
+    @BindView(R.id.profile_progressBar) lateinit var progressBar: ProgressBar
+    @BindView(R.id.profile_editTextMultiline_personalStory) lateinit var editTextMultilinePersonalStory: EditText
+    @BindView(R.id.layout_profile_loading) override lateinit var loaderView: View
+    @BindView(R.id.profile_rbutton_Male) lateinit var rbuttonMale: RadioButton
+    @BindView(R.id.profile_rbutton_Female) lateinit var rbuttonFemale: RadioButton
 
-    @BindView(R.id.profile_button_save)
-    lateinit var buttonSave: Button
-
-    @BindView(R.id.profile_button_logout)
-    lateinit var buttonLogout: Button
-
-    @BindView(R.id.profile_imageView_avatar)
-    lateinit var imageViewAvatar: ImageView
-
-    @BindView(R.id.profile_progressBar)
-    lateinit var progressBar: ProgressBar
-
-    @BindView(R.id.profile_editTextMultiline_personalStory)
-    lateinit var editTextMultilinePersonalStory: EditText
-
-    @BindView(R.id.layout_profile_loading)
-    override lateinit var loaderView: View
-
-    @BindView(R.id.profile_rbutton_Male)
-    lateinit var rbuttonMale: RadioButton
-    @BindView(R.id.profile_rbutton_Female)
-    lateinit var rbuttonFemale: RadioButton
-
-    @InjectPresenter
-    lateinit var mProfilePresenter: ProfilePresenter
+    @InjectPresenter lateinit var mProfilePresenter: ProfilePresenter
 
     private var userGender: GenderType = GenderType.NotDefined
 
@@ -164,6 +148,10 @@ class ProfileFragment : LoaderFragment(), IProfileView {
         return when (item.itemId) {
             R.id.button_menu_resetAllEstimations -> {
                 mProfilePresenter.resetAllEstimations()
+                true
+            }
+            R.id.button_menu_searchOptions -> {
+                context?.let { startActivity(SearchOptionsActivity.getIntent(it)) }
                 true
             }
             else -> super.onContextItemSelected(item)

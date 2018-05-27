@@ -6,6 +6,7 @@ import com.github.salomonbrys.kodein.lazy
 import com.soulmate.shared.Estimation
 import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.App
+import com.soulmate.soulmate.configuration.interfaces.ISearchPreferencesManager
 import com.soulmate.soulmate.interaction.helpers.PicassoWrapper
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
 import com.soulmate.soulmate.repositories.EstimationRepository
@@ -16,6 +17,7 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
 
     private val estimationRepository: EstimationRepository by instance()
     private val picassoWrapper: PicassoWrapper by instance()
+    private val searchPreferenceManager: ISearchPreferencesManager by instance()
 
     private val currentUserAccount: UserAccountDto?
         get() = getAccount(currentUserAccountIndex)
@@ -34,7 +36,10 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
     }
 
     fun loadEstimationProfiles() {
-        estimationRepository.getUsersForEstimation()
+        estimationRepository.getUsersForEstimation(
+                ageFrom = searchPreferenceManager.minAge,
+                ageTo = searchPreferenceManager.maxAge,
+                genderTypes = searchPreferenceManager.genderTypes)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally { viewState.onFinishedLoading() }
                 .createSubscription({
@@ -66,5 +71,13 @@ class ProfileEstimationPresenter : BasePresenter<IProfileEstimationView>(App.glo
         currentUserAccountIndex++
         viewState.displayUserAccount(currentUserAccount)
         preloadNextUserImages()
+    }
+
+    private fun getFiltrationOptions(): Map<String, String> {
+        with(searchPreferenceManager) {
+            return mapOf(
+                    Pair("ageFrom", minAge.toString()),
+                    Pair("ageTo", maxAge.toString()))
+        }
     }
 }
