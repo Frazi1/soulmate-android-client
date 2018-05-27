@@ -16,19 +16,13 @@ import com.soulmate.soulmate.configuration.preferences.ConnectionPreferenceManag
 import com.soulmate.soulmate.configuration.interfaces.IConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.interfaces.ISearchPreferencesManager
 import com.soulmate.soulmate.configuration.preferences.SearchPreferencesManager
-import com.soulmate.soulmate.interaction.api.AuthApi
-import com.soulmate.soulmate.interaction.api.EstimationApi
-import com.soulmate.soulmate.interaction.api.ImageApi
-import com.soulmate.soulmate.interaction.api.UserApi
+import com.soulmate.soulmate.interaction.api.*
 import com.soulmate.soulmate.interaction.api.errors.validation.IValidationResponseHandler
 import com.soulmate.soulmate.interaction.api.errors.validation.ValidationResponseHandler
 import com.soulmate.soulmate.interaction.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
 import com.soulmate.soulmate.interaction.helpers.PicassoWrapper
-import com.soulmate.soulmate.repositories.AuthRepository
-import com.soulmate.soulmate.repositories.EstimationRepository
-import com.soulmate.soulmate.repositories.ImageRepository
-import com.soulmate.soulmate.repositories.UserRepository
+import com.soulmate.soulmate.repositories.*
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
@@ -41,6 +35,7 @@ val apiModule = Kodein.Module {
     bind<UserApi>() with singleton { instance<Retrofit>().create(UserApi::class.java) }
     bind<ImageApi>() with singleton { instance<Retrofit>().create(ImageApi::class.java) }
     bind<EstimationApi>() with singleton { instance<Retrofit>().create(EstimationApi::class.java) }
+    bind<MessageApi>() with singleton { instance<Retrofit>().create(MessageApi::class.java) }
 }
 
 val repositoryModule = Kodein.Module {
@@ -67,6 +62,13 @@ val repositoryModule = Kodein.Module {
         EstimationRepository(
                 instance<EstimationApi>(),
                 instance<IErrorHandler>()
+        )
+    }
+
+    bind<MessageRepository>() with singleton {
+        MessageRepository(
+                instance<IErrorHandler>(),
+                instance<MessageApi>()
         )
     }
 }
