@@ -23,7 +23,7 @@
     
     <style name="AppTheme.MainTextLabel">
         <item name="android:layout_marginLeft">@dimen/searchOptions_label_left_margin</item>
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">20sp</item>
     </style>
 

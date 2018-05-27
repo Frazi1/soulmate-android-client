@@ -81,13 +81,13 @@
                     android:layout_height="wrap_content"
                     android:checked="false"
                     android:duplicateParentState="true"
-                    android:text="@string/profile_Male" />
+                    android:text="@string/male" />
 
                 <RadioButton
                     android:id="@+id/profile_rbutton_Female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_Female" />
+                    android:text="@string/female" />
             </RadioGroup>
 
             <android.support.constraint.ConstraintLayout
