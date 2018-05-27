@@ -18,7 +18,5 @@ interface MessageApi {
     fun getUserChats() :Observable<List<UserAccountDto>>
 
     @POST("api/message")
-    fun sendMessage(@Body message: SendMessageDto): Observable<ResponseBody>
-
-
+    fun sendMessage(@Body message: SendMessageDto): Observable<UserMessageDto>
 }

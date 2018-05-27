@@ -6,6 +6,7 @@ import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.api.errors.IErrorHandler
+import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
 import com.soulmate.soulmate.interaction.authorization.OAuthTokenDto
 import com.soulmate.soulmate.interaction.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.presentation.view.ILoginView

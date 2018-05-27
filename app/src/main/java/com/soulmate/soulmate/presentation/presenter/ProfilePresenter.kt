@@ -11,6 +11,7 @@ import com.soulmate.shared.dtos.UploadImageDto
 import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.configuration.CredentialsStore
+import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
 import com.soulmate.soulmate.presentation.view.IProfileView
 import com.soulmate.soulmate.repositories.EstimationRepository
 import com.soulmate.soulmate.repositories.ImageRepository
@@ -24,6 +25,7 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
     private val estimationRepository: EstimationRepository by instance()
     private val contentResolver: ContentResolver by instance()
     private val credentialsStore: CredentialsStore by instance()
+    private val userContextHolder: IUserContexHolder by instance()
 
     private var userAccount: UserAccountDto? = null
 
@@ -34,11 +36,12 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
 
     private fun onLoad() {
         viewState.onLoading()
-        userRepository.loadUserProfile()
+        userRepository.getOwnProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally({ viewState.onFinishedLoading() })
                 .createSubscription({
                     userAccount = it
+                    userContextHolder.user = userAccount
                     viewState.showProfile(it)
                 })
     }

@@ -13,6 +13,7 @@ import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
+import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
 import com.soulmate.soulmate.presentation.activity.base.BaseFragment
 import com.soulmate.soulmate.presentation.activity.chat.ChatDialog
 import com.soulmate.soulmate.presentation.activity.chat.Message
@@ -30,6 +31,7 @@ class ChatFragment : BaseFragment(), IChatView {
     override val kodein: LazyKodein = App.globalkodein.lazy
 
     private val picasso: Picasso by instance()
+    private val userContextHolder: IUserContexHolder by instance()
 
     companion object {
         const val TAG = "ChatFragment"
@@ -60,6 +62,16 @@ class ChatFragment : BaseFragment(), IChatView {
         ButterKnife.bind(this, view)
         dialogsListAdapter = DialogsListAdapter(ImageLoader { imageView, url -> picasso.load(url).into(imageView) })
         dialogsList.setAdapter(dialogsListAdapter)
+        dialogsListAdapter.setOnDialogClickListener {
+            val intent = PrivateChatActivity.getIntent(context!!)
+            val array: List<Long> = it.users
+                    .map { it.id.toLong() }
+                    .minus(userContextHolder.user?.id)
+                    .mapNotNull { it }
+            val typed = array.toTypedArray()
+            intent.putExtra("ids", typed)
+            startActivity(intent)
+        }
         mChatPresenter.loadDialogs()
         return view
     }

@@ -12,9 +12,11 @@ import com.soulmate.soulmate.api.errors.HttpErrorMessageExtractor
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.api.errors.IErrorMessageExtractor
 import com.soulmate.soulmate.api.errors.ToastErrorMessageHandler
+import com.soulmate.soulmate.configuration.UserContextHolder
 import com.soulmate.soulmate.configuration.preferences.ConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.interfaces.IConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.interfaces.ISearchPreferencesManager
+import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
 import com.soulmate.soulmate.configuration.preferences.SearchPreferencesManager
 import com.soulmate.soulmate.interaction.api.*
 import com.soulmate.soulmate.interaction.api.errors.validation.IValidationResponseHandler
@@ -111,4 +113,5 @@ fun configurationModule(context: Context) = Kodein.Module {
     bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
 
     bind<ImageUrlHelper>() with singleton { ImageUrlHelper(instance<IConnectionPreferenceManager>()) }
+    bind<IUserContexHolder>() with singleton { UserContextHolder() }
 }

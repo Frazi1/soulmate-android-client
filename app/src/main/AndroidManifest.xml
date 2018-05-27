@@ -23,6 +23,7 @@
         <activity android:name=".presentation.activity.DeveloperSettingsActivity" />
         <activity android:name=".presentation.activity.MainActivity" />
         <activity android:name=".presentation.activity.SearchOptionsActivity" />
+        <activity android:name=".presentation.activity.PrivateChatActivity" />
         <!-- <activity -->
         <!-- android:name=".ui.activity.MainActivity" -->
         <!-- android:label="@string/title_activity_main" -->

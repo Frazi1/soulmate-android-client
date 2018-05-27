@@ -10,8 +10,12 @@ import okhttp3.ResponseBody
 
 class UserRepository(private val userApi: UserApi,
                      errorHandler: IErrorHandler) : BaseRepository(errorHandler) {
-    fun loadUserProfile(): Observable<UserAccountDto> {
-        return userApi.getUserProfile()
+    fun getOwnProfile(): Observable<UserAccountDto> {
+        return userApi.getOwnProfile()
+    }
+
+    fun getUserProfiles(vararg idArg: Long): Observable<List<UserAccountDto>> {
+        return userApi.getUserProfile(idArg.toList())
     }
 
     fun updateUserProfile(userAccountDto: UserAccountDto): Observable<ResponseBody>

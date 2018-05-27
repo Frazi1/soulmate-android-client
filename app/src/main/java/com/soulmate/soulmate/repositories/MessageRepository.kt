@@ -20,7 +20,7 @@ class MessageRepository(errorHandler: IErrorHandler,
         return messageApi.getMessagesWithUser(userId)
     }
 
-    fun sendMessage(sendMessageDto: SendMessageDto): Observable<ResponseBody> {
+    fun sendMessage(sendMessageDto: SendMessageDto): Observable<UserMessageDto> {
         return messageApi.sendMessage(sendMessageDto)
     }
 }
