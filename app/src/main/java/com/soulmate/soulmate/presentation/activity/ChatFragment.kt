@@ -21,8 +21,6 @@ import com.soulmate.soulmate.presentation.presenter.ChatPresenter
 import com.soulmate.soulmate.presentation.view.IChatView
 import com.squareup.picasso.Picasso
 import com.stfalcon.chatkit.commons.ImageLoader
-import com.stfalcon.chatkit.commons.models.IDialog
-import com.stfalcon.chatkit.commons.models.IMessage
 import com.stfalcon.chatkit.dialogs.DialogsList
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter
 
@@ -52,7 +50,7 @@ class ChatFragment : BaseFragment(), IChatView {
     @ProvidePresenter
     fun providePresenter(): ChatPresenter = ChatPresenter(kodein)
 
-    lateinit var dialogsListAdapter: DialogsListAdapter<ChatDialog<Message>>
+    private lateinit var dialogsListAdapter: DialogsListAdapter<ChatDialog<Message>>
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -68,8 +66,7 @@ class ChatFragment : BaseFragment(), IChatView {
                     .map { it.id.toLong() }
                     .minus(userContextHolder.user?.id)
                     .mapNotNull { it }
-            val typed = array.toTypedArray()
-            intent.putExtra("ids", typed)
+            intent.putExtra("ids", array.toTypedArray())
             startActivity(intent)
         }
         mChatPresenter.loadDialogs()
