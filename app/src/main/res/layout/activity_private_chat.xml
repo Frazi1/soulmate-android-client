@@ -1,0 +1,30 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.soulmate.soulmate.presentation.activity.PrivateChatActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.stfalcon.chatkit.messages.MessagesList
+            android:id="@+id/privateChat_messagesList"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            app:layout_constraintHorizontal_bias="0.51"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_above="@id/privateChat_messageInput" />
+
+        <com.stfalcon.chatkit.messages.MessageInput
+            android:id="@+id/privateChat_messageInput"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>
