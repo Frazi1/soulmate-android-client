@@ -52,7 +52,7 @@ class ChatFragment : BaseFragment(), IChatView {
     @ProvidePresenter
     fun providePresenter(): ChatPresenter = ChatPresenter(kodein)
 
-    lateinit var dialogsListAdapter: DialogsListAdapter<IDialog<IMessage>>
+    lateinit var dialogsListAdapter: DialogsListAdapter<ChatDialog<Message>>
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +77,6 @@ class ChatFragment : BaseFragment(), IChatView {
     }
 
     override fun displayDialogs(dialogs: List<ChatDialog<Message>>) {
-        dialogsListAdapter.setItems(dialogs.map { it as IDialog<IMessage> })
+        dialogsListAdapter.setItems(dialogs)
     }
 }
