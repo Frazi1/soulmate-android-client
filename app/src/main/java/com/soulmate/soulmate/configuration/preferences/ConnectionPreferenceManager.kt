@@ -13,7 +13,15 @@ class ConnectionPreferenceManager(context: Context, resources: Resources) : ICon
     private val keyServerUrl = resources.getString(R.string.key_devPref_serverUrl)
     private val keyIsHerokuServer = resources.getString(R.string.key_devPref_isHerokuServer)
 
-    private val defaultServerUrl = "http://192.168.0.100:8080"
+    //local server
+//    private val defaultServerUrl = "http://192.168.0.100:8080"
+
+    //stable server
+    private val defaultServerUrl = "http://91.202.25.70:58000"
+
+    //dev server
+//    private val defaultServerUrl = "http://91.202.25.70:58001"
+
     private val herokuServerUrl = "https://cryptic-wildwood-80958.herokuapp.com"
 
     override var serverUrl: String
