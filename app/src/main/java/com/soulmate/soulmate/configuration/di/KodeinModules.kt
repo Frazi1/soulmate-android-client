@@ -12,9 +12,11 @@ import com.soulmate.soulmate.api.errors.HttpErrorMessageExtractor
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.api.errors.IErrorMessageExtractor
 import com.soulmate.soulmate.api.errors.ToastErrorMessageHandler
+import com.soulmate.soulmate.configuration.Logger
 import com.soulmate.soulmate.configuration.UserContextHolder
 import com.soulmate.soulmate.configuration.preferences.ConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.interfaces.IConnectionPreferenceManager
+import com.soulmate.soulmate.configuration.interfaces.ILogger
 import com.soulmate.soulmate.configuration.interfaces.ISearchPreferencesManager
 import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
 import com.soulmate.soulmate.configuration.preferences.SearchPreferencesManager
@@ -28,8 +30,10 @@ import com.soulmate.soulmate.repositories.*
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
+import kotlin.math.sin
 
 @Suppress("RemoveExplicitTypeArguments")
 val apiModule = Kodein.Module {
@@ -89,6 +93,10 @@ fun configurationModule(context: Context) = Kodein.Module {
         val builder = OkHttpClient.Builder()
         builder.connectTimeout(10, TimeUnit.SECONDS)
         builder.addInterceptor(AuthorizationInterceptor(instance<CredentialsStore>()))
+
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        builder.addInterceptor(loggingInterceptor)
 //        builder.authenticator(TokenAuthenticator(kodein.lazy))
         return@provider builder.build()
     }
@@ -109,9 +117,10 @@ fun configurationModule(context: Context) = Kodein.Module {
                 instance<Resources>()
         )
     }
-    bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(context, instance<IErrorMessageExtractor>()) }
+    bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(context, instance<IErrorMessageExtractor>(), instance<ILogger>()) }
     bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
 
     bind<ImageUrlHelper>() with singleton { ImageUrlHelper(instance<IConnectionPreferenceManager>()) }
     bind<IUserContexHolder>() with singleton { UserContextHolder() }
+    bind<ILogger>() with singleton { Logger() }
 }

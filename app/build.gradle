@@ -102,4 +102,6 @@ dependencies {
 
     //Chat ui
     implementation 'com.github.stfalcon:chatkit:0.2.2'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 }
