@@ -16,20 +16,14 @@ class ChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IChatView>(lazyKodei
     private val messageRepository: MessageRepository by instance()
     private val urlHelper: ImageUrlHelper by instance()
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-//        loadDialogs()
-    }
-
     fun loadDialogs() {
         messageRepository.getUserChats()
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally({viewState.onFinishedLoading()})
                 .createSubscription ({
                     val users = it.map { Author(it, urlHelper ) }
                     val dialogs: List<ChatDialog<Message>> = users.map { ChatDialog<Message>(it) }
                     viewState.displayDialogs(dialogs)
-                }, {
-                    val e = it
                 })
     }
 }
