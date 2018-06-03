@@ -18,18 +18,15 @@ import com.soulmate.shared.Estimation
 import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
+import com.soulmate.soulmate.interaction.helpers.PicassoWrapper
 import com.soulmate.soulmate.presentation.activity.base.LoaderFragment
 import com.soulmate.soulmate.presentation.presenter.ProfileEstimationPresenter
 import com.soulmate.soulmate.presentation.view.IProfileEstimationView
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile_estimation.*
 
 class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
-    override val kodein: LazyKodein = App.globalkodein.lazy
 
-    private val picasso: Picasso by instance()
-    private val urlHelper: ImageUrlHelper by instance()
+    private val picassoWrapper: PicassoWrapper by instance()
 
     companion object {
         const val TAG = "ProfileEstimationFragment"
@@ -75,10 +72,10 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
 
         textProfileName.text = profileEstimationDto.firstName
         if (profileEstimationDto.profileImages.any()) {
-            picasso
-                    .load(urlHelper.getImageUrl(profileEstimationDto.profileImages.first().imageId))
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(imageViewAvatar)
+            picassoWrapper.fetchAndDisplay(
+                    profileEstimationDto.profileImages.first().imageId,
+                    imageViewAvatar,
+                    R.drawable.ic_launcher_background)
         } else {
             imageViewAvatar.setBackgroundColor(resources.getColor(R.color.colorNoContent))
             imageViewAvatar.setImageResource(0)

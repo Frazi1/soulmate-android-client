@@ -1,3 +1,5 @@
+@file:Suppress("RemoveExplicitTypeArguments")
+
 package com.soulmate.soulmate.configuration.di
 
 import android.content.Context
@@ -6,19 +8,19 @@ import android.preference.PreferenceManager
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.salomonbrys.kodein.*
-import com.soulmate.soulmate.configuration.CredentialsStore
-import com.soulmate.soulmate.configuration.RetrofitProvider
 import com.soulmate.soulmate.api.errors.HttpErrorMessageExtractor
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.api.errors.IErrorMessageExtractor
 import com.soulmate.soulmate.api.errors.ToastErrorMessageHandler
+import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.configuration.Logger
+import com.soulmate.soulmate.configuration.RetrofitProvider
 import com.soulmate.soulmate.configuration.UserContextHolder
-import com.soulmate.soulmate.configuration.preferences.ConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.interfaces.IConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.interfaces.ILogger
 import com.soulmate.soulmate.configuration.interfaces.ISearchPreferencesManager
 import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
+import com.soulmate.soulmate.configuration.preferences.ConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.preferences.SearchPreferencesManager
 import com.soulmate.soulmate.interaction.api.*
 import com.soulmate.soulmate.interaction.api.errors.validation.IValidationResponseHandler
@@ -33,9 +35,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
-import kotlin.math.sin
 
-@Suppress("RemoveExplicitTypeArguments")
 val apiModule = Kodein.Module {
     bind<AuthApi>() with singleton { instance<Retrofit>().create(AuthApi::class.java) }
     bind<UserApi>() with singleton { instance<Retrofit>().create(UserApi::class.java) }
@@ -108,7 +108,7 @@ fun configurationModule(context: Context) = Kodein.Module {
                 .build()
     }
 
-    bind<PicassoWrapper>() with provider { PicassoWrapper(instance<Picasso>(), instance<ImageUrlHelper>()) }
+    bind<PicassoWrapper>() with provider { PicassoWrapper(instance<Picasso>(), instance<ImageUrlHelper>(), instance<IErrorHandler>()) }
 
     bind<IErrorMessageExtractor>() with singleton {
         HttpErrorMessageExtractor(

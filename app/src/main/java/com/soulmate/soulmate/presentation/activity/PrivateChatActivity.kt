@@ -14,27 +14,25 @@ import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
+import com.soulmate.soulmate.interaction.helpers.PicassoWrapper
 import com.soulmate.soulmate.presentation.activity.base.BaseActivity
 import com.soulmate.soulmate.presentation.activity.chat.Message
 import com.soulmate.soulmate.presentation.presenter.PrivateChatPresenter
 import com.soulmate.soulmate.presentation.view.IPrivateChatView
-import com.squareup.picasso.Picasso
 import com.stfalcon.chatkit.commons.ImageLoader
 import com.stfalcon.chatkit.messages.MessageInput
 import com.stfalcon.chatkit.messages.MessagesList
 import com.stfalcon.chatkit.messages.MessagesListAdapter
 
 
-class PrivateChatActivity : BaseActivity(), IPrivateChatView, LazyKodeinAware {
+class PrivateChatActivity : BaseActivity(), IPrivateChatView {
     companion object {
         const val TAG = "PrivateChatActivity"
         fun getIntent(context: Context): Intent = Intent(context, PrivateChatActivity::class.java)
     }
 
-    override val kodein: LazyKodein = App.globalkodein.lazy
-
     private val userContextHolder: IUserContexHolder by instance()
-    private val picasso: Picasso by instance()
+    private val picassoWrapper: PicassoWrapper by instance()
 
     @BindView(R.id.privateChat_messagesList) lateinit var messagesList: MessagesList
     @BindView(R.id.privateChat_messageInput) lateinit var messageInput: MessageInput
@@ -43,7 +41,7 @@ class PrivateChatActivity : BaseActivity(), IPrivateChatView, LazyKodeinAware {
     lateinit var mPrivateChatPresenter: PrivateChatPresenter
 
     @ProvidePresenter
-    fun providePresenter(): PrivateChatPresenter = PrivateChatPresenter(App.globalkodein.lazy)
+    fun providePresenter(): PrivateChatPresenter = PrivateChatPresenter(kodein)
 
     lateinit var messagesListAdapter: MessagesListAdapter<Message>
 
@@ -52,7 +50,9 @@ class PrivateChatActivity : BaseActivity(), IPrivateChatView, LazyKodeinAware {
         setContentView(R.layout.activity_private_chat)
         ButterKnife.bind(this)
 
-        messagesListAdapter = MessagesListAdapter(userContextHolder.user?.id.toString(), ImageLoader { imageView, url -> picasso.load(url).into(imageView) })
+        messagesListAdapter = MessagesListAdapter(
+                userContextHolder.user?.id.toString(),
+                ImageLoader { imageView, url -> picassoWrapper.fetchAndDisplay(url, imageView) })
         messagesList.setAdapter(messagesListAdapter)
         val userIds: Array<Long>? = intent.getSerializableExtra("ids") as Array<Long>
         if (userIds != null)
