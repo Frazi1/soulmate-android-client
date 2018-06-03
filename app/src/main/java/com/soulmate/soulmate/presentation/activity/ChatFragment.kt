@@ -28,8 +28,6 @@ import com.stfalcon.chatkit.dialogs.DialogsListAdapter
 
 
 class ChatFragment : BaseFragment(), IChatView {
-    override val kodein: LazyKodein = App.globalkodein.lazy
-
     private val picasso: Picasso by instance()
     private val userContextHolder: IUserContexHolder by instance()
 

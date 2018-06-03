@@ -1,7 +1,6 @@
 package com.soulmate.soulmate.presentation.activity
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -11,13 +10,9 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.lazy
 import com.soulmate.shared.GenderType
 import com.soulmate.shared.dtos.UserAccountDto
-import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
 import com.soulmate.soulmate.presentation.activity.base.LoaderFragment
@@ -30,8 +25,6 @@ class ProfileFragment : LoaderFragment(), IProfileView {
     companion object {
         private const val PICK_IMAGE = 1
     }
-
-    override val kodein: LazyKodein = App.globalkodein.lazy
 
     private val picasso: Picasso by instance()
     private val urlHelper: ImageUrlHelper by instance()
