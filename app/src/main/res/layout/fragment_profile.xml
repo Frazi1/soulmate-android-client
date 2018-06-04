@@ -7,6 +7,7 @@
 
 
     <ScrollView
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -14,12 +15,12 @@
             android:id="@+id/layot_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_marginLeft="@dimen/profile_side_margin"
             android:layout_marginRight="@dimen/profile_side_margin"
+            android:visibility="visible"
             android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:focusableInTouchMode="true">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -67,28 +68,6 @@
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:singleLine="false" />
-
-            <RadioGroup
-                android:id="@+id/profile_rbuttonGroup_gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/profile_rbutton_Male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:duplicateParentState="true"
-                    android:text="@string/male" />
-
-                <RadioButton
-                    android:id="@+id/profile_rbutton_Female"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/female" />
-            </RadioGroup>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"

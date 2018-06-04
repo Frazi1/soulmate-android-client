@@ -3,18 +3,12 @@ package com.soulmate.soulmate.presentation.activity.base
 import android.view.Menu
 import android.view.MenuItem
 import com.arellomobile.mvp.MvpAppCompatActivity
-import com.github.salomonbrys.kodein.LazyKodein
-import com.github.salomonbrys.kodein.LazyKodeinAware
-import com.github.salomonbrys.kodein.lazy
-import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.view.IBaseMvpView
 import com.soulmate.soulmate.presentation.activity.DeveloperSettingsActivity
 
-abstract class BaseActivity : MvpAppCompatActivity(), IBaseMvpView, LazyKodeinAware {
+abstract class BaseActivity : MvpAppCompatActivity(), IBaseMvpView {
     protected val baseContext: BaseContext = BaseContext(this)
-
-    override val kodein: LazyKodein = App.globalkodein.lazy
 
     override fun showToast(text: String, duration: Int) {
         baseContext.showToast(text, duration)
