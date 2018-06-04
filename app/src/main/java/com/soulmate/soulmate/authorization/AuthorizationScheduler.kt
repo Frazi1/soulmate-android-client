@@ -1,7 +1,7 @@
-package com.soulmate.soulmate.interaction.authorization
+package com.soulmate.soulmate.authorization
 
-import com.soulmate.soulmate.configuration.CredentialsStore
-import com.soulmate.soulmate.interaction.api.AuthApi
+import com.soulmate.soulmate.CredentialsStore
+import com.soulmate.soulmate.api.AuthApi
 import com.soulmate.soulmate.api.errors.IErrorHandler
 import com.soulmate.soulmate.repositories.AuthRepository
 import java.util.*

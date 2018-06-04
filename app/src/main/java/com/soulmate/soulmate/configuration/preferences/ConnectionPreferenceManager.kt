@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import android.preference.PreferenceManager
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.configuration.interfaces.IConnectionPreferenceManager
 
 class ConnectionPreferenceManager(context: Context, resources: Resources) : IConnectionPreferenceManager {
     private val preference: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)

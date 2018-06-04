@@ -8,7 +8,7 @@ import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
-import com.soulmate.soulmate.presentation.view.base.IBaseMvpView
+import com.soulmate.soulmate.presentation.view.IBaseMvpView
 import com.soulmate.soulmate.presentation.activity.DeveloperSettingsActivity
 
 abstract class BaseActivity : MvpAppCompatActivity(), IBaseMvpView, LazyKodeinAware {
