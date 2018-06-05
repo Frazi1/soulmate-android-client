@@ -23,7 +23,7 @@ open class HttpErrorMessageExtractor(private val objectMapper: ObjectMapper,
         return when (t.code()) {
             HttpErrorCodes.UNPROCESSABLE_ENTITY.code -> getUnprocessableEntityMessage(t)
             HttpErrorCodes.NOT_AUTHORIZED.code -> resource.getString(R.string.invalid_credentials)
-            else -> t.message()
+            else -> readErrorText(t)
         }
     }
 
@@ -31,5 +31,10 @@ open class HttpErrorMessageExtractor(private val objectMapper: ObjectMapper,
         val body = t.response().errorBody()
         val v = objectMapper.readValue(body?.byteStream(), ValidationResponse::class.java)
         return validationResponseHandler.getValidationMessage(v)
+    }
+
+    private fun readErrorText(t: HttpException): String {
+        val reader = t.response().errorBody()?.charStream()?.buffered(DEFAULT_BUFFER_SIZE)
+        return reader?.readLines()?.joinToString(" ")?: "Unknown error"
     }
 }
