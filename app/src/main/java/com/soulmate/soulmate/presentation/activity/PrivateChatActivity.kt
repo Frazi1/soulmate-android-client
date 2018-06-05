@@ -34,8 +34,10 @@ class PrivateChatActivity : BaseActivity(), IPrivateChatView {
     private val userContextHolder: IUserContexHolder by instance()
     private val picassoWrapper: PicassoWrapper by instance()
 
-    @BindView(R.id.privateChat_messagesList) lateinit var messagesList: MessagesList
-    @BindView(R.id.privateChat_messageInput) lateinit var messageInput: MessageInput
+    @BindView(R.id.privateChat_messagesList)
+    lateinit var messagesList: MessagesList
+    @BindView(R.id.privateChat_messageInput)
+    lateinit var messageInput: MessageInput
 
     @InjectPresenter
     lateinit var mPrivateChatPresenter: PrivateChatPresenter
@@ -64,8 +66,11 @@ class PrivateChatActivity : BaseActivity(), IPrivateChatView {
         }
     }
 
-    override fun displayMessages(messages: List<Message>) {
-        messagesListAdapter.addToEnd(messages, true)
+    override fun displayMessages(messages: List<Message>, addToStart: Boolean) {
+        if (addToStart)
+            messages.forEach { messagesListAdapter.addToStart(it, true) }
+        else
+            messagesListAdapter.addToEnd(messages, true)
     }
 
     override fun addDisplayMessage(message: Message) {

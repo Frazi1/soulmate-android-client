@@ -12,7 +12,10 @@ import com.soulmate.soulmate.presentation.activity.chat.Message
 import com.soulmate.soulmate.presentation.view.IPrivateChatView
 import com.soulmate.soulmate.repositories.MessageRepository
 import com.soulmate.soulmate.repositories.UserRepository
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @InjectViewState
 class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatView>(lazyKodein) {
@@ -24,6 +27,7 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
 
     private var user: Author? = null
     private var colluctor: Author? = null
+    private var lastMessageDate = Date(0)
 
 
     private fun constructMessage(msg: UserMessageDto): Message {
@@ -35,24 +39,35 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
 
     fun loadMessagesWithUser(userId: Long) {
         userRepository.getUserProfiles(userId)
+                .timeout(30, TimeUnit.SECONDS)
                 .flatMap {
                     colluctor = Author(it.first(), imageUrlHelper)
                     user = Author(userContextHolder.user!!, imageUrlHelper)
-                    messageRepository.getMessagesWithUser(userId)
+                    return@flatMap messageRepository.getMessagesWithUser(userId, lastMessageDate)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally({
+                    loadMessagesWithUser(colluctor!!.id.toLong())
+                })
                 .createSubscription({ messages ->
                     if (messages.isNotEmpty()) {
-                        viewState.displayMessages(messages.map { constructMessage(it) })
+                        updateLastMessage(messages)
+                        viewState.displayMessages(messages.map { constructMessage(it) }, lastMessageDate.time != 0.toLong())
                     }
+                }, {
+                    val a = it
                 })
+    }
+
+    private fun updateLastMessage(messages: List<UserMessageDto>) {
+        val lastMessage = messages.sortedByDescending { it.sentAt }.first()
+        lastMessageDate = lastMessage.sentAt
     }
 
     fun sendMessage(msg: String) {
         messageRepository.sendMessage(SendMessageDto(colluctor!!.id.toLong(), msg))
                 .observeOn(AndroidSchedulers.mainThread())
                 .createSubscription({
-                    viewState.addDisplayMessage(constructMessage(it))
                 })
     }
 
