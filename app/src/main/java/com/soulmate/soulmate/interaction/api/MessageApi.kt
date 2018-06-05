@@ -8,9 +8,12 @@ import retrofit2.http.*
 import java.util.*
 
 interface MessageApi {
+    @GET("api/message/poll/{id}")
+    fun pollMessagesWithUser(@Path("id") userId: Long,
+                             @Query("dateAfter") dateAfter: Long): Observable<List<UserMessageDto>>
+
     @GET("api/message/{id}")
-    fun getMessagesWithUser(@Path("id") userId: Long,
-                            @Query("dateAfter") dateAfter: Long): Observable<List<UserMessageDto>>
+    fun getMessagesWithUser(@Path("id") userId: Long): Observable<List<UserMessageDto>>
 
     @GET("api/message")
     fun getUserDialogs() :Observable<List<UserDialogDto>>

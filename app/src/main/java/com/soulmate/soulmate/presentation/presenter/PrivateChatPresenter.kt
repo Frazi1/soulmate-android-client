@@ -12,7 +12,6 @@ import com.soulmate.soulmate.presentation.activity.chat.Message
 import com.soulmate.soulmate.presentation.view.IPrivateChatView
 import com.soulmate.soulmate.repositories.MessageRepository
 import com.soulmate.soulmate.repositories.UserRepository
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -39,24 +38,39 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
 
     fun loadMessagesWithUser(userId: Long) {
         userRepository.getUserProfiles(userId)
-                .timeout(30, TimeUnit.SECONDS)
                 .flatMap {
                     colluctor = Author(it.first(), imageUrlHelper)
                     user = Author(userContextHolder.user!!, imageUrlHelper)
-                    return@flatMap messageRepository.getMessagesWithUser(userId, lastMessageDate)
+                    return@flatMap messageRepository.getMessagesWithUser(userId)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally({
-                    loadMessagesWithUser(colluctor!!.id.toLong())
+                    pollMessages()
                 })
                 .createSubscription({ messages ->
                     if (messages.isNotEmpty()) {
                         updateLastMessage(messages)
-                        viewState.displayMessages(messages.map { constructMessage(it) }, lastMessageDate.time != 0.toLong())
+                        viewState.displayMessages(messages.map { constructMessage(it) })
+                    }
+                })
+    }
+
+    private fun pollMessages() {
+        messageRepository.pollMessagesWithUser(colluctor!!.id.toLong(), lastMessageDate)
+                .timeout(30, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally({ pollMessages() })
+                .createSubscription({ messages ->
+                    if (messages.isNotEmpty()) {
+                        updateLastMessage(messages)
+                        viewState.displayMessages(messages.map { constructMessage(it) }, true)
                     }
                 }, {
-                    val a = it
+//                    if(it !is java.util.concurrent.TimeoutException)
+//                        defaultErrorHandler.handle(it)
+                    //suppress timeout exceptions handling.
                 })
+
     }
 
     private fun updateLastMessage(messages: List<UserMessageDto>) {
@@ -67,8 +81,7 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
     fun sendMessage(msg: String) {
         messageRepository.sendMessage(SendMessageDto(colluctor!!.id.toLong(), msg))
                 .observeOn(AndroidSchedulers.mainThread())
-                .createSubscription({
-                })
+                .createSubscription({})
     }
 
 }

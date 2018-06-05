@@ -16,8 +16,12 @@ class MessageRepository(errorHandler: IErrorHandler,
         return messageApi.getUserDialogs()
     }
 
-    fun getMessagesWithUser(userId: Long, dateAfter: Date): Observable<List<UserMessageDto>> {
-        return messageApi.getMessagesWithUser(userId, dateAfter.time)
+    fun getMessagesWithUser(userId: Long): Observable<List<UserMessageDto>> {
+        return messageApi.getMessagesWithUser(userId)
+    }
+
+    fun pollMessagesWithUser(userId: Long, dateAfter: Date): Observable<List<UserMessageDto>> {
+        return messageApi.pollMessagesWithUser(userId, dateAfter.time)
     }
 
     fun sendMessage(sendMessageDto: SendMessageDto): Observable<UserMessageDto> {
