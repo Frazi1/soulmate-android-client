@@ -16,9 +16,10 @@ abstract class BasePresenter<T : MvpView>(final override val kodein: LazyKodein)
 
 
     fun <T : Any> Observable<T>.createSubscription(onDo: (T) -> Unit,
-                                                   onError: (Throwable) -> Unit = defaultErrorHandler::handle) {
+                                                   onError: (Throwable) -> Unit = defaultErrorHandler::handle): Disposable {
         val s: Disposable = subscribe(onDo, onError)
         subscriptions.add(s)
+        return s
     }
 
     override fun onDestroy() {

@@ -13,6 +13,7 @@ import com.soulmate.soulmate.presentation.view.IPrivateChatView
 import com.soulmate.soulmate.repositories.MessageRepository
 import com.soulmate.soulmate.repositories.UserRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -24,28 +25,33 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
     private val userContextHolder: IUserContexHolder by instance()
     private val imageUrlHelper: ImageUrlHelper by instance()
 
-    private var user: Author? = null
-    private var colluctor: Author? = null
-    private var lastMessageDate = Date(0)
+    private var pollingDisposable: Disposable? = null
 
+    private var user: Author? = null
+    private var partner: Author? = null
+    private var lastMessageDate = Date(0)
+    private var isPolling = false
+
+    var partnerUserId: Long = -1
 
     private fun constructMessage(msg: UserMessageDto): Message {
         val toLong = user!!.id.toLong()
         if (msg.fromUserId == toLong)
             return Message(msg, user!!)
-        return Message(msg, colluctor!!)
+        return Message(msg, partner!!)
     }
 
-    fun loadMessagesWithUser(userId: Long) {
+    private fun loadMessagesWithUser(userId: Long) {
         userRepository.getUserProfiles(userId)
                 .flatMap {
-                    colluctor = Author(it.first(), imageUrlHelper)
+                    partner = Author(it.first(), imageUrlHelper)
                     user = Author(userContextHolder.user!!, imageUrlHelper)
                     return@flatMap messageRepository.getMessagesWithUser(userId)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally({
-                    pollMessages()
+                    if(!isPolling)
+                        pollMessages()
                 })
                 .createSubscription({ messages ->
                     if (messages.isNotEmpty()) {
@@ -56,19 +62,24 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
     }
 
     private fun pollMessages() {
-        messageRepository.pollMessagesWithUser(colluctor!!.id.toLong(), lastMessageDate)
+        isPolling = true
+        pollingDisposable = messageRepository.pollMessagesWithUser(partner!!.id.toLong(), lastMessageDate)
                 .timeout(30, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally({ pollMessages() })
+                .doFinally({
+                    isPolling = false
+                })
                 .createSubscription({ messages ->
                     if (messages.isNotEmpty()) {
                         updateLastMessage(messages)
                         viewState.displayMessages(messages.map { constructMessage(it) }, true)
                     }
+                    pollMessages()
+
                 }, {
-//                    if(it !is java.util.concurrent.TimeoutException)
-//                        defaultErrorHandler.handle(it)
-                    //suppress timeout exceptions handling.
+                    if(it !is java.util.concurrent.TimeoutException) //suppress timeout exceptions handling.
+                        defaultErrorHandler.handle(it)
+                    pollMessages()
                 })
 
     }
@@ -79,9 +90,17 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
     }
 
     fun sendMessage(msg: String) {
-        messageRepository.sendMessage(SendMessageDto(colluctor!!.id.toLong(), msg))
+        messageRepository.sendMessage(SendMessageDto(partner!!.id.toLong(), msg))
                 .observeOn(AndroidSchedulers.mainThread())
                 .createSubscription({})
     }
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        loadMessagesWithUser(partnerUserId)
+    }
+
+    override fun detachView(view: IPrivateChatView?) {
+        pollingDisposable?.dispose()
+    }
 }
