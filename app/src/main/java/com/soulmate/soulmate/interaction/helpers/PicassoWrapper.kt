@@ -24,6 +24,7 @@ class PicassoWrapper(private val picasso: Picasso,
             = fetchAndDisplay(imageUrlHelper.getImageUrl(imageId), imageView, placeHolder)
 
     fun fetchAndDisplay(url: String, imageView: ImageView, placeHolder: Int? = null) {
+        if (url == "") return
         picasso
                 .load(url)
                 .fetch(object : Callback {

@@ -9,26 +9,22 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.lazy
-import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
+import com.soulmate.soulmate.interaction.helpers.PicassoWrapper
 import com.soulmate.soulmate.presentation.activity.base.BaseFragment
 import com.soulmate.soulmate.presentation.activity.chat.ChatDialog
 import com.soulmate.soulmate.presentation.activity.chat.Message
 import com.soulmate.soulmate.presentation.presenter.ChatPresenter
 import com.soulmate.soulmate.presentation.view.IChatView
-import com.soulmate.soulmate.presentation.view.base.ILoader
-import com.squareup.picasso.Picasso
 import com.stfalcon.chatkit.commons.ImageLoader
 import com.stfalcon.chatkit.dialogs.DialogsList
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter
 
 
 class ChatFragment : BaseFragment(), IChatView {
-    private val picasso: Picasso by instance()
+    private val picassoWrapper: PicassoWrapper by instance()
     private val userContextHolder: IUserContexHolder by instance()
 
     companion object {
@@ -45,8 +41,10 @@ class ChatFragment : BaseFragment(), IChatView {
     @InjectPresenter
     lateinit var mChatPresenter: ChatPresenter
 
-    @BindView(R.id.chat_dialogsList) lateinit var dialogsList: DialogsList
-    @BindView(R.id.chats_refreshLayout) lateinit var refreshLayout: SwipeRefreshLayout
+    @BindView(R.id.chat_dialogsList)
+    lateinit var dialogsList: DialogsList
+    @BindView(R.id.chats_refreshLayout)
+    lateinit var refreshLayout: SwipeRefreshLayout
 
     @ProvidePresenter
     fun providePresenter(): ChatPresenter = ChatPresenter(kodein)
@@ -60,7 +58,7 @@ class ChatFragment : BaseFragment(), IChatView {
         val view = inflater.inflate(R.layout.fragment_chat, container, false)
         ButterKnife.bind(this, view)
         refreshLayout.setOnRefreshListener { mChatPresenter.loadDialogs() }
-        dialogsListAdapter = DialogsListAdapter(ImageLoader { imageView, url -> picasso.load(url).into(imageView) })
+        dialogsListAdapter = DialogsListAdapter(ImageLoader { imageView, url -> picassoWrapper.fetchAndDisplay(url, imageView) })
         dialogsList.setAdapter(dialogsListAdapter)
         dialogsListAdapter.setOnDialogClickListener {
             val intent = PrivateChatActivity.getIntent(context!!)

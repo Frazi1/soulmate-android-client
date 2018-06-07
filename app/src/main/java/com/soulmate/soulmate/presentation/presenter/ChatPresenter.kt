@@ -17,13 +17,17 @@ class ChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IChatView>(lazyKodei
     private val urlHelper: ImageUrlHelper by instance()
 
     fun loadDialogs() {
-        messageRepository.getUserChats()
+        messageRepository.getUserDialogs()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally({viewState.onFinishedLoading()})
-                .createSubscription ({
-                    val users = it.map { Author(it, urlHelper ) }
-                    val dialogs: List<ChatDialog<Message>> = users.map { ChatDialog<Message>(it) }
-                    viewState.displayDialogs(dialogs)
+                .doFinally({ viewState.onFinishedLoading() })
+                .createSubscription({
+                    val d = it.map {
+                        val author = Author(it.user, urlHelper)
+                        ChatDialog(author, if (it.lastMessage != null) Message(it.lastMessage!!, author) else null)
+                    }
+//                    val users = it.map { Author(it.user, urlHelper) }
+//                    val dialogs: List<ChatDialog<Message>> = users.map { ChatDialog<Message>(it) }
+                    viewState.displayDialogs(d)
                 })
     }
 }
