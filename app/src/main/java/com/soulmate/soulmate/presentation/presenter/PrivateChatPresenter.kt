@@ -13,6 +13,9 @@ import com.soulmate.soulmate.presentation.view.IPrivateChatView
 import com.soulmate.soulmate.repositories.MessageRepository
 import com.soulmate.soulmate.repositories.UserRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @InjectViewState
 class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatView>(lazyKodein) {
@@ -22,38 +25,82 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
     private val userContextHolder: IUserContexHolder by instance()
     private val imageUrlHelper: ImageUrlHelper by instance()
 
-    private var user: Author? = null
-    private var colluctor: Author? = null
+    private var pollingDisposable: Disposable? = null
 
+    private var user: Author? = null
+    private var partner: Author? = null
+    private var lastMessageDate = Date(0)
+    private var isPolling = false
+
+    var partnerUserId: Long = -1
 
     private fun constructMessage(msg: UserMessageDto): Message {
         val toLong = user!!.id.toLong()
         if (msg.fromUserId == toLong)
             return Message(msg, user!!)
-        return Message(msg, colluctor!!)
+        return Message(msg, partner!!)
     }
 
-    fun loadMessagesWithUser(userId: Long) {
+    private fun loadMessagesWithUser(userId: Long) {
         userRepository.getUserProfiles(userId)
                 .flatMap {
-                    colluctor = Author(it.first(), imageUrlHelper)
+                    partner = Author(it.first(), imageUrlHelper)
                     user = Author(userContextHolder.user!!, imageUrlHelper)
-                    messageRepository.getMessagesWithUser(userId)
+                    return@flatMap messageRepository.getMessagesWithUser(userId)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally({
+                    if(!isPolling)
+                        pollMessages()
+                })
                 .createSubscription({ messages ->
                     if (messages.isNotEmpty()) {
+                        updateLastMessage(messages)
                         viewState.displayMessages(messages.map { constructMessage(it) })
                     }
                 })
     }
 
-    fun sendMessage(msg: String) {
-        messageRepository.sendMessage(SendMessageDto(colluctor!!.id.toLong(), msg))
+    private fun pollMessages() {
+        isPolling = true
+        pollingDisposable = messageRepository.pollMessagesWithUser(partner!!.id.toLong(), lastMessageDate)
+                .timeout(30, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .createSubscription({
-                    viewState.addDisplayMessage(constructMessage(it))
+                .doFinally({
+                    isPolling = false
                 })
+                .createSubscription({ messages ->
+                    if (messages.isNotEmpty()) {
+                        updateLastMessage(messages)
+                        viewState.displayMessages(messages.map { constructMessage(it) }, true)
+                    }
+                    pollMessages()
+
+                }, {
+                    if(it !is java.util.concurrent.TimeoutException) //suppress timeout exceptions handling.
+                        defaultErrorHandler.handle(it)
+                    pollMessages()
+                })
+
     }
 
+    private fun updateLastMessage(messages: List<UserMessageDto>) {
+        val lastMessage = messages.sortedByDescending { it.sentAt }.first()
+        lastMessageDate = lastMessage.sentAt
+    }
+
+    fun sendMessage(msg: String) {
+        messageRepository.sendMessage(SendMessageDto(partner!!.id.toLong(), msg))
+                .observeOn(AndroidSchedulers.mainThread())
+                .createSubscription({})
+    }
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        loadMessagesWithUser(partnerUserId)
+    }
+
+    override fun detachView(view: IPrivateChatView?) {
+        pollingDisposable?.dispose()
+    }
 }

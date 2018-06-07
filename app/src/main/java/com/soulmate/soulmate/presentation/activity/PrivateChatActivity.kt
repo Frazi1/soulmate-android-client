@@ -7,11 +7,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.github.salomonbrys.kodein.LazyKodein
-import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.lazy
-import com.soulmate.soulmate.App
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
 import com.soulmate.soulmate.interaction.helpers.PicassoWrapper
@@ -56,7 +52,7 @@ class PrivateChatActivity : BaseActivity(), IPrivateChatView {
         messagesList.setAdapter(messagesListAdapter)
         val userIds: Array<Long>? = intent.getSerializableExtra("ids") as Array<Long>
         if (userIds != null)
-            mPrivateChatPresenter.loadMessagesWithUser(userIds.first())
+            mPrivateChatPresenter.partnerUserId = userIds.first()
 
         messageInput.setInputListener { it: CharSequence ->
             mPrivateChatPresenter.sendMessage(it.toString())
@@ -64,8 +60,11 @@ class PrivateChatActivity : BaseActivity(), IPrivateChatView {
         }
     }
 
-    override fun displayMessages(messages: List<Message>) {
-        messagesListAdapter.addToEnd(messages, true)
+    override fun displayMessages(messages: List<Message>, addToStart: Boolean) {
+        if (addToStart)
+            messages.forEach { messagesListAdapter.addToStart(it, true) }
+        else
+            messagesListAdapter.addToEnd(messages, true)
     }
 
     override fun addDisplayMessage(message: Message) {
