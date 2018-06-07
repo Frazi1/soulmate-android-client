@@ -1,9 +1,12 @@
 package com.soulmate.soulmate.presentation.activity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat
 import android.view.*
 import android.widget.*
 import butterknife.BindView
@@ -65,14 +68,21 @@ class ProfileFragment : LoaderFragment(), IProfileView {
     @OnClick(R.id.profile_imageView_avatar)
     fun selectImage() {
         val type = "image/*"
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = type
-        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickIntent.type = type
-        val chooser = Intent.createChooser(intent, activity?.applicationContext?.resources?.getString(R.string.select_picture))
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
-        startActivityForResult(chooser,
-                PICK_IMAGE)
+
+        if (ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat
+                    .requestPermissions(this.requireActivity(),
+                            listOf(Manifest.permission.READ_EXTERNAL_STORAGE).toTypedArray(), PICK_IMAGE)
+        } else {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = type
+            val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            pickIntent.type = type
+            val chooser = Intent.createChooser(intent, activity?.applicationContext?.resources?.getString(R.string.select_picture))
+            chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
+            startActivityForResult(chooser, PICK_IMAGE)
+        }
     }
 
     @OnClick(R.id.profile_button_logout)
