@@ -42,17 +42,12 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
     @InjectPresenter
     lateinit var mProfileEstimationPresenter: ProfileEstimationPresenter
 
-    @BindView(R.id.estimation_imageViewAvatar)
-    lateinit var imageViewAvatar: ImageView
+    @BindView(R.id.estimation_imageViewAvatar) lateinit var imageViewAvatar: ImageView
+    @BindView(R.id.estimation_textProfileName) lateinit var textProfileName: TextView
+    @BindView(R.id.estimation_textView_profileDescription) lateinit var textViewProfileDescription: TextView
+    @BindView(R.id.layout_profile_loading) override lateinit var loaderView: View
+    @BindView(R.id.estimation_refreshLayout) lateinit var refreshLayout: SwipeRefreshLayout
 
-    @BindView(R.id.estimation_textProfileName)
-    lateinit var textProfileName: TextView
-
-    @BindView(R.id.layout_profile_loading)
-    override lateinit var loaderView: View
-
-    @BindView(R.id.estimation_refreshLayout)
-    lateinit var refreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -71,6 +66,8 @@ class ProfileEstimationFragment : LoaderFragment(), IProfileEstimationView {
         estimation_layoutNoProfiles.visibility = View.GONE
 
         textProfileName.text = profileEstimationDto.firstName
+        textViewProfileDescription.text = profileEstimationDto.personalStory
+
         if (profileEstimationDto.profileImages.any()) {
             picassoWrapper.fetchAndDisplay(
                     profileEstimationDto.profileImages.first().imageId,

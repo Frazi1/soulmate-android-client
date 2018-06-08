@@ -19,28 +19,58 @@
                 android:layout_height="match_parent"
                 android:visibility="visible">
 
-                <ImageView
-                    android:id="@+id/estimation_imageViewAvatar"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="275dp"
-                    android:src="@android:color/darker_gray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/estimation_textProfileName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/estimation_imageViewAvatar"
-                    tools:text="Irina, 21, Voronezh" />
+                    <ImageView
+                        android:id="@+id/estimation_imageViewAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="275dp"
+                        android:adjustViewBounds="false"
+                        android:cropToPadding="false"
+                        android:src="@android:color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:background="@color/black" />
+
+                    <TextView
+                        android:id="@+id/estimation_textProfileName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/estimation_imageViewAvatar"
+                        tools:text="dimaxkhxykckukdkdfukxuixiucoucuofuocoufukfluflufu" />
+
+                    <TextView
+                        android:id="@+id/estimation_textView_profileDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif"
+                        android:text="TextView"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/estimation_buttonDislike"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/estimation_textProfileName"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:text="I love panckaces and cats" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/estimation_buttonDislike"
