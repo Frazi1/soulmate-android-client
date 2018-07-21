@@ -5,7 +5,9 @@ import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.instance
 import com.soulmate.shared.dtos.SendMessageDto
 import com.soulmate.shared.dtos.UserMessageDto
+import com.soulmate.soulmate.configuration.interfaces.IConnectionPreferenceManager
 import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
+import com.soulmate.soulmate.interaction.api.websocket.NotificationWebSocketListener
 import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
 import com.soulmate.soulmate.presentation.activity.chat.Author
 import com.soulmate.soulmate.presentation.activity.chat.Message
@@ -14,6 +16,9 @@ import com.soulmate.soulmate.repositories.MessageRepository
 import com.soulmate.soulmate.repositories.UserRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -49,10 +54,10 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
                     return@flatMap messageRepository.getMessagesWithUser(userId)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally({
-                    if(!isPolling)
+                .doFinally {
+                    if (!isPolling)
                         pollMessages()
-                })
+                }
                 .createSubscription({ messages ->
                     if (messages.isNotEmpty()) {
                         updateLastMessage(messages)
@@ -63,12 +68,12 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
 
     private fun pollMessages() {
         isPolling = true
-        pollingDisposable = messageRepository.pollMessagesWithUser(partner!!.id.toLong(), lastMessageDate)
+        pollingDisposable = messageRepository.pollMessagesWithUser(partnerUserId, lastMessageDate)
                 .timeout(30, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally({
+                .doFinally {
                     isPolling = false
-                })
+                }
                 .createSubscription({ messages ->
                     if (messages.isNotEmpty()) {
                         updateLastMessage(messages)
@@ -77,7 +82,7 @@ class PrivateChatPresenter(lazyKodein: LazyKodein) : BasePresenter<IPrivateChatV
                     pollMessages()
 
                 }, {
-                    if(it !is java.util.concurrent.TimeoutException) //suppress timeout exceptions handling.
+                    if (it !is java.util.concurrent.TimeoutException) //suppress timeout exceptions handling.
                         defaultErrorHandler.handle(it)
                     pollMessages()
                 })

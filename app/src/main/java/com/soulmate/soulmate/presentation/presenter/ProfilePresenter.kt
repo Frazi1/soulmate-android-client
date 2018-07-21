@@ -1,6 +1,7 @@
 package com.soulmate.soulmate.presentation.presenter
 
 import android.content.ContentResolver
+import android.content.Intent
 import android.content.res.AssetFileDescriptor
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
@@ -10,6 +11,7 @@ import com.soulmate.shared.GenderType
 import com.soulmate.shared.dtos.UploadImageDto
 import com.soulmate.shared.dtos.UserAccountDto
 import com.soulmate.soulmate.App
+import com.soulmate.soulmate.NotificationService
 import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
 import com.soulmate.soulmate.presentation.view.IProfileView
@@ -74,6 +76,7 @@ class ProfilePresenter : BasePresenter<IProfileView>(App.globalkodein.lazy) {
 
     fun logout() {
         credentialsStore.clear()
+        App.instance.applicationContext.stopService(Intent(App.instance.applicationContext, NotificationService::class.java))
         viewState.openLoginActivity()
     }
 

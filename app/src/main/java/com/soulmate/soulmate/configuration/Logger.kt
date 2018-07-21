@@ -7,4 +7,8 @@ class Logger: ILogger {
     override fun error(text: String) {
         Log.e("Soulmate", text)
     }
+
+    override fun info(text: String) {
+        Log.i("Soulmate", text)
+    }
 }

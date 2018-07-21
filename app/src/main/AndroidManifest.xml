@@ -24,7 +24,8 @@
         <activity android:name=".presentation.activity.DeveloperSettingsActivity" />
         <activity android:name=".presentation.activity.MainActivity" />
         <activity android:name=".presentation.activity.SearchOptionsActivity" />
-        <activity android:name=".presentation.activity.PrivateChatActivity" />
+        <activity android:name=".presentation.activity.PrivateChatActivity"
+            android:parentActivityName=".presentation.activity.MainActivity"/>
         <!-- <activity -->
         <!-- android:name=".ui.activity.MainActivity" -->
         <!-- android:label="@string/title_activity_main" -->
@@ -36,6 +37,7 @@
         <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
+        <service android:name=".NotificationService"/>
     </application>
 
 </manifest>

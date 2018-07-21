@@ -6,7 +6,6 @@ import com.github.salomonbrys.kodein.lazy
 import com.soulmate.soulmate.App
 import com.soulmate.soulmate.configuration.CredentialsStore
 import com.soulmate.soulmate.api.errors.IErrorHandler
-import com.soulmate.soulmate.configuration.interfaces.IUserContexHolder
 import com.soulmate.soulmate.interaction.authorization.OAuthTokenDto
 import com.soulmate.soulmate.interaction.authorization.AuthorizationScheduler
 import com.soulmate.soulmate.presentation.view.ILoginView
@@ -21,13 +20,14 @@ class LoginPresenter : BasePresenter<ILoginView>(App.globalkodein.lazy) {
     private val errorHandler: IErrorHandler by instance()
 
     override fun onFirstViewAttach() {
-        if (credentialsStore.authorizationToken.isExpired)
-            credentialsStore.clear()
+//        if (credentialsStore.authorizationToken.isExpired)
+//            credentialsStore.clear()
         viewState.setUsername(credentialsStore.username)
         viewState.setPassword(credentialsStore.password)
     }
 
     fun attemptAutoLogin(): Boolean {
+        if(credentialsStore.isTokenInitialized) return true
         if (credentialsStore.isCredentialsInitialized)
             attemptLogin(credentialsStore.username, credentialsStore.password, false)
         return credentialsStore.isCredentialsInitialized
@@ -44,7 +44,7 @@ class LoginPresenter : BasePresenter<ILoginView>(App.globalkodein.lazy) {
                 .subscribe({
                     credentialsStore.initializeWithToken(OAuthTokenDto.fromAccessToken(it))
 //                    authorizationScheduler.startAuthorizationTask(AuthorizationScheduler.REFRESH_TOKEN_PERIOD)
-                    viewState.openProfileActivity()
+                    viewState.onSuccessfulAuthorization()
                 }, errorHandler::handle)
     }
 }

@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 27
-//    kapt { generateStubs = true }
+    kapt { generateStubs = true }
     defaultConfig {
         applicationId "com.soulmate.soulmate"
         minSdkVersion 16
@@ -41,11 +41,12 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${androidSupportVer}"
     implementation "com.android.support:support-v4:${androidSupportVer}"
     implementation "com.android.support:design:${androidSupportVer}"
+    implementation "com.android.support:support-compat:${androidSupportVer}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // ViewModel and LiveData
 //    implementation "android.arch.lifecycle:extensions:1.1.0"
@@ -58,30 +59,30 @@ dependencies {
 //    implementation "android.arch.paging:runtime:1.0.0-alpha6"
 
     //Jackson
-    compile "com.fasterxml.jackson.core:jackson-core:${jacksonVer}"
-    compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVer}"
-    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVer}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVer}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVer}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVer}"
 
     //Retrofit
-    compile "com.squareup.retrofit2:retrofit:${retrofitVer}"
-    compile "com.squareup.retrofit2:converter-jackson:${retrofitVer}"
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVer}"
+    implementation "com.squareup.retrofit2:converter-jackson:${retrofitVer}"
 
     //Multidex for 65K+ methods
-    compile 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
 
     //Kodein
-    compile "com.github.salomonbrys.kodein:kodein:${kodeinVer}"
-    compile "com.github.salomonbrys.kodein:kodein-android:${kodeinVer}"
+    implementation "com.github.salomonbrys.kodein:kodein:${kodeinVer}"
+    implementation "com.github.salomonbrys.kodein:kodein-android:${kodeinVer}"
 
     //Moxy MVP
-    compile "com.arello-mobile:moxy:${moxyVer}"
-    compile "com.arello-mobile:moxy-app-compat:${moxyVer}"
+    implementation "com.arello-mobile:moxy:${moxyVer}"
+    implementation "com.arello-mobile:moxy-app-compat:${moxyVer}"
     kapt "com.arello-mobile:moxy-compiler:${moxyVer}"
 
     //RxJava
-    compile 'io.reactivex.rxjava2:rxjava:2.1.9'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -93,7 +94,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     //Butter knife
-    compile "com.jakewharton:butterknife:${butterKnifeVer}"
+    implementation "com.jakewharton:butterknife:${butterKnifeVer}"
     kapt "com.jakewharton:butterknife-compiler:${butterKnifeVer}"
 
     //Range bar

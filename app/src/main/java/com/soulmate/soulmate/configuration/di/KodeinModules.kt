@@ -2,6 +2,7 @@
 
 package com.soulmate.soulmate.configuration.di
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.preference.PreferenceManager
@@ -25,9 +26,11 @@ import com.soulmate.soulmate.configuration.preferences.SearchPreferencesManager
 import com.soulmate.soulmate.interaction.api.*
 import com.soulmate.soulmate.interaction.api.errors.validation.IValidationResponseHandler
 import com.soulmate.soulmate.interaction.api.errors.validation.ValidationResponseHandler
+import com.soulmate.soulmate.interaction.api.websocket.NotificationWebSocketListener
 import com.soulmate.soulmate.interaction.authorization.AuthorizationInterceptor
 import com.soulmate.soulmate.interaction.helpers.ImageUrlHelper
 import com.soulmate.soulmate.interaction.helpers.PicassoWrapper
+import com.soulmate.soulmate.presentation.notifications.NotificationHelper
 import com.soulmate.soulmate.repositories.*
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
@@ -92,7 +95,7 @@ fun configurationModule(context: Context) = Kodein.Module {
     bind<OkHttpClient>() with provider {
         val builder = OkHttpClient.Builder()
         builder.connectTimeout(1, TimeUnit.SECONDS)
-        builder.readTimeout(30,TimeUnit.SECONDS)
+        builder.readTimeout(30, TimeUnit.SECONDS)
         builder.addInterceptor(AuthorizationInterceptor(instance<CredentialsStore>()))
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -117,10 +120,19 @@ fun configurationModule(context: Context) = Kodein.Module {
                 instance<Resources>()
         )
     }
-    bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(context, instance<IErrorMessageExtractor>(), instance<ILogger>()) }
+    bind<IErrorHandler>() with singleton { ToastErrorMessageHandler(context, instance<IErrorMessageExtractor>(), instance<ILogger>(), instance<CredentialsStore>()) }
     bind<IValidationResponseHandler>() with singleton { ValidationResponseHandler() }
 
     bind<ImageUrlHelper>() with singleton { ImageUrlHelper(instance<IConnectionPreferenceManager>()) }
     bind<IUserContexHolder>() with singleton { UserContextHolder() }
     bind<ILogger>() with singleton { Logger() }
+
+    bind<NotificationWebSocketListener>() with singleton {
+        NotificationWebSocketListener(instance<ILogger>(),
+                instance<IErrorHandler>(),
+                instance<ObjectMapper>(),
+                instance<NotificationHelper>())
+    }
+
+    bind<NotificationHelper>() with singleton { NotificationHelper() }
 }

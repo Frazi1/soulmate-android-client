@@ -1,11 +1,16 @@
 package com.soulmate.soulmate.presentation.activity
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.widget.Button
 import android.widget.TextView
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.soulmate.soulmate.App
+import com.soulmate.soulmate.NotificationService
 import com.soulmate.soulmate.R
 import com.soulmate.soulmate.presentation.presenter.LoginPresenter
 import com.soulmate.soulmate.presentation.view.ILoginView
@@ -29,7 +34,6 @@ class LoginActivity : BaseActivity(), ILoginView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        mLoginPresenter.attemptAutoLogin()
         setContentView(R.layout.activity_login)
         buttonLogin = findViewById(R.id.login_button_login)
         buttonRegistration = findViewById(R.id.login_button_registration)
@@ -43,12 +47,16 @@ class LoginActivity : BaseActivity(), ILoginView {
         }
 
         buttonRegistration.setOnClickListener { startActivity(RegistrationActivity.getIntent(this)) }
+        if(mLoginPresenter.attemptAutoLogin())
+            onSuccessfulAuthorization()
     }
 
-    override fun openProfileActivity() {
+    override fun onSuccessfulAuthorization() {
         val intent = MainActivity.getIntent(this)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+
+        App.instance.startNotificationService()
     }
 
     override fun openMainActivity() {
